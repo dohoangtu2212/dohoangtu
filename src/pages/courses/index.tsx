@@ -1,18 +1,18 @@
 import Head from "next/head";
-import Home from "@/views/Home";
 import PageContainer from "@/components/Layout/PageContainer";
+import Courses from "@/views/Courses";
 
-const HomePage = () => {
+const CoursePage = () => {
   return (
     <>
       <Head>
-        <title>Home</title>
+        <title>Khoá học</title>
       </Head>
       <PageContainer>
-        <Home />
+        <Courses />
       </PageContainer>
     </>
   );
 };
 
-export default HomePage;
+export default CoursePage;

@@ -18,6 +18,7 @@ const TopbarContainer: FC<TopbarContainerProps> = ({
       boxShadow="sm"
       position="sticky"
       top="0"
+      zIndex="30"
       {...flexProps}
     >
       {children}

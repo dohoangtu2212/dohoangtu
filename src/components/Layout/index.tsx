@@ -10,7 +10,7 @@ const Layout: FC<LayoutProps> = ({ children }) => {
   const { authenticated } = useAuthenticate();
 
   return (
-    <Flex flexDir="column" position="relative" minH="100vh">
+    <Flex flexDir="column" position="relative" maxH="100vh">
       <Topbar authenticated={authenticated} />
       <main>{children}</main>
     </Flex>

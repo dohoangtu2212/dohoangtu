@@ -1,28 +1,29 @@
 import type { INavigator } from "@/types/navigator";
+import { ROUTE } from "@/constants/route";
 
 export const NAVIGATORS: INavigator[] = [
   {
     id: "home",
     name: "Trang chủ",
-    link: "/",
+    link: ROUTE.home,
     isPrivate: false,
   },
   {
     id: "books",
     name: "Sách",
-    link: "/",
+    link: ROUTE.books,
     isPrivate: false,
   },
   {
     id: "courses ",
     name: "Khoá học",
-    link: "/",
+    link: ROUTE.courses,
     isPrivate: false,
   },
   {
     id: "documents",
     name: "Tài liệu",
-    link: "/",
+    link: ROUTE.documents,
     isPrivate: false,
   },
 ];

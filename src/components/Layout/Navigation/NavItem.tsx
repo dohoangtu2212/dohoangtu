@@ -1,4 +1,4 @@
-import { Box, Text, Button } from "@chakra-ui/react";
+import { Box, Button } from "@chakra-ui/react";
 import type { ButtonProps } from "@chakra-ui/react";
 import type { FC } from "react";
 

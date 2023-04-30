@@ -1,13 +1,16 @@
-import { Flex } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import type { FlexProps } from "@chakra-ui/react";
 import type { FC } from "react";
 
 type PageContainerProps = FlexProps & {};
 const PageContainer: FC<PageContainerProps> = ({ children, ...flexProps }) => {
   return (
-    <Flex {...flexProps} p={{ base: "0.25rem 0.5rem", md: "1rem 2rem" }}>
+    <Box
+      {...flexProps}
+      p={{ base: "1.5rem 1rem", md: "1.75rem 6rem" }}
+    >
       {children}
-    </Flex>
+    </Box>
   );
 };
 

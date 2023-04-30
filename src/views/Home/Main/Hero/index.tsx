@@ -1,7 +1,6 @@
-import Image from "next/image";
 import { Box, Flex, Text } from "@chakra-ui/react";
 import { SlPaperPlane, SlLock, SlTag, SlPeople } from "react-icons/sl";
-import useMobile from "@/hooks/useMobile";
+import DisplayImage from "@/components/UI/DisplayImage";
 
 const IMAGE_ADDRESS =
   "https://mrstranganh.edu.vn/upload/banner/1680571629-z4235885897159_88a33ee5ca64651c34f68e0b2fe14977.jpg";
@@ -34,27 +33,21 @@ const GOOD_THINGS = [
 ];
 
 const Hero = () => {
-  const { isMobile } = useMobile();
   return (
-    <Flex flexDir="column">
-      <Box
+    <Flex flexDir="column" gap="1rem">
+      <DisplayImage
+        imageUrl={IMAGE_ADDRESS}
+        alt="Hero"
         w="100%"
+        borderRadius="lg"
         height={{ base: "15rem", md: "40rem" }}
-        borderRadius="6px"
         position="relative"
-        zIndex="0"
-      >
-        <Image
-          loader={() => IMAGE_ADDRESS}
-          src={IMAGE_ADDRESS}
-          alt="Hero"
-          fill
-        />
-      </Box>
+      />
       <Flex
         px={{ base: "1rem", md: "8rem" }}
         bgColor="gray.200"
         flexDir={{ base: "column", md: "row" }}
+        borderRadius="lg"
       >
         {GOOD_THINGS.map((thing) => (
           <Flex

@@ -12,7 +12,6 @@ const useAuthenticate = () => {
   useEffect(() => {
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
-      console.log({ user });
       if (user) {
         setAuthenticated(true);
       } else {

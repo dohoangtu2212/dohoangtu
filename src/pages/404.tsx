@@ -1,18 +1,18 @@
-import { Text } from "@chakra-ui/react";
 import PageContainer from "@/components/Layout/PageContainer";
+import { Text } from "@chakra-ui/react";
 import Head from "next/head";
 
-const AppPage = () => {
+const NotFoundPage = () => {
   return (
     <>
       <Head>
-        <title>App</title>
+        <title>404</title>
       </Head>
       <PageContainer>
-        
+        <Text>Trang bạn tìm không được hỗ trợ</Text>
       </PageContainer>
     </>
   );
 };
 
-export default AppPage;
+export default NotFoundPage;
