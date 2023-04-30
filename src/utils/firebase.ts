@@ -2,8 +2,7 @@ import { initializeApp } from "firebase/app";
 import { getAuth as fbGetAuth } from "firebase/auth";
 
 const firebaseConfig = {
-  //
-  apiKey: "AIzaSyCKcRO1HNIvZdK0UdnpO3pZfKu1wG5ZhVs",
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_CONFIG_API_KEY,
 
   authDomain: "online-classroom-de70d.firebaseapp.com",
   projectId: "online-classroom-de70d",
