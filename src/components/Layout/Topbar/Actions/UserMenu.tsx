@@ -26,12 +26,7 @@ const UserMenu = () => {
     <Popover>
       <PopoverTrigger>
         <Button variant="unstyled">
-          <Avatar
-            name={userCred}
-            height="2.5rem"
-            width="2.5rem"
-            borderRadius="50%"
-          />
+          <Avatar name={userCred} size="sm" />
         </Button>
       </PopoverTrigger>
       <PopoverContent

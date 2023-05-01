@@ -7,4 +7,10 @@ export const ROUTE = {
   documents: "/documents",
 };
 
-export const PUBLIC_ROUTES = [ROUTE.home, ROUTE.auth];
+export const PUBLIC_ROUTES = [
+  ROUTE.home,
+  ROUTE.auth,
+  ROUTE.courses,
+  ROUTE.books,
+  ROUTE.documents,
+];

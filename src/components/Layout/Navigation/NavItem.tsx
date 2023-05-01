@@ -9,8 +9,9 @@ const NavItem: FC<NavItemProps> = ({ children, ...buttonProps }) => {
     <Box>
       <Button
         variant="ghost"
-        fontWeight="600"
+        fontWeight="500"
         userSelect="none"
+        fontSize="0.875rem"
         {...buttonProps}
       >
         {children}
