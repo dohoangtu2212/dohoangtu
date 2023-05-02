@@ -12,7 +12,9 @@ import useMobile from "@/hooks/useMobile";
 import { AiOutlineMenu } from "react-icons/ai";
 import { FC, PropsWithChildren, useState } from "react";
 
-type NavigatorsContainerProps = PropsWithChildren & {};
+type NavigatorsContainerProps = PropsWithChildren & {
+  isMinimized?: boolean;
+};
 
 const NavigatorsContainer: FC<NavigatorsContainerProps> = ({ children }) => {
   const { isMobile } = useMobile();

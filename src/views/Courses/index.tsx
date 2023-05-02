@@ -7,15 +7,13 @@ import useMobile from "@/hooks/useMobile";
 const Courses = () => {
   const { isMobile } = useMobile();
   return (
-    <Flex flexDir="column" gap="1rem">
-      <Heading fontSize={{ base: "1.5rem", md: "2rem" }} fontWeight="600">
+    <Flex flexDir="column" gap="1rem" minH="100vh">
+      <Text textTransform="uppercase" fontWeight="600">
         Danh sách khoá học
-      </Heading>
+      </Text>
       <Grid templateColumns={`repeat(${isMobile ? 1 : 5}, 1fr)`} gap="1rem">
         {COURSES.map((c) => (
-          <Flex key={c.id}>
-            <CourseCard course={c} />
-          </Flex>
+          <CourseCard course={c} key={c.id} />
         ))}
       </Grid>
     </Flex>

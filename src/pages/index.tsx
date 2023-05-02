@@ -6,7 +6,7 @@ const HomePage = () => {
   return (
     <>
       <Head>
-        <title>Home</title>
+        <title>Trang chủ</title>
       </Head>
       <PageContainer>
         <Home />

@@ -31,7 +31,7 @@ const SignIn = () => {
         isClosable: true,
       });
 
-      router.push(ROUTE.app);
+      router.push(ROUTE.studentHome);
     } catch (err) {
       const { code } = err as AuthError;
       let message = "Đã xảy ra lỗi.";

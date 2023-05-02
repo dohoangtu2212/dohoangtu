@@ -7,10 +7,11 @@ export interface ICourse {
   rating: number;
   ratingCount: number;
   hours: number;
-  lectures: number;
+  lessons: number;
   tag?: ICourseTag;
   price: number;
   previousPrice: number;
+  updatedAt: string;
 }
 
 export enum ICourseTag {
@@ -47,4 +48,14 @@ export interface ICourseDetails {
   ratingCount?: number;
   hours?: number;
   sections: ICourseSection[];
+}
+
+export interface IStudentCourse {
+  id: string;
+  courseId: string;
+  courseDetailsId: string;
+  progress: number;
+  name: string;
+  teacherName: string;
+  rating: number | null;
 }

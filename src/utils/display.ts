@@ -1,4 +1,4 @@
-const displayPrice = (price: number) => {
+export const displayPrice = (price: number) => {
   const config = {
     style: "currency",
     currency: "VND",

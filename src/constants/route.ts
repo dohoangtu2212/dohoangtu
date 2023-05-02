@@ -1,7 +1,8 @@
 export const ROUTE = {
   auth: "/auth",
   home: "/",
-  app: "/app",
+  studentHome: "/student",
+  studentCourses: "/student/courses",
   courses: "/courses",
   books: "/books",
   documents: "/documents",

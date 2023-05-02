@@ -1,5 +1,5 @@
 import Head from "next/head";
-import MyCourseView from "@/views/App/MyCourse/View";
+import StudentCoursesView from "@/views/Student/Courses/View";
 
 const ViewCoursePage = () => {
   return (
@@ -7,7 +7,7 @@ const ViewCoursePage = () => {
       <Head>
         <title>{/* Course name */}</title>
       </Head>
-      <MyCourseView/>
+      <StudentCoursesView />
     </>
   );
 };

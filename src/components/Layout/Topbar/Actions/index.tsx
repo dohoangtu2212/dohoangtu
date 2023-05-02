@@ -34,7 +34,7 @@ const Actions: FC<ActionsProps> = ({ authenticated }) => {
   };
 
   const handleEnterApp = () => {
-    router.push(ROUTE.app);
+    router.push(ROUTE.studentHome);
   };
 
   const handleGoToHome = () => {

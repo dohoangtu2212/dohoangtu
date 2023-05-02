@@ -1,7 +1,7 @@
 import type { INavigator } from "@/types/navigator";
 import { ROUTE } from "@/constants/route";
 
-export const NAVIGATORS: INavigator[] = [
+export const PUBLIC_NAVIGATORS: INavigator[] = [
   {
     id: "home",
     name: "Trang chủ",
@@ -15,7 +15,7 @@ export const NAVIGATORS: INavigator[] = [
     isPrivate: false,
   },
   {
-    id: "courses ",
+    id: "courses",
     name: "Khoá học",
     link: ROUTE.courses,
     isPrivate: false,
@@ -26,10 +26,6 @@ export const NAVIGATORS: INavigator[] = [
     link: ROUTE.documents,
     isPrivate: false,
   },
-];
-
-export const PUBLIC_NAVIGATORS: INavigator[] = [
-  ...NAVIGATORS,
   {
     id: "features",
     name: "Tính năng",
@@ -40,6 +36,21 @@ export const PUBLIC_NAVIGATORS: INavigator[] = [
     id: "contact",
     name: "Liên hệ",
     link: "/",
+    isPrivate: false,
+  },
+];
+
+export const STUDENT_NAVIGATORS: INavigator[] = [
+  {
+    id: "home",
+    name: "Trang chủ",
+    link: ROUTE.home,
+    isPrivate: false,
+  },
+  {
+    id: "my-courses",
+    name: "Khoá học",
+    link: ROUTE.studentCourses,
     isPrivate: false,
   },
 ];
