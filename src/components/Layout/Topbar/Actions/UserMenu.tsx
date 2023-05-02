@@ -23,7 +23,7 @@ const UserMenu = () => {
   };
 
   return (
-    <Popover>
+    <Popover placement="bottom-start">
       <PopoverTrigger>
         <Button variant="unstyled">
           <Avatar name={userCred} size="sm" />

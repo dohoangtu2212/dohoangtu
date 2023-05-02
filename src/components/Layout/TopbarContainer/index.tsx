@@ -20,9 +20,8 @@ const TopbarContainer: FC<TopbarContainerProps> = ({
       alignItems="center"
       justifyContent="space-between"
       as="header"
-      padding={{ base: "0.75rem 1rem", md: "0.5rem 2rem" }}
+      padding={{ base: "0.75rem 1rem", md: "1rem 2rem" }}
       position="sticky"
-      bg={!isPublicRoute ? "gray.400" : "white"}
       top="0"
       zIndex={LAYER.TOPBAR}
       {...flexProps}
