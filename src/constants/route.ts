@@ -3,6 +3,7 @@ export const ROUTE = {
   home: "/",
   studentHome: "/student",
   studentCourses: "/student/courses",
+  teacherHome: "/teacher",
   courses: "/courses",
   books: "/books",
   documents: "/documents",

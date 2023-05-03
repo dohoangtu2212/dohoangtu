@@ -3,14 +3,12 @@ import Navigators from "./Navigators";
 import TopbarContainer from "@/components/Layout/TopbarContainer";
 import type { FC } from "react";
 
-type TopbarProps = {
-  authenticated: boolean;
-};
-const Topbar: FC<TopbarProps> = ({ authenticated }) => {
+type TopbarProps = {};
+const Topbar: FC<TopbarProps> = () => {
   return (
     <TopbarContainer>
-      <Navigators authenticated={authenticated} />
-      <Actions authenticated={authenticated} />
+      <Navigators />
+      <Actions />
     </TopbarContainer>
   );
 };

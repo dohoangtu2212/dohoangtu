@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import type { IGetVideosResponse } from "@/types/dyntube";
 
+// As a proxy to prevent CORS issues
 const dyntubeApis = createApi({
   reducerPath: "dyntube",
   baseQuery: fetchBaseQuery({

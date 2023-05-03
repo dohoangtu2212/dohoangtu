@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-const dyntubeApis = createApi({
-  reducerPath: "dyntube",
+const dyntubeUploadApis = createApi({
+  reducerPath: "dyntube-upload",
   baseQuery: fetchBaseQuery({
     baseUrl: "https://upload.dyntube.com/v1",
     prepareHeaders: (headers) => {
@@ -33,6 +33,6 @@ const dyntubeApis = createApi({
   }),
 });
 
-export const { useUploadVideoMutation } = dyntubeApis;
+export const { useUploadVideoMutation } = dyntubeUploadApis;
 
-export default dyntubeApis;
+export default dyntubeUploadApis;

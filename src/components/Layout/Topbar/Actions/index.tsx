@@ -6,13 +6,14 @@ import { AuthMode } from "@/constants/auth";
 import { BsBoxArrowInRight } from "react-icons/bs";
 import UserMenu from "@/components/Layout/Topbar/Actions/UserMenu";
 import useMobile from "@/hooks/useMobile";
+import { useCurrentUserSelector } from "@/store/slices/user";
 
-type ActionsProps = {
-  authenticated: boolean;
-};
-const Actions: FC<ActionsProps> = ({ authenticated }) => {
+type ActionsProps = {};
+const Actions: FC<ActionsProps> = () => {
   const isMobile = useMobile();
   const router = useRouter();
+  const currentUser = useCurrentUserSelector();
+  const authenticated = !!currentUser;
   const { pathname } = router;
 
   const handleSignIn = () => {

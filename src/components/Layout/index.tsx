@@ -7,15 +7,16 @@ import { Box, Flex } from "@chakra-ui/react";
 type LayoutProps = PropsWithChildren & {};
 
 const Layout: FC<LayoutProps> = ({ children }) => {
-  const { authenticated } = useAuthenticate();
-
+  useAuthenticate();
   return (
-    <Flex flexDir="column" position="relative" maxH="100vh">
-      <Topbar authenticated={authenticated} />
-      <Box minH="100vh">
-        <main>{children}</main>
-      </Box>
-    </Flex>
+    <>
+      <Flex flexDir="column" position="relative" maxH="100vh">
+        <Topbar />
+        <Box minH="100vh">
+          <main>{children}</main>
+        </Box>
+      </Flex>
+    </>
   );
 };
 

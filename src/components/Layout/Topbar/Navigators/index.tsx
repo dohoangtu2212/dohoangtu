@@ -20,10 +20,8 @@ import {
 import { useMemo } from "react";
 import { AiOutlineMenu } from "react-icons/ai";
 
-type NavigatorsProps = {
-  authenticated: boolean;
-};
-const Navigators: FC<NavigatorsProps> = ({ authenticated }) => {
+type NavigatorsProps = {};
+const Navigators: FC<NavigatorsProps> = () => {
   const router = useRouter();
   const { isMobile } = useMobile();
   const { pathname } = router;
