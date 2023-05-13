@@ -1,9 +1,13 @@
 import NavItem from "@/components/Layout/Navigation/NavItem";
-import { PUBLIC_NAVIGATORS, STUDENT_NAVIGATORS } from "@/constants/navigator";
+import {
+  PUBLIC_NAVIGATORS,
+  STUDENT_NAVIGATORS,
+  TEACHER_NAVIGATORS,
+} from "@/constants/navigator";
 import { useRouter } from "next/router";
 import NavigatorsContainer from "@/components/Layout/Navigation/NavigatorsContainer";
 import type { FC } from "react";
-import { PUBLIC_ROUTES, ROUTE } from "@/constants/route";
+import { PUBLIC_ROUTES } from "@/constants/route";
 import useMobile from "@/hooks/useMobile";
 import {
   IconButton,
@@ -13,70 +17,74 @@ import {
   PopoverArrow,
   PopoverBody,
   Flex,
-  Tooltip,
-  Box,
-  Text,
 } from "@chakra-ui/react";
 import { useMemo } from "react";
 import { AiOutlineMenu } from "react-icons/ai";
+import { useUserRoleSelector } from "@/store/slices/user";
+import { UserRole } from "@/types/permission";
 
 type NavigatorsProps = {};
 const Navigators: FC<NavigatorsProps> = () => {
-  const router = useRouter();
   const { isMobile } = useMobile();
-  const { pathname } = router;
-  const showPublicNavigators = PUBLIC_ROUTES.includes(pathname);
-  const showStudentView = pathname.includes(ROUTE.studentHome);
-
-  const navigators = useMemo(() => {
-    if (showStudentView) return STUDENT_NAVIGATORS;
-    if (showPublicNavigators) return PUBLIC_NAVIGATORS;
-    return [];
-  }, [showStudentView, showPublicNavigators]);
 
   if (isMobile)
     return (
       <NavigatorsContainer>
-        {navigators.map((nav) => (
-          <NavItem key={nav.id} onClick={() => router.push(nav.link)}>
-            {nav.name}
-          </NavItem>
-        ))}
+        <NavigatorsList />
       </NavigatorsContainer>
     );
 
   return (
-    <Tooltip
-      hasArrow
-      borderRadius="md"
-      placement="left"
-      label={
-        <Box>
-          <Text>Vào ứng dụng</Text>
-        </Box>
-      }
-    >
-      <Popover placement="right-end">
-        <PopoverTrigger>
-          <IconButton
-            aria-label="navigators"
-            icon={<AiOutlineMenu size="1.25rem" />}
-          />
-        </PopoverTrigger>
-        <PopoverContent w="fit-content">
-          <PopoverArrow />
-          <PopoverBody>
-            <Flex>
-              {navigators.map((nav) => (
-                <NavItem key={nav.id} onClick={() => router.push(nav.link)}>
-                  {nav.name}
-                </NavItem>
-              ))}
-            </Flex>
-          </PopoverBody>
-        </PopoverContent>
-      </Popover>
-    </Tooltip>
+    <Popover placement="right-end">
+      <PopoverTrigger>
+        <IconButton
+          aria-label="navigators"
+          variant="ghost"
+          icon={<AiOutlineMenu size="1.5rem" />}
+        />
+      </PopoverTrigger>
+      <PopoverContent w="fit-content">
+        <PopoverArrow />
+        <PopoverBody>
+          <Flex alignItems="center">
+            <NavigatorsList />
+          </Flex>
+        </PopoverBody>
+      </PopoverContent>
+    </Popover>
+  );
+};
+
+const NavigatorsList = () => {
+  const userRole = useUserRoleSelector();
+  const router = useRouter();
+  const { pathname } = router;
+
+  const showPublicNavigators = PUBLIC_ROUTES.includes(pathname);
+  const isRoleStudent = userRole === UserRole.student;
+  const isRoleTeacher = userRole === UserRole.teacher;
+
+  const navigators = useMemo(() => {
+    if (showPublicNavigators) return PUBLIC_NAVIGATORS;
+    if (isRoleStudent) return STUDENT_NAVIGATORS;
+    if (isRoleTeacher) return TEACHER_NAVIGATORS;
+    return [];
+  }, [isRoleStudent, showPublicNavigators, isRoleTeacher]);
+  return (
+    <>
+      {navigators.map((nav) => {
+        const isActive = pathname === nav.link;
+        return (
+          <NavItem
+            key={nav.id}
+            onClick={() => router.push(nav.link)}
+            color={isActive ? "orange.400" : "base"}
+          >
+            {nav.name}
+          </NavItem>
+        );
+      })}
+    </>
   );
 };
 

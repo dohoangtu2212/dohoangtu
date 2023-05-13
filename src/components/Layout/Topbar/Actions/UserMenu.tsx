@@ -9,7 +9,9 @@ import {
   Flex,
 } from "@chakra-ui/react";
 import { getAuth } from "firebase/auth";
-import { VscSignOut } from "react-icons/vsc";
+import RoleTag from "@/components/Role/RoleTag";
+import { UserRole } from "@/types/permission";
+import { MdPerson, MdLogout } from "react-icons/md";
 
 const UserMenu = () => {
   const auth = getAuth();
@@ -29,21 +31,29 @@ const UserMenu = () => {
           <Avatar name={userCred} size="sm" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent
-        w="fit-content"
-        as={Flex}
-        flexDir="column"
-        alignItems="flex-end"
-      >
+      <PopoverContent w="fit-content">
         <PopoverArrow />
         <PopoverBody>
-          <Button
-            variant="ghost"
-            leftIcon={<VscSignOut size="1.25rem" />}
-            onClick={handleLogout}
-          >
-            Thoát
-          </Button>
+          <Flex flexDir="column" gap="1rem">
+            <RoleTag role={UserRole.teacher} />
+            <Button
+              variant="ghost"
+              leftIcon={<MdPerson size="1.25rem" />}
+              fontSize="0.875rem"
+              justifyContent="flex-start"
+            >
+              Thông tin
+            </Button>
+            <Button
+              variant="ghost"
+              leftIcon={<MdLogout size="1.25rem" />}
+              onClick={handleLogout}
+              fontSize="0.875rem"
+              justifyContent="flex-start"
+            >
+              Thoát
+            </Button>
+          </Flex>
         </PopoverBody>
       </PopoverContent>
     </Popover>

@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useCallback } from "react";
 import { Flex, Button, IconButton, Tooltip, Box, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { ROUTE, PUBLIC_ROUTES } from "@/constants/route";
@@ -6,13 +6,19 @@ import { AuthMode } from "@/constants/auth";
 import { BsBoxArrowInRight } from "react-icons/bs";
 import UserMenu from "@/components/Layout/Topbar/Actions/UserMenu";
 import useMobile from "@/hooks/useMobile";
-import { useCurrentUserSelector } from "@/store/slices/user";
+import {
+  useCurrentUserSelector,
+  useUserRoleSelector,
+} from "@/store/slices/user";
+import { MdHome } from "react-icons/md";
+import { UserRole } from "@/types/permission";
 
 type ActionsProps = {};
 const Actions: FC<ActionsProps> = () => {
   const isMobile = useMobile();
   const router = useRouter();
   const currentUser = useCurrentUserSelector();
+  const userRole = useUserRoleSelector();
   const authenticated = !!currentUser;
   const { pathname } = router;
 
@@ -34,9 +40,14 @@ const Actions: FC<ActionsProps> = () => {
     });
   };
 
-  const handleEnterApp = () => {
-    router.push(ROUTE.studentHome);
-  };
+  const handleEnterApp = useCallback(() => {
+    if (userRole === UserRole.student) {
+      return router.push(ROUTE.studentHome);
+    }
+    if (userRole === UserRole.teacher) {
+      return router.push(ROUTE.teacherHome);
+    }
+  }, [userRole, router]);
 
   const handleGoToHome = () => {
     router.push(ROUTE.home);
@@ -49,9 +60,22 @@ const Actions: FC<ActionsProps> = () => {
 
   if (isUnauthenticatedAndNotOnAuthPage) {
     return (
-      <Flex gap="1rem" bg="white" p="0.25rem" borderRadius="md">
-        <Button onClick={handleSignIn}>Đăng nhập</Button>
-        <Button variant="outline" onClick={handleSignUp}>
+      <Flex gap="0.5rem" bg="white" p="0.125rem" borderRadius="md">
+        <Button
+          onClick={handleSignIn}
+          fontSize="0.875rem"
+          h="fit-content"
+          py="0.5rem"
+        >
+          Đăng nhập
+        </Button>
+        <Button
+          variant="outline"
+          onClick={handleSignUp}
+          fontSize="0.875rem"
+          h="fit-content"
+          py="0.5rem"
+        >
           Đăng ký
         </Button>
       </Flex>
@@ -73,7 +97,8 @@ const Actions: FC<ActionsProps> = () => {
         <IconButton
           onClick={handleEnterApp}
           aria-label="enter-app"
-          icon={<BsBoxArrowInRight size="1.25rem" />}
+          variant="ghost"
+          icon={<BsBoxArrowInRight size="1.75rem" />}
         />
       </Tooltip>
     );
@@ -81,7 +106,26 @@ const Actions: FC<ActionsProps> = () => {
 
   if (authenticated) return <UserMenu />;
 
-  if (isMobile) return <Button onClick={handleGoToHome}>Trang chủ</Button>;
+  if (isMobile)
+    return (
+      <Tooltip
+        hasArrow
+        borderRadius="md"
+        placement="left"
+        label={
+          <Box>
+            <Text>Trang chủ</Text>
+          </Box>
+        }
+      >
+        <IconButton
+          onClick={handleGoToHome}
+          aria-label="Home"
+          variant="ghost"
+          icon={<MdHome size="1.75rem" />}
+        />
+      </Tooltip>
+    );
 
   return null;
 };

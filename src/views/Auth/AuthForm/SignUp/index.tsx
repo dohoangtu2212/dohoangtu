@@ -20,11 +20,14 @@ import { getAuth } from "firebase/auth";
 import Form from "@/views/Auth/AuthForm/Form";
 import { useRouter } from "next/router";
 import { ROUTE } from "@/constants/route";
-import { useCallback, useState } from "react";
+import { FC, useCallback, useState } from "react";
 import { useUpdateUserRoleMutation } from "@/store/apis/user";
 import { UserRole } from "@/types/permission";
 
-const SignUp = () => {
+type SignUpProps = {
+  onDone: () => void;
+};
+const SignUp: FC<SignUpProps> = ({ onDone }) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const [updateUserRole, { isLoading: isUpdateUserRoleLoading }] =
     useUpdateUserRoleMutation();
@@ -84,7 +87,7 @@ const SignUp = () => {
         isClosable: true,
       });
       await signInWithEmailAndPassword(auth, email, password);
-      router.push(ROUTE.studentHome);
+      onDone?.();
     } catch (err) {
       toast({
         title: "Lỗi!",
@@ -94,7 +97,7 @@ const SignUp = () => {
         isClosable: true,
       });
     }
-  }, [email, password, router, toast, updateUserRole]);
+  }, [email, password, toast, updateUserRole, onDone]);
 
   const handleSelectTeacher = useCallback(async () => {
     const auth = getAuth();
@@ -112,7 +115,7 @@ const SignUp = () => {
         isClosable: true,
       });
       await signInWithEmailAndPassword(auth, email, password);
-      router.push(ROUTE.teacherHome);
+      onDone?.();
     } catch (err) {
       toast({
         title: "Lỗi!",
@@ -122,7 +125,7 @@ const SignUp = () => {
         isClosable: true,
       });
     }
-  }, [email, password, router, toast, updateUserRole]);
+  }, [email, password, onDone, toast, updateUserRole]);
 
   return (
     <>

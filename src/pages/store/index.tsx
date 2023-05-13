@@ -6,7 +6,7 @@ const CoursePage = () => {
   return (
     <>
       <Head>
-        <title>Khoá học</title>
+        <title>Cửa hàng</title>
       </Head>
       <PageContainer>
         <Courses />

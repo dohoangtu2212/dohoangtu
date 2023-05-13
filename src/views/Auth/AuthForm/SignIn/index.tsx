@@ -7,52 +7,56 @@ import {
 } from "firebase/auth";
 import { getAuth } from "firebase/auth";
 import Form from "@/views/Auth/AuthForm/Form";
-import { useRouter } from "next/router";
-import { ROUTE } from "@/constants/route";
+import { FC, useCallback } from "react";
 
-const SignIn = () => {
-  const router = useRouter();
+type SignInProps = {
+  onDone: () => void;
+};
+const SignIn: FC<SignInProps> = ({ onDone }) => {
   const toast = useToast({
     position: "bottom",
   });
 
-  const signIn = async (values: AuthFormValues) => {
-    const auth = getAuth();
-    const { email, password } = values;
+  const signIn = useCallback(
+    async (values: AuthFormValues) => {
+      const auth = getAuth();
+      const { email, password } = values;
 
-    try {
-      await signInWithEmailAndPassword(auth, email, password);
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
 
-      toast({
-        title: "Đăng nhập thành công!",
-        description: "Chào mừng bạn.",
-        status: "success",
-        duration: 3000,
-        isClosable: true,
-      });
+        toast({
+          title: "Đăng nhập thành công!",
+          description: "Chào mừng bạn.",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
 
-      router.push(ROUTE.studentHome);
-    } catch (err) {
-      const { code } = err as AuthError;
-      let message = "Đã xảy ra lỗi.";
+        onDone?.();
+      } catch (err) {
+        const { code } = err as AuthError;
+        let message = "Đã xảy ra lỗi.";
 
-      if (code === AuthErrorCodes.INVALID_EMAIL) {
-        message = "Tài khoản không hợp lệ.";
+        if (code === AuthErrorCodes.INVALID_EMAIL) {
+          message = "Tài khoản không hợp lệ.";
+        }
+
+        if (code === AuthErrorCodes.USER_DELETED) {
+          message = "Tài khoản chưa đăng ký.";
+        }
+
+        toast({
+          title: "Đăng nhập thất bại!",
+          description: message,
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
       }
-
-      if (code === AuthErrorCodes.USER_DELETED) {
-        message = "Tài khoản chưa đăng ký.";
-      }
-
-      toast({
-        title: "Đăng nhập thất bại!",
-        description: message,
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
-    }
-  };
+    },
+    [onDone, toast]
+  );
 
   return <Form onSubmit={signIn} action="Đăng nhập" />;
 };

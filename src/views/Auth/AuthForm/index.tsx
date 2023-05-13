@@ -9,28 +9,36 @@ import {
   Text,
   Button,
 } from "@chakra-ui/react";
-import type { FC } from "react";
+import { FC, useCallback } from "react";
 import SignIn from "@/views/Auth/AuthForm/SignIn";
 import SignUp from "@/views/Auth/AuthForm/SignUp";
 import { useRouter } from "next/router";
 import { AuthMode } from "@/constants/auth";
 import { FcGoogle } from "react-icons/fc";
 import { BiMessageDetail } from "react-icons/bi";
-
-export enum DisplayMode {
-  page = "page",
-  modal = "modal",
-}
+import { DisplayMode } from "@/views/Auth/AuthForm/types";
+import { getUserRole } from "@/utils/firebase";
+import { UserRole } from "@/types/permission";
+import { ROUTE } from "@/constants/route";
 
 type AuthFormProps = {
   mode: DisplayMode;
+  onLoggedIn?: () => void;
 };
 
-const AuthForm: FC<AuthFormProps> = ({ mode }) => {
+const AuthForm: FC<AuthFormProps> = ({ mode, onLoggedIn }) => {
   const router = useRouter();
   const authMode = router.query?.mode as AuthMode;
 
   const isSignUp = authMode === AuthMode.signUp;
+
+  const handleDone = useCallback(async () => {
+    onLoggedIn?.();
+    const userRole = await getUserRole();
+    if (mode === DisplayMode.modal) return;
+    if (userRole === UserRole.student) router.push(ROUTE.studentHome);
+    if (userRole === UserRole.teacher) router.push(ROUTE.teacherHome);
+  }, [onLoggedIn, mode, router]);
 
   return (
     <Flex
@@ -46,10 +54,10 @@ const AuthForm: FC<AuthFormProps> = ({ mode }) => {
         </TabList>
         <TabPanels>
           <TabPanel>
-            <SignIn />
+            <SignIn onDone={handleDone} />
           </TabPanel>
           <TabPanel>
-            <SignUp />
+            <SignUp onDone={handleDone} />
           </TabPanel>
         </TabPanels>
       </Tabs>

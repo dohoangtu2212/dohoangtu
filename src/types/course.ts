@@ -4,15 +4,19 @@ export interface ICourse {
   description: string;
   thumbnailUrl: string;
   teacherName: string;
-  rating: number;
-  ratingCount: number;
+  rating?: number;
+  ratingCount?: number;
   hours: number;
   lessons: number;
   tag?: ICourseTag;
   price: number;
-  previousPrice: number;
+  previousPrice?: number;
   updatedAt: string;
+  courseDetailsId?: string;
+  slug?: string;
 }
+
+export type INewCourse = Omit<ICourse, "id" | "rating" | "ratingCount">;
 
 export enum ICourseTag {
   bestSeller = "Bestseller",
@@ -46,9 +50,11 @@ export interface ICourseDetails {
   teacherName: string;
   rating?: number;
   ratingCount?: number;
-  hours?: number;
+  hours: number;
   sections: ICourseSection[];
 }
+
+export type INewCourseDetails = Omit<ICourseDetails, "id">;
 
 export interface IStudentCourse {
   id: string;
@@ -58,4 +64,15 @@ export interface IStudentCourse {
   name: string;
   teacherName: string;
   rating: number | null;
+}
+
+export interface ICourseFormValues {
+  name: string;
+  description: string;
+  thumbnailUrl: string;
+  teacherName: string;
+  hours: number;
+  lessons: number;
+  price: number;
+  sections: ICourseSection[];
 }

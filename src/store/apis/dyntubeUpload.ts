@@ -1,3 +1,4 @@
+import { IUploadVideoResponse } from "@/types/dyntube";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 const dyntubeUploadApis = createApi({
@@ -14,7 +15,7 @@ const dyntubeUploadApis = createApi({
   }),
   tagTypes: [],
   endpoints: (build) => ({
-    uploadVideo: build.mutation<any, { video: File }>({
+    uploadVideo: build.mutation<IUploadVideoResponse, { video: File }>({
       query: ({ video }) => {
         const formData = new FormData();
         formData.append("file", video);

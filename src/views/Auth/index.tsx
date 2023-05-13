@@ -1,5 +1,6 @@
 import { Flex } from "@chakra-ui/react";
-import AuthForm, { DisplayMode } from "@/views/Auth/AuthForm";
+import AuthForm from "@/views/Auth/AuthForm";
+import { DisplayMode } from "@/views/Auth/AuthForm/types";
 
 const Auth = () => {
   return (

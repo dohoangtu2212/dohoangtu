@@ -12,7 +12,7 @@ const Layout: FC<LayoutProps> = ({ children }) => {
     <>
       <Flex flexDir="column" position="relative" maxH="100vh">
         <Topbar />
-        <Box minH="100vh">
+        <Box minH="80vh">
           <main>{children}</main>
         </Box>
       </Flex>

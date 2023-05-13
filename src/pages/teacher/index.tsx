@@ -1,5 +1,6 @@
 import PageContainer from "@/components/Layout/PageContainer";
 import Head from "next/head";
+import TeacherHome from "@/views/Teacher";
 
 const TeacherHomePage = () => {
   return (
@@ -7,7 +8,9 @@ const TeacherHomePage = () => {
       <Head>
         <title>GV | Trang chủ</title>
       </Head>
-      <PageContainer></PageContainer>
+      <PageContainer>
+        <TeacherHome />
+      </PageContainer>
     </>
   );
 };
