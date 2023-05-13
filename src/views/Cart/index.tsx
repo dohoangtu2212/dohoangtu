@@ -65,7 +65,12 @@ const Cart = () => {
                 {displayPrice(totalPrice)}
               </Text>
             </Box>
-            <Button w="fit-content" px="3rem" onClick={handleCheckout}>
+            <Button
+              w="fit-content"
+              px="3rem"
+              onClick={handleCheckout}
+              isDisabled={!totalPrice}
+            >
               Thanh toán
             </Button>
           </Flex>

@@ -79,6 +79,7 @@ const NavigatorsList = () => {
             key={nav.id}
             onClick={() => router.push(nav.link)}
             color={isActive ? "orange.400" : "base"}
+            fontWeight={isActive ? "600" : "400"}
           >
             {nav.name}
           </NavItem>

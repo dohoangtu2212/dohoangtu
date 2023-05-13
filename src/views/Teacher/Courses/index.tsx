@@ -1,7 +1,8 @@
-import { Button, Flex, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { MdAdd } from "react-icons/md";
 import { useRouter } from "next/router";
 import { ROUTE } from "@/constants/route";
+import CoursesTable from "@/views/Teacher/Courses/CoursesTable";
 
 const TeacherCourses = () => {
   const router = useRouter();
@@ -23,6 +24,9 @@ const TeacherCourses = () => {
           Tạo mới
         </Button>
       </Flex>
+      <Box py="1rem">
+        <CoursesTable />
+      </Box>
     </Flex>
   );
 };

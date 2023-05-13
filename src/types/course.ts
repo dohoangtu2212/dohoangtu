@@ -35,6 +35,7 @@ export interface ICourseLesson {
   type: ICourseLessonType;
   duration: number;
   dyntubeKey: string;
+  dyntubeVideoId: string;
 }
 
 export interface ICourseSection {
