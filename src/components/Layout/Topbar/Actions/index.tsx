@@ -12,6 +12,7 @@ import {
 } from "@/store/slices/user";
 import { MdHome } from "react-icons/md";
 import { UserRole } from "@/types/permission";
+import RoleTag from "@/components/Role/RoleTag";
 
 type ActionsProps = {};
 const Actions: FC<ActionsProps> = () => {
@@ -94,12 +95,14 @@ const Actions: FC<ActionsProps> = () => {
           </Box>
         }
       >
-        <IconButton
+        <Button
           onClick={handleEnterApp}
           aria-label="enter-app"
           variant="ghost"
-          icon={<BsBoxArrowInRight size="1.75rem" />}
-        />
+          leftIcon={<BsBoxArrowInRight size="1.5rem" />}
+        >
+          {!!userRole && <RoleTag role={userRole} fontSize="1rem" />}
+        </Button>
       </Tooltip>
     );
   }

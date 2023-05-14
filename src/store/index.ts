@@ -6,6 +6,7 @@ import dbApis from "@/store/apis/db";
 import { userReducer } from "@/store/slices/user";
 import { cartReducer } from "@/store/slices/cart";
 import dyntubeUploadApis from "@/store/apis/dyntubeUpload";
+import { courseReducer } from "@/store/slices/course";
 
 const reducer = combineReducers({
   [dyntubeApis.reducerPath]: dyntubeApis.reducer,
@@ -14,6 +15,7 @@ const reducer = combineReducers({
   [dbApis.reducerPath]: dbApis.reducer,
   user: userReducer,
   cart: cartReducer,
+  course: courseReducer,
 });
 
 const makeStore = () =>

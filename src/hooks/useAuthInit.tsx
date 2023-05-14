@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { getAuth, getUserRole } from "@/utils/firebase";
 import { useRouter } from "next/router";
@@ -7,9 +7,10 @@ import { useDispatch } from "react-redux";
 import { useCurrentUserSelector } from "@/store/slices/user";
 import { userActions } from "@/store/slices/user";
 
-const useAuthenticate = () => {
+const useAuthInit = () => {
   const router = useRouter();
   const dispatch = useDispatch();
+  const [initialized, setInitialized] = useState(false);
   const currentUser = useCurrentUserSelector();
   const { pathname } = router;
 
@@ -24,17 +25,18 @@ const useAuthenticate = () => {
         dispatch(userActions.setCurrentUser(null));
         dispatch(userActions.setUserRole(null));
       }
+      setInitialized(true);
     });
   }, [dispatch]);
 
   useEffect(() => {
-    if (!!pathname && !currentUser) {
+    if (!!pathname && !currentUser && initialized) {
       const isPublicRoute = !!PUBLIC_ROUTES.find((r) => r === pathname);
       if (!isPublicRoute) router.push(ROUTE.home);
     }
-  }, [currentUser, pathname, router]);
+  }, [currentUser, pathname, router, initialized]);
 
   return null;
 };
 
-export default useAuthenticate;
+export default useAuthInit;

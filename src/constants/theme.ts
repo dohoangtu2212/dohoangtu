@@ -8,7 +8,7 @@ export const breakpoints = {
 };
 
 export const theme = extendTheme({
-  breakpoints,
+  // breakpoints,
   fonts: {
     body: "Montserrat, sans-serif",
   },

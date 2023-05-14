@@ -6,6 +6,7 @@ import { displayPrice } from "@/utils/display";
 import { FC } from "react";
 import { useDispatch } from "react-redux";
 import { cartActions } from "@/store/slices/cart";
+import { DEFAULT_EXERCISE_THUMBNAIL } from "@/constants/exercise";
 
 type CourseItemProps = {
   course: ICourse;
@@ -51,7 +52,7 @@ const Basics: FC<BasicsProps> = ({ course }) => {
   return (
     <Flex gap="1rem">
       <DisplayImage
-        imageUrl={thumbnailUrl}
+        imageUrl={!!thumbnailUrl ? thumbnailUrl : DEFAULT_EXERCISE_THUMBNAIL}
         w="10rem"
         h="6rem"
         alt={name}

@@ -1,18 +1,18 @@
 import PageContainer from "@/components/Layout/PageContainer";
 import Head from "next/head";
-import StudentHome from "@/views/Student";
+import TeacherOrders from "@/views/Teacher/Orders";
 
-const StudentHomePage = () => {
+const TeacherOrdersPage = () => {
   return (
     <>
       <Head>
-        <title>HS | Trang chủ</title>
+        <title>GV | Đơn hàng</title>
       </Head>
       <PageContainer>
-        <StudentHome />
+        <TeacherOrders />
       </PageContainer>
     </>
   );
 };
 
-export default StudentHomePage;
+export default TeacherOrdersPage;

@@ -12,8 +12,9 @@ export interface ICourse {
   price: number;
   previousPrice?: number;
   updatedAt: string;
-  courseDetailsId?: string;
+  courseDetailsId: string;
   slug?: string;
+  studentIds?: string[];
 }
 
 export type INewCourse = Omit<ICourse, "id" | "rating" | "ratingCount">;
@@ -52,28 +53,32 @@ export interface ICourseDetails {
   rating?: number;
   ratingCount?: number;
   hours: number;
+  courseId?: string;
   sections: ICourseSection[];
 }
 
 export type INewCourseDetails = Omit<ICourseDetails, "id">;
 
 export interface IStudentCourse {
-  id: string;
   courseId: string;
   courseDetailsId: string;
   progress: number;
   name: string;
   teacherName: string;
   rating: number | null;
+  price: ICourse["price"];
+  thumbnailUrl: ICourse["thumbnailUrl"];
 }
 
 export interface ICourseFormValues {
   name: string;
   description: string;
   thumbnailUrl: string;
+  thumbnailFile: File | null;
   teacherName: string;
   hours: number;
   lessons: number;
   price: number;
+  previousPrice?: number;
   sections: ICourseSection[];
 }

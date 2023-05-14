@@ -19,9 +19,11 @@ import Video from "@/components/DynTube/Video";
 
 type VideoUploadModalProps = Omit<ModalProps, "children"> & {
   onUploaded: (uploadedVideo: IUploadVideoResponse) => void;
+  onDurationChange: (duration: number) => void;
 };
 const VideoUploadModal: FC<VideoUploadModalProps> = ({
-  onUploaded = () => {},
+  onUploaded,
+  onDurationChange,
   ...modalProps
 }) => {
   const { onClose } = modalProps;
@@ -51,9 +53,12 @@ const VideoUploadModal: FC<VideoUploadModalProps> = ({
 
   const handleSave = useCallback(() => {
     if (!uploadedVideo) return;
-    onUploaded(uploadedVideo);
+    // TODO: Delete old video
+    const duration = videoRef.current?.duration ?? 0;
+    onUploaded?.(uploadedVideo);
+    onDurationChange?.(duration);
     onClose();
-  }, [uploadedVideo, onUploaded, onClose]);
+  }, [uploadedVideo, onUploaded, onClose, videoRef, onDurationChange]);
 
   const handleUploadVideo = useCallback(async () => {
     if (!selectedVideo) return;
@@ -87,20 +92,23 @@ const VideoUploadModal: FC<VideoUploadModalProps> = ({
             />
           )}
           {previewUrl && (
-            <Box py="1rem" w="100%">
-              {!uploadedVideo && (
+            <>
+              <Box py="1rem" w="100%" hidden={!!uploadedVideo}>
                 <video controls ref={videoRef}>
                   <source src={previewUrl} />
                 </video>
-              )}
+              </Box>
+
               <Flex pt="1rem" flexDir="column" gap="0.25rem">
-                {!uploadedVideo && <Text>Bạn có muốn đăng tải video này?</Text>}
+                {!!uploadedVideo && (
+                  <Text>Bạn có muốn đăng tải video này?</Text>
+                )}
                 {!!uploadedVideo ? (
                   <>
                     <Text textAlign="center" color="green.400" fontWeight="600">
                       Đăng tải thành công
                     </Text>
-                    <Video dynTubeKey="mwE2hVj6t0CCeakG9EL1bQ" w="100%" />
+                    <Video dynTubeKey={uploadedVideo.channelKey} w="100%" />
                     <Text fontSize="0.85rem">
                       {
                         'Video đã được lưu vào hệ thống đang được xử lý. Bạn có thể "Lưu".'
@@ -116,7 +124,7 @@ const VideoUploadModal: FC<VideoUploadModalProps> = ({
                   </Button>
                 )}
               </Flex>
-            </Box>
+            </>
           )}
         </ModalBody>
 

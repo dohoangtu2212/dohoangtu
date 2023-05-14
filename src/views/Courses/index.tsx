@@ -3,7 +3,6 @@ import { Flex, Grid, Text, Spinner } from "@chakra-ui/react";
 import CourseCard from "@/components/Course/CourseCard";
 import useMobile from "@/hooks/useMobile";
 import { useGetCoursesQuery } from "@/store/apis/db";
-import { COURSES } from "@/mocks/course";
 
 const Courses = () => {
   const { isMobile } = useMobile();
@@ -23,7 +22,7 @@ const Courses = () => {
       </Text>
       {isLoading && <Spinner color="orange.300" />}
       <Grid templateColumns={`repeat(${isMobile ? 1 : 5}, 1fr)`} gap="1rem">
-        {COURSES?.map((c) => (
+        {courses?.map((c) => (
           <CourseCard course={c} key={c.id} />
         ))}
       </Grid>

@@ -6,7 +6,7 @@ import {
   Divider,
   useDisclosure,
 } from "@chakra-ui/react";
-import { FC, Fragment } from "react";
+import { FC, Fragment, useCallback } from "react";
 import { MdOndemandVideo, MdAssignment, MdAdd, MdCheck } from "react-icons/md";
 import type { EditableProps } from "@chakra-ui/react";
 import {
@@ -18,8 +18,13 @@ import {
 import { FormikHelpers } from "formik";
 import LessonTitle from "@/views/Teacher/CoursesNew/Form/Structure/Sections/Lessons/LessonTitle";
 import VideoUploadModal from "@/views/Teacher/CoursesNew/Form/Structure/Sections/Lessons/VideoUploadModal";
+import { IUploadVideoResponse } from "@/types/dyntube";
+import dayjs from "dayjs";
+import duration from "dayjs/plugin/duration";
+dayjs.extend(duration);
 
 type LessonsProps = {
+  values: ICourseFormValues;
   section: ICourseSection;
   sectionIdx: number;
   handleSetFieldValue: FormikHelpers<
@@ -30,6 +35,7 @@ type LessonsProps = {
   >["setFieldTouched"];
 };
 const Lessons: FC<LessonsProps> = ({
+  values,
   section,
   sectionIdx,
   handleSetFieldValue,
@@ -47,8 +53,10 @@ const Lessons: FC<LessonsProps> = ({
         type: ICourseLessonType.video,
         duration: 0,
         dyntubeKey: "",
+        dyntubeVideoId: "",
       },
     ]);
+    handleSetFieldValue("lessons", values.lessons + 1);
   };
 
   return (
@@ -114,11 +122,28 @@ const Lesson: FC<LessonProps> = ({
     );
   };
 
-  const handleLessonDyntubeKeyChange: (val: string) => void = (val) => {
+  const handleLessonVideoChange: (video: IUploadVideoResponse) => void = (
+    video
+  ) => {
     handleSetFieldValue(
       `sections[${sectionIdx}].lessons[${lessonIdx}].dyntubeKey`,
-      val
+      video.channelKey
     );
+    handleSetFieldValue(
+      `sections[${sectionIdx}].lessons[${lessonIdx}].dyntubeVideoId`,
+      video.videoId
+    );
+  };
+
+  const handleLessonDurationChange: (dur: number) => void = (dur) => {
+    const dayjsDuration = dayjs.duration(dur * 1000);
+    const hours = Math.round(dayjsDuration.asHours() * 100) / 100;
+
+    handleSetFieldValue(
+      `sections[${sectionIdx}].lessons[${lessonIdx}].duration`,
+      dur
+    );
+    handleSetFieldValue("hours", hours);
   };
 
   const isVideoUploaded = !!lesson.dyntubeKey;
@@ -128,9 +153,8 @@ const Lesson: FC<LessonProps> = ({
       <VideoUploadModal
         isOpen={isUploadVideoModalOpen}
         onClose={onCloseUploadVideoModal}
-        onUploaded={(video) => {
-          handleLessonDyntubeKeyChange(video.videoKey);
-        }}
+        onUploaded={handleLessonVideoChange}
+        onDurationChange={handleLessonDurationChange}
       />
       <LessonTitle
         lessonOrder={lessonOrder}

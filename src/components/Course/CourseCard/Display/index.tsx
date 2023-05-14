@@ -6,6 +6,7 @@ import { BsPerson, BsStar } from "react-icons/bs";
 import { displayPrice } from "@/utils/display";
 import { useCartCoursesSelector } from "@/store/slices/cart";
 import { IoMdCart } from "react-icons/io";
+import { DEFAULT_EXERCISE_THUMBNAIL } from "@/constants/exercise";
 
 type DisplayProps = {
   course: ICourse;
@@ -50,7 +51,9 @@ const Display = forwardRef<HTMLDivElement, DisplayProps>(
         )}
         <Flex flexDir="column" gap="0.5rem">
           <DisplayImage
-            imageUrl={thumbnailUrl}
+            imageUrl={
+              !!thumbnailUrl ? thumbnailUrl : DEFAULT_EXERCISE_THUMBNAIL
+            }
             w="100%"
             h="10rem"
             alt={name}

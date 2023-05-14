@@ -16,7 +16,7 @@ import SectionTitle from "@/views/Teacher/CoursesNew/Form/Structure/Sections/Sec
 import Lessons from "@/views/Teacher/CoursesNew/Form/Structure/Sections/Lessons";
 
 type SectionsProps = {
-  sections: ICourseFormValues["sections"];
+  values: ICourseFormValues;
   handleSetFieldValue: FormikHelpers<
     Partial<ICourseFormValues>
   >["setFieldValue"];
@@ -25,15 +25,14 @@ type SectionsProps = {
   >["setFieldTouched"];
 };
 const Sections: FC<SectionsProps> = ({
-  sections = [],
+  values,
   handleSetFieldValue,
   handleSetFieldTouched,
 }) => {
+  const sections = values.sections ?? [];
   return (
     <>
       {sections.map((section, idx) => {
-        const { lessons } = section;
-
         const handleSectionTitleChange: EditableProps["onChange"] = (val) => {
           handleSetFieldValue(`sections[${idx}].name`, val);
         };
@@ -71,6 +70,7 @@ const Sections: FC<SectionsProps> = ({
               <Divider />
               <AccordionPanel>
                 <Lessons
+                  values={values}
                   section={section}
                   sectionIdx={idx}
                   handleSetFieldValue={handleSetFieldValue}

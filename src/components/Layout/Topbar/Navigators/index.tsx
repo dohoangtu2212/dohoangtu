@@ -3,6 +3,7 @@ import {
   PUBLIC_NAVIGATORS,
   STUDENT_NAVIGATORS,
   TEACHER_NAVIGATORS,
+  NAVIGATORS,
 } from "@/constants/navigator";
 import { useRouter } from "next/router";
 import NavigatorsContainer from "@/components/Layout/Navigation/NavigatorsContainer";
@@ -17,15 +18,22 @@ import {
   PopoverArrow,
   PopoverBody,
   Flex,
+  Text,
+  Box,
 } from "@chakra-ui/react";
 import { useMemo } from "react";
 import { AiOutlineMenu } from "react-icons/ai";
 import { useUserRoleSelector } from "@/store/slices/user";
 import { UserRole } from "@/types/permission";
+import type { INavigator } from "@/types/navigator";
 
 type NavigatorsProps = {};
 const Navigators: FC<NavigatorsProps> = () => {
   const { isMobile } = useMobile();
+  const router = useRouter();
+  const { pathname } = router;
+
+  const activeNavigator = NAVIGATORS.find((nav) => nav.link === pathname);
 
   if (isMobile)
     return (
@@ -36,13 +44,27 @@ const Navigators: FC<NavigatorsProps> = () => {
 
   return (
     <Popover placement="right-end">
-      <PopoverTrigger>
-        <IconButton
-          aria-label="navigators"
-          variant="ghost"
-          icon={<AiOutlineMenu size="1.5rem" />}
-        />
-      </PopoverTrigger>
+      <Flex alignItems="center" gap="0.5rem">
+        <PopoverTrigger>
+          <IconButton
+            aria-label="navigators"
+            variant="ghost"
+            icon={<AiOutlineMenu size="1.5rem" />}
+          />
+        </PopoverTrigger>
+
+        {!!activeNavigator && (
+          <Box bgColor="orange.100" p="0.25rem 0.5rem" borderRadius="lg">
+            <Text
+              fontWeight="600"
+              textTransform="uppercase"
+              fontSize="0.875rem"
+            >
+              {activeNavigator?.name}
+            </Text>
+          </Box>
+        )}
+      </Flex>
       <PopoverContent w="fit-content">
         <PopoverArrow />
         <PopoverBody>
@@ -55,9 +77,11 @@ const Navigators: FC<NavigatorsProps> = () => {
   );
 };
 
-const NavigatorsList = () => {
-  const userRole = useUserRoleSelector();
+type NavigatorsListProps = {};
+const NavigatorsList: FC<NavigatorsListProps> = () => {
   const router = useRouter();
+  const userRole = useUserRoleSelector();
+
   const { pathname } = router;
 
   const showPublicNavigators = PUBLIC_ROUTES.includes(pathname);
@@ -70,6 +94,7 @@ const NavigatorsList = () => {
     if (isRoleTeacher) return TEACHER_NAVIGATORS;
     return [];
   }, [isRoleStudent, showPublicNavigators, isRoleTeacher]);
+
   return (
     <>
       {navigators.map((nav) => {

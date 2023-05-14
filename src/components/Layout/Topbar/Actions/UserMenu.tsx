@@ -12,9 +12,11 @@ import { getAuth } from "firebase/auth";
 import RoleTag from "@/components/Role/RoleTag";
 import { UserRole } from "@/types/permission";
 import { MdPerson, MdLogout } from "react-icons/md";
+import { useUserRoleSelector } from "@/store/slices/user";
 
 const UserMenu = () => {
   const auth = getAuth();
+  const userRole = useUserRoleSelector();
   const user = auth.currentUser;
   const userCred = !!user
     ? user.displayName ?? user.email?.split("@")[0]
@@ -35,7 +37,7 @@ const UserMenu = () => {
         <PopoverArrow />
         <PopoverBody>
           <Flex flexDir="column" gap="1rem">
-            <RoleTag role={UserRole.teacher} />
+            {!!userRole && <RoleTag role={userRole} />}
             <Button
               variant="ghost"
               leftIcon={<MdPerson size="1.25rem" />}

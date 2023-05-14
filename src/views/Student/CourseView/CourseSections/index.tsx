@@ -1,6 +1,6 @@
 import { Flex, Text, IconButton } from "@chakra-ui/react";
 import { MdClose } from "react-icons/md";
-import CourseSection from "@/views/Student/Courses/View/CourseSections/CourseSection";
+import CourseSection from "@/views/Student/CourseView/CourseSections/CourseSection";
 import { ICourseDetails, ICourseLesson } from "@/types/course";
 import type { FC } from "react";
 

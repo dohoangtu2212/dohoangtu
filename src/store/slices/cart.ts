@@ -29,6 +29,10 @@ export const cartSlice = createSlice({
       state.courses = newCourses;
       state.totalPrice = state.totalPrice - course.price;
     },
+    clearCart: (state) => {
+      state.courses = [];
+      state.totalPrice = 0;
+    },
   },
 });
 

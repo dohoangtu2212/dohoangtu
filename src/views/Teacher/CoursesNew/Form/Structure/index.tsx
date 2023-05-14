@@ -38,16 +38,18 @@ const Structure: FC<StructureProps> = ({
             type: ICourseLessonType.video,
             duration: 0,
             dyntubeKey: "",
+            dyntubeVideoId: "",
           },
         ],
       },
     ]);
+    handleSetFieldValue("lessons", values.lessons + 1);
   }, [values, handleSetFieldValue]);
 
   return (
     <Flex flexDir="column" alignItems="flex-start" gap="1rem">
       <Sections
-        sections={values.sections ?? []}
+        values={values}
         handleSetFieldValue={handleSetFieldValue}
         handleSetFieldTouched={handleSetFieldTouched}
       />
