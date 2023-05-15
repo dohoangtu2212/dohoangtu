@@ -9,6 +9,8 @@ import { useCartCoursesSelector } from "@/store/slices/cart";
 import { useRouter } from "next/router";
 import { ROUTE } from "@/constants/route";
 import { MdCheck } from "react-icons/md";
+import { useUserRoleSelector } from "@/store/slices/user";
+import { UserRole } from "@/types/permission";
 
 type MenuProps = {
   course: ICourse;
@@ -16,6 +18,7 @@ type MenuProps = {
 const Menu: FC<MenuProps> = ({ course }) => {
   const { name, description, hours, lessons, updatedAt } = course;
   const dispatch = useDispatch();
+  const userRole = useUserRoleSelector();
   const cartCourses = useCartCoursesSelector();
   const router = useRouter();
 
@@ -67,6 +70,7 @@ const Menu: FC<MenuProps> = ({ course }) => {
               flex="1"
               variant="outline"
               onClick={handleGoToCart}
+              isDisabled={userRole !== UserRole.student}
             >
               Xem giỏ hàng
             </Button>
@@ -75,11 +79,16 @@ const Menu: FC<MenuProps> = ({ course }) => {
               leftIcon={<BsCartPlus size="1.25rem" />}
               flex="1"
               onClick={handleAddToCart}
+              isDisabled={userRole !== UserRole.student}
             >
               Bỏ vào giỏ
             </Button>
           )}
-          <IconButton aria-label="wishlist" icon={<BsHeart size="1.25rem" />} />
+          <IconButton
+            aria-label="wishlist"
+            icon={<BsHeart size="1.25rem" />}
+            isDisabled={userRole !== UserRole.student}
+          />
         </Flex>
       </Flex>
     </Flex>
