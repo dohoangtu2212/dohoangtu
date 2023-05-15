@@ -32,7 +32,7 @@ export enum ICourseLessonType {
 }
 
 export interface ICourseLesson {
-  order: number;
+  order: number | string;
   name: string;
   type: ICourseLessonType;
   duration: number;

@@ -1,13 +1,13 @@
 import Head from "next/head";
-import StudentCourseView from "@/views/Student/CourseView";
+import CourseView from "@/views/CourseView";
 
 const ViewCoursePage = () => {
   return (
     <>
       <Head>
-        <title>Xem khoá học</title>
+        <title>Khoá học | Chi tiết</title>
       </Head>
-      <StudentCourseView />
+      <CourseView />
     </>
   );
 };

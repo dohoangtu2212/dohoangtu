@@ -18,9 +18,11 @@ const CourseMain: FC<CourseMainProps> = ({ course, selectedLesson }) => {
 
   return (
     <Flex flexDir="column" w="100%">
-      <Box p="0.75rem 1rem">
-        <Text fontWeight="600">KHÓA: {course.name}</Text>
-      </Box>
+      {!!selectedLesson && (
+        <Text px="1rem" py="0.5rem">
+          Bài {selectedLesson.order}: {selectedLesson?.name}
+        </Text>
+      )}
       <Video dynTubeKey={videoKey} w="100%" minH="30rem" />
       <Flex alignItems="center" bg="white" py="0.25rem" px="1rem">
         <IconButton variant="ghost" aria-label="search" icon={<MdSearch />} />

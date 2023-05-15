@@ -10,11 +10,12 @@ import {
   Flex,
   IconButton,
   Text,
+  Tooltip,
 } from "@chakra-ui/react";
 import { useGetCoursesQuery } from "@/store/apis/db";
 import { displayPrice } from "@/utils/display";
 import DisplayImage from "@/components/UI/DisplayImage";
-import { MdOutlineDelete, MdOutlineEdit } from "react-icons/md";
+import { MdPlayArrow, MdOutlineEdit } from "react-icons/md";
 import { ICourse } from "@/types/course";
 import { useDispatch } from "react-redux";
 import { courseActions } from "@/store/slices/course";
@@ -140,7 +141,7 @@ const TdActions: FC<TdActionsProps> = ({ course }) => {
   const router = useRouter();
   const dispatch = useDispatch();
 
-  const handleEdit = (course: ICourse) => () => {
+  const handleEdit = () => {
     dispatch(
       courseActions.setEditingCourse({
         courseId: course.id,
@@ -150,16 +151,34 @@ const TdActions: FC<TdActionsProps> = ({ course }) => {
     router.push(ROUTE.teacherCoursesNew);
   };
 
+  const handleView = () =>
+    router.push({
+      pathname: ROUTE.teacherCourseView,
+      query: {
+        courseDetailsId: course.courseDetailsId,
+      },
+    });
+
   return (
     <Td>
-      <Flex flexDir="column" gap="0.5rem">
-        <IconButton
-          aria-label="Edit"
-          variant="ghost"
-          w="fit-content"
-          icon={<MdOutlineEdit size="1.5rem" />}
-          onClick={handleEdit(course)}
-        />
+      <Flex flexDir="column" gap="0.5rem" alignItems="center">
+        <Tooltip label="Xem khoá học" placement="left">
+          <IconButton
+            aria-label="play"
+            variant="ghost"
+            icon={<MdPlayArrow size="1.75rem" />}
+            onClick={handleView}
+          />
+        </Tooltip>
+        <Tooltip label="Chỉnh sửa" placement="left">
+          <IconButton
+            aria-label="Edit"
+            variant="ghost"
+            w="fit-content"
+            icon={<MdOutlineEdit size="1.5rem" />}
+            onClick={handleEdit}
+          />
+        </Tooltip>
       </Flex>
     </Td>
   );

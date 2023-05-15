@@ -4,6 +4,7 @@ export const ROUTE = {
   studentHome: "/student",
   studentCourses: "/student/courses",
   studentCourseView: "/student/courses/[courseDetailsId]/view",
+  teacherCourseView: "/teacher/courses/[courseDetailsId]/view",
   teacherHome: "/teacher",
   teacherCourses: "/teacher/courses",
   teacherOrders: "/teacher/orders",

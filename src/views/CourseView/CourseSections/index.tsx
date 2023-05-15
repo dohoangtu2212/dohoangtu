@@ -1,6 +1,6 @@
 import { Flex, Text, IconButton } from "@chakra-ui/react";
 import { MdClose } from "react-icons/md";
-import CourseSection from "@/views/Student/CourseView/CourseSections/CourseSection";
+import CourseSection from "@/views/CourseView/CourseSections/CourseSection";
 import { ICourseDetails, ICourseLesson } from "@/types/course";
 import type { FC } from "react";
 
@@ -20,9 +20,8 @@ const CourseSections: FC<CourseSectionsProps> = ({
       position="sticky"
       top="0"
       zIndex="30"
-      bg="white"
       maxH="100vh"
-      overflow="scroll"
+      overflowY="auto"
     >
       <Flex
         p="1rem"

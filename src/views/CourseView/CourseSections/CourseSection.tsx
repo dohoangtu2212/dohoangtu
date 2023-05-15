@@ -26,7 +26,12 @@ const CourseSection: FC<CourseSectionProps> = ({
   onLessonSelected = () => {},
 }) => {
   return (
-    <Accordion allowMultiple>
+    <Accordion
+      allowMultiple
+      borderLeft="1px"
+      borderRight="1px"
+      borderColor="gray.300"
+    >
       <AccordionItem>
         <h2>
           <AccordionButton>
@@ -51,14 +56,19 @@ const CourseSection: FC<CourseSectionProps> = ({
                 gap="1rem"
                 key={lesson.order}
                 cursor="pointer"
-                onClick={() => onLessonSelected(lesson)}
+                onClick={() =>
+                  onLessonSelected({
+                    ...lesson,
+                    order: `${section.order}.${lesson.order}`,
+                  })
+                }
               >
                 <Box py="0.125rem">
                   <Checkbox isChecked={false} isDisabled />
                 </Box>
                 <Box>
                   <Text fontSize="0.875rem" fontWeight="500">
-                    Bài {lesson.order}: {lesson.name}
+                    Bài {section.order}.{lesson.order}: {lesson.name}
                   </Text>
                   <Flex gap="0.5rem" alignItems="center" color="gray.500">
                     {lesson.type === ICourseLessonType.video ? (
