@@ -6,17 +6,15 @@ import {
   IStudentCourse,
 } from "@/types/course";
 import { INewOrder, IOrder } from "@/types/order";
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { createApi } from "@reduxjs/toolkit/query/react";
 import { fakeBaseQuery } from "@reduxjs/toolkit/query/react";
+import { getDatabase, ref, push, child, update, get } from "firebase/database";
 import {
-  getDatabase,
-  ref,
-  set,
-  push,
-  child,
-  update,
-  get,
-} from "firebase/database";
+  getStorage,
+  uploadBytes,
+  ref as storageRef,
+  getDownloadURL,
+} from "firebase/storage";
 
 const DB_KEY = {
   courses: "courses",
@@ -68,6 +66,15 @@ const dbApis = createApi({
 
           const courseData = data;
           const newCourseKey = push(child(ref(db), DB_KEY.courses)).key;
+          if (!!courseData.thumbnailFile && !courseData.thumbnailUrl) {
+            const storage = getStorage();
+            const fileRef = storageRef(storage, `thumbnail/${newCourseKey}`);
+            await uploadBytes(fileRef, courseData.thumbnailFile);
+            const url = await getDownloadURL(fileRef);
+            courseData.thumbnailUrl = url;
+          }
+          delete courseData.thumbnailFile;
+
           const updates: Updates = {};
           updates[`/${DB_KEY.courses}/` + newCourseKey] = courseData;
 
@@ -125,7 +132,7 @@ const dbApis = createApi({
     }),
     // COURSE-DETAILS
     createCourseDetails: build.mutation<
-      { id: string },
+      { id: string; thumbnailUrl: string },
       { data: INewCourseDetails }
     >({
       async queryFn({ data }) {
@@ -136,12 +143,33 @@ const dbApis = createApi({
           const newCourseDetailsKey = push(
             child(ref(db), DB_KEY.coursesDetails)
           ).key;
+
+          if (
+            !!courseDetailsData.thumbnailFile &&
+            !courseDetailsData.thumbnailUrl
+          ) {
+            const storage = getStorage();
+            const fileRef = storageRef(
+              storage,
+              `thumbnail/${courseDetailsData.courseId}`
+            );
+            await uploadBytes(fileRef, courseDetailsData.thumbnailFile);
+            const url = await getDownloadURL(fileRef);
+            courseDetailsData.thumbnailUrl = url;
+          }
+          delete courseDetailsData.thumbnailFile;
+
           const updates: { [key: string]: any } = {};
           updates[`/${DB_KEY.coursesDetails}/` + newCourseDetailsKey] =
             courseDetailsData;
 
           await update(ref(db), updates);
-          return { data: { id: newCourseDetailsKey as string } };
+          return {
+            data: {
+              id: newCourseDetailsKey as string,
+              thumbnailUrl: courseDetailsData.thumbnailUrl,
+            },
+          };
         } catch (e) {
           return { error: JSON.stringify(e) };
         }

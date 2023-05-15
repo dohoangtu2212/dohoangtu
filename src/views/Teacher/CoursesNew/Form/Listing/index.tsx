@@ -66,17 +66,7 @@ const Listing: FC<ListingProps> = ({
     <Flex flexDir="column" alignItems="flex-start" gap="1rem" py="1rem">
       {/* TÊN */}
       <FormControl>
-        <FormLabel>TÊN</FormLabel>
-        <Input
-          type="text"
-          placeholder="Nhập tên giáo viên"
-          value={values.teacherName}
-          onChange={(e) => handleChangeTeacherName(e.target.value)}
-        />
-      </FormControl>
-      {/* GIÁO VIÊN */}
-      <FormControl>
-        <FormLabel>GIÁO VIÊN</FormLabel>
+        <FormLabel>TÊN KHOÁ HỌC</FormLabel>
         <Input
           type="text"
           placeholder="Nhập tên khoá học"
@@ -84,6 +74,17 @@ const Listing: FC<ListingProps> = ({
           onChange={(e) => handleChangeName(e.target.value)}
         />
       </FormControl>
+      {/* GIÁO VIÊN */}
+      <FormControl>
+        <FormLabel>GIÁO VIÊN</FormLabel>
+        <Input
+          type="text"
+          placeholder="Nhập tên giáo viên"
+          value={values.teacherName}
+          onChange={(e) => handleChangeTeacherName(e.target.value)}
+        />
+      </FormControl>
+
       {/* MÔ TẢ */}
       <FormControl>
         <FormLabel>MÔ TẢ</FormLabel>

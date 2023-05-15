@@ -89,6 +89,7 @@ const VideoUploadModal: FC<VideoUploadModalProps> = ({
               name={!!previewUrl ? "Chọn lại video" : "Chọn video"}
               accept="video/*"
               onFileSelected={handleVideoSelected}
+              isDisabled={isUploadVideoLoading}
             />
           )}
           {previewUrl && (

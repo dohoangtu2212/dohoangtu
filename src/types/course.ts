@@ -17,7 +17,9 @@ export interface ICourse {
   studentIds?: string[];
 }
 
-export type INewCourse = Omit<ICourse, "id" | "rating" | "ratingCount">;
+export type INewCourse = Omit<ICourse, "id" | "rating" | "ratingCount"> & {
+  thumbnailFile?: File | null;
+};
 
 export enum ICourseTag {
   bestSeller = "Bestseller",
@@ -32,7 +34,6 @@ export enum ICourseLessonType {
 export interface ICourseLesson {
   order: number;
   name: string;
-  isCompleted: boolean;
   type: ICourseLessonType;
   duration: number;
   dyntubeKey: string;
@@ -57,7 +58,9 @@ export interface ICourseDetails {
   sections: ICourseSection[];
 }
 
-export type INewCourseDetails = Omit<ICourseDetails, "id">;
+export type INewCourseDetails = Omit<ICourseDetails, "id"> & {
+  thumbnailFile?: File | null;
+};
 
 export interface IStudentCourse {
   courseId: string;

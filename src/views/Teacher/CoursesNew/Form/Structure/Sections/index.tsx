@@ -7,13 +7,17 @@ import {
   AccordionPanel,
   AccordionIcon,
   Divider,
+  InputProps,
+  IconButton,
+  Tooltip,
 } from "@chakra-ui/react";
 import { FC } from "react";
 import type { EditableProps } from "@chakra-ui/react";
-import { ICourseFormValues } from "@/types/course";
+import { ICourseFormValues, ICourseSection } from "@/types/course";
 import { FormikHelpers } from "formik";
 import SectionTitle from "@/views/Teacher/CoursesNew/Form/Structure/Sections/SectionTitle";
 import Lessons from "@/views/Teacher/CoursesNew/Form/Structure/Sections/Lessons";
+import { MdDelete, MdOutlineDelete } from "react-icons/md";
 
 type SectionsProps = {
   values: ICourseFormValues;
@@ -33,8 +37,15 @@ const Sections: FC<SectionsProps> = ({
   return (
     <>
       {sections.map((section, idx) => {
-        const handleSectionTitleChange: EditableProps["onChange"] = (val) => {
-          handleSetFieldValue(`sections[${idx}].name`, val);
+        const handleSectionTitleChange: InputProps["onChange"] = (ev) => {
+          handleSetFieldValue(`sections[${idx}].name`, ev.target.value);
+        };
+
+        const handleDeleteSection = (section: ICourseSection) => () => {
+          handleSetFieldValue(
+            `sections`,
+            values.sections.filter((s) => s.order !== section.order)
+          );
         };
 
         return (
@@ -63,6 +74,16 @@ const Sections: FC<SectionsProps> = ({
                     onChange={handleSectionTitleChange}
                   />
                 </Box>
+                {section.order.toString() === "0" && (
+                  <Tooltip label={`Xoá CHƯƠNG ${section.order.toString()}`}>
+                    <IconButton
+                      aria-label="delete"
+                      icon={<MdOutlineDelete size="1.5rem" />}
+                      variant="ghost"
+                      onClick={handleDeleteSection(section)}
+                    />
+                  </Tooltip>
+                )}
                 <AccordionButton pl="2rem" w="fit-content" p="1rem">
                   <AccordionIcon />
                 </AccordionButton>

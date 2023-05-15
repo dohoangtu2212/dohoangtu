@@ -1,54 +1,23 @@
-import {
-  Flex,
-  Text,
-  Editable,
-  EditablePreview,
-  EditableInput,
-  Box,
-} from "@chakra-ui/react";
+import { Flex, Text, Input, InputProps, Box } from "@chakra-ui/react";
 import { FC } from "react";
-import type { EditableProps } from "@chakra-ui/react";
-import EditableControls from "@/views/Teacher/CoursesNew/Form/Structure/EditableControls";
 
-type LessonTitleProps = EditableProps & {
+type LessonTitleProps = InputProps & {
   lessonOrder: string;
 };
-const LessonTitle: FC<LessonTitleProps> = ({
-  lessonOrder,
-  ...editableProps
-}) => {
+const LessonTitle: FC<LessonTitleProps> = ({ lessonOrder, ...inputProps }) => {
   return (
-    <Editable
-      as={Flex}
+    <Flex
       alignItems="center"
-      w="100%"
       gap="0.5rem"
-      onClick={(e) => e.stopPropagation()}
-      {...editableProps}
+      fontSize="0.875rem"
+      fontWeight="500"
+      w="100%"
     >
-      <Flex
-        alignItems="center"
-        gap="0.5rem"
-        fontSize="0.875rem"
-        fontWeight="500"
-        w="100%"
-      >
-        <Text>Bài {lessonOrder}:</Text>
-        <Box
-          bg="gray.200"
-          px="0.5rem"
-          minW="10rem"
-          h="2rem"
-          borderRadius="lg"
-          overflow="hidden"
-          flex="1"
-        >
-          <EditablePreview />
-          <EditableInput />
-        </Box>
-      </Flex>
-      <EditableControls />
-    </Editable>
+      <Box>
+        <Text w="max-content">Bài {lessonOrder}:</Text>
+      </Box>
+      <Input type="text" {...inputProps} variant="flushed" />
+    </Flex>
   );
 };
 

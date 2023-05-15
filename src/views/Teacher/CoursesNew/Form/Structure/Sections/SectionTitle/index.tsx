@@ -1,48 +1,20 @@
-import {
-  Flex,
-  Text,
-  Editable,
-  EditablePreview,
-  EditableInput,
-  Box,
-} from "@chakra-ui/react";
+import { Flex, Text, Box, Input, InputProps } from "@chakra-ui/react";
 import { FC } from "react";
-import type { EditableProps } from "@chakra-ui/react";
-import EditableControls from "@/views/Teacher/CoursesNew/Form/Structure/EditableControls";
 
-type SectionTitleProps = EditableProps & {
+type SectionTitleProps = InputProps & {
   sectionOrder: string;
 };
 const SectionTitle: FC<SectionTitleProps> = ({
   sectionOrder,
-  ...editableProps
+  ...inputProps
 }) => {
   return (
-    <Editable
-      as={Flex}
-      alignItems="center"
-      w="100%"
-      gap="0.5rem"
-      onClick={(e) => e.stopPropagation()}
-      {...editableProps}
-    >
-      <Flex alignItems="center" gap="0.5rem" fontWeight="600" w="100%">
-        <Text>CHƯƠNG {sectionOrder}:</Text>
-        <Box
-          bg="gray.200"
-          px="0.5rem"
-          minW="10rem"
-          h="2rem"
-          borderRadius="lg"
-          overflow="hidden"
-          flex="1"
-        >
-          <EditablePreview />
-          <EditableInput />
-        </Box>
-      </Flex>
-      <EditableControls />
-    </Editable>
+    <Flex alignItems="center" gap="0.5rem" fontWeight="600" w="100%">
+      <Box>
+        <Text w="max-content">CHƯƠNG {sectionOrder}:</Text>
+      </Box>
+      <Input type="text" {...inputProps} variant="flushed" />
+    </Flex>
   );
 };
 

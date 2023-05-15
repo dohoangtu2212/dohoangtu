@@ -54,7 +54,7 @@ const CourseSection: FC<CourseSectionProps> = ({
                 onClick={() => onLessonSelected(lesson)}
               >
                 <Box py="0.125rem">
-                  <Checkbox isChecked={lesson.isCompleted} isDisabled />
+                  <Checkbox isChecked={false} isDisabled />
                 </Box>
                 <Box>
                   <Text fontSize="0.875rem" fontWeight="500">

@@ -7,12 +7,14 @@ import { userReducer } from "@/store/slices/user";
 import { cartReducer } from "@/store/slices/cart";
 import dyntubeUploadApis from "@/store/apis/dyntubeUpload";
 import { courseReducer } from "@/store/slices/course";
+import storageApis from "@/store/apis/storage";
 
 const reducer = combineReducers({
   [dyntubeApis.reducerPath]: dyntubeApis.reducer,
   [userApis.reducerPath]: userApis.reducer,
   [dyntubeUploadApis.reducerPath]: dyntubeUploadApis.reducer,
   [dbApis.reducerPath]: dbApis.reducer,
+  [storageApis.reducerPath]: storageApis.reducer,
   user: userReducer,
   cart: cartReducer,
   course: courseReducer,
@@ -29,6 +31,7 @@ const makeStore = () =>
         userApis.middleware,
         dyntubeUploadApis.middleware,
         dbApis.middleware,
+        storageApis.middleware,
       ]),
     devTools: true,
   });

@@ -3,7 +3,12 @@ import { useMemo } from "react";
 import Form from "@/views/Teacher/CoursesNew/Form";
 import { useFormik } from "formik";
 import { formikGetErrorMessages, formikGetIsDisabled } from "@/utils/formik";
-import { ICourseDetails, ICourseFormValues, INewCourse, INewCourseDetails } from "@/types/course";
+import {
+  ICourseDetails,
+  ICourseFormValues,
+  INewCourse,
+  INewCourseDetails,
+} from "@/types/course";
 import {
   useCreateCourseMutation,
   useCreateCourseDetailsMutation,
@@ -18,6 +23,8 @@ import { useRouter } from "next/router";
 import { ROUTE } from "@/constants/route";
 import { useEditingCourseSelector } from "@/store/slices/course";
 import type { FormikConfig } from "formik";
+import { useUploadCourseThumbnailMutation } from "@/store/apis/storage";
+import { ICourseLessonType } from "@/types/course";
 
 const INITIAL_VALUES: ICourseFormValues = {
   name: "",
@@ -29,7 +36,22 @@ const INITIAL_VALUES: ICourseFormValues = {
   lessons: 0,
   price: 0,
   previousPrice: 0,
-  sections: [],
+  sections: [
+    {
+      order: 0,
+      name: "Giới thiệu",
+      lessons: [
+        {
+          order: 1,
+          name: "",
+          type: ICourseLessonType.video,
+          duration: 0,
+          dyntubeKey: "",
+          dyntubeVideoId: "",
+        },
+      ],
+    },
+  ],
 };
 
 const TeacherCoursesNew = () => {
@@ -74,6 +96,8 @@ const TeacherCoursesNew = () => {
     updateCourseDetails,
     { data: updateCourseDetailsData, isLoading: updateCourseDetailsIsLoading },
   ] = useUpdateCourseDetailsMutation();
+  const [uploadCourseThumbnail, { isLoading: uploadCourseThumbnailIsLoading }] =
+    useUploadCourseThumbnailMutation();
 
   const initialValues = useMemo(() => {
     if (editingCourse && !!courseDetails && !!course) {
@@ -128,31 +152,49 @@ const TeacherCoursesNew = () => {
       lessons,
       price,
       previousPrice,
+      courseDetailsId: "",
       updatedAt: dayjs().toString(),
     };
 
     try {
       if (isEditMode) {
         const { courseDetailsId, courseId } = editingCourse;
+        let newThumbnailUrl = "";
+        if (!!values.thumbnailFile) {
+          const { url } = await uploadCourseThumbnail({
+            file: values.thumbnailFile,
+            filePath: courseId,
+          }).unwrap();
+          newThumbnailUrl = url;
+        }
         const resUpdateCourseDetails = await updateCourseDetails({
-          data: courseDetailsData,
+          data: {
+            ...courseDetailsData,
+            thumbnailUrl: !!newThumbnailUrl
+              ? newThumbnailUrl
+              : courseDetailsData.thumbnailUrl,
+          },
           courseDetailsId,
         }).unwrap();
         const resUpdateCourse = await updateCourse({
           data: {
             ...courseData,
             courseDetailsId,
+            thumbnailUrl: !!newThumbnailUrl
+              ? newThumbnailUrl
+              : courseData.thumbnailUrl,
           },
           courseId,
         });
       } else {
         const resCreateCourseDetails = await createCourseDetails({
-          data: courseDetailsData,
+          data: { ...courseDetailsData, thumbnailFile: values.thumbnailFile },
         }).unwrap();
-        const { id: newCourseDetailsId } = resCreateCourseDetails;
+        const { id: newCourseDetailsId, thumbnailUrl } = resCreateCourseDetails;
         const resCreateCourse = await createCourse({
           data: {
             ...courseData,
+            thumbnailUrl,
             courseDetailsId: newCourseDetailsId,
           },
         });
@@ -214,7 +256,11 @@ const TeacherCoursesNew = () => {
   );
 
   const isSubmissionLoading =
-    createCourseIsLoading || createCourseDetailsLoading;
+    createCourseIsLoading ||
+    createCourseDetailsLoading ||
+    updateCourseIsLoading ||
+    updateCourseDetailsIsLoading ||
+    uploadCourseThumbnailIsLoading;
   const isLoading =
     isGetCourseDetailsFetching ||
     isGetCourseDetailsLoading ||

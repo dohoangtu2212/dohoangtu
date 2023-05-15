@@ -3,11 +3,15 @@ import { MdAdd } from "react-icons/md";
 import { useRouter } from "next/router";
 import { ROUTE } from "@/constants/route";
 import CoursesTable from "@/views/Teacher/Courses/CoursesTable";
+import { useDispatch } from "react-redux";
+import { courseActions } from "@/store/slices/course";
 
 const TeacherCourses = () => {
   const router = useRouter();
+  const dispatch = useDispatch();
 
   const handleCreateCourse = () => {
+    dispatch(courseActions.setEditingCourse(null));
     router.push(ROUTE.teacherCoursesNew);
   };
 

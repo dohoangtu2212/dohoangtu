@@ -19,6 +19,7 @@ export const COURSES: ICourse[] = [
     price: 429000,
     previousPrice: 2399000,
     updatedAt: dayjs().toString(),
+    courseDetailsId: "",
   },
   {
     id: "2",
@@ -36,6 +37,7 @@ export const COURSES: ICourse[] = [
     price: 429000,
     previousPrice: 2399000,
     updatedAt: dayjs().toString(),
+    courseDetailsId: "",
   },
   {
     id: "3",
@@ -53,6 +55,7 @@ export const COURSES: ICourse[] = [
     price: 429000,
     previousPrice: 2399000,
     updatedAt: dayjs().toString(),
+    courseDetailsId: "",
   },
   {
     id: "4",
@@ -69,6 +72,7 @@ export const COURSES: ICourse[] = [
     price: 429000,
     previousPrice: 2399000,
     updatedAt: dayjs().toString(),
+    courseDetailsId: "",
   },
   {
     id: "5",
@@ -85,6 +89,7 @@ export const COURSES: ICourse[] = [
     price: 429000,
     previousPrice: 2399000,
     updatedAt: dayjs().toString(),
+    courseDetailsId: "",
   },
   {
     id: "6",
@@ -101,6 +106,7 @@ export const COURSES: ICourse[] = [
     price: 429000,
     previousPrice: 2399000,
     updatedAt: dayjs().toString(),
+    courseDetailsId: "",
   },
 ];
 
@@ -120,7 +126,6 @@ export const COURSE_DETAILS: ICourseDetails = {
           order: 1,
           name: "Đơn điệu của hàm số và các tính chất của hàm đơn điệu",
           type: ICourseLessonType.video,
-          isCompleted: true,
           duration: 20 * 60,
           dyntubeKey: "TpxuRmTzlkG0W6i7jEOanQ",
           dyntubeVideoId: "",
@@ -129,7 +134,6 @@ export const COURSE_DETAILS: ICourseDetails = {
           order: 2,
           name: "Đơn điệu của hàm số và các tính chất của hàm đơn điệu",
           type: ICourseLessonType.video,
-          isCompleted: false,
           duration: 15 * 60,
           dyntubeKey: "WvnVKrOOm0m44ZdMuAQXVQ",
           dyntubeVideoId: "",
@@ -138,7 +142,6 @@ export const COURSE_DETAILS: ICourseDetails = {
           order: 3,
           name: "Mối quan hệ giữa đơn điệu của hàm số và đạo hàm - Xét chiều biến thiên của hàm số",
           type: ICourseLessonType.assignment,
-          isCompleted: false,
           duration: 12 * 60,
           dyntubeKey: "nAgdm5gcEyxCQCWp2jdcg",
           dyntubeVideoId: "",
@@ -153,7 +156,6 @@ export const COURSE_DETAILS: ICourseDetails = {
           order: 4,
           name: "Đơn điệu của hàm số và các tính chất của hàm đơn điệu",
           type: ICourseLessonType.video,
-          isCompleted: true,
           duration: 20 * 60,
           dyntubeKey: "TpxuRmTzlkG0W6i7jEOanQ",
           dyntubeVideoId: "",
@@ -162,7 +164,6 @@ export const COURSE_DETAILS: ICourseDetails = {
           order: 5,
           name: "Đơn điệu của hàm số và các tính chất của hàm đơn điệu",
           type: ICourseLessonType.video,
-          isCompleted: false,
           duration: 15 * 60,
           dyntubeKey: "WvnVKrOOm0m44ZdMuAQXVQ",
           dyntubeVideoId: "",
@@ -171,7 +172,6 @@ export const COURSE_DETAILS: ICourseDetails = {
           order: 6,
           name: "Đơn điệu của hàm số và các tính chất của hàm đơn điệu",
           type: ICourseLessonType.assignment,
-          isCompleted: false,
           duration: 12 * 60,
           dyntubeKey: "nAgdm5gcEyxCQCWp2jdcg",
           dyntubeVideoId: "",

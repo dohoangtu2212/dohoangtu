@@ -5,10 +5,18 @@ import {
   IconButton,
   Divider,
   useDisclosure,
+  InputProps,
+  Tooltip,
+  Box,
 } from "@chakra-ui/react";
-import { FC, Fragment, useCallback } from "react";
-import { MdOndemandVideo, MdAssignment, MdAdd, MdCheck } from "react-icons/md";
-import type { EditableProps } from "@chakra-ui/react";
+import { FC, Fragment } from "react";
+import {
+  MdOndemandVideo,
+  MdAssignment,
+  MdAdd,
+  MdCheck,
+  MdOutlineDelete,
+} from "react-icons/md";
 import {
   ICourseFormValues,
   ICourseLesson,
@@ -108,10 +116,10 @@ const Lesson: FC<LessonProps> = ({
   const lessonOrder = `${section.order}.${lesson.order}`;
   const isVideoLesson = lesson.type === ICourseLessonType.video;
 
-  const handleLessonTitleChange: EditableProps["onChange"] = (val) => {
+  const handleLessonTitleChange: InputProps["onChange"] = (ev) => {
     handleSetFieldValue(
       `sections[${sectionIdx}].lessons[${lessonIdx}].name`,
-      val
+      ev.target.value
     );
   };
 
@@ -146,6 +154,17 @@ const Lesson: FC<LessonProps> = ({
     handleSetFieldValue("hours", hours);
   };
 
+  const handleDeleteLesson = (lesson: ICourseLesson) => async () => {
+    const idx = section.lessons?.findIndex((l) => l.order === lesson.order);
+    if (idx === -1) return;
+    await handleSetFieldValue(
+      `sections[${sectionIdx}].lessons`,
+      section.lessons
+        ?.filter((l) => l.order !== lesson.order)
+        .map((l, idx) => ({ ...l, order: idx + 1 }))
+    );
+  };
+
   const isVideoUploaded = !!lesson.dyntubeKey;
 
   return (
@@ -156,11 +175,23 @@ const Lesson: FC<LessonProps> = ({
         onUploaded={handleLessonVideoChange}
         onDurationChange={handleLessonDurationChange}
       />
-      <LessonTitle
-        lessonOrder={lessonOrder}
-        value={lesson.name}
-        onChange={handleLessonTitleChange}
-      />
+      <Flex alignItems="center" w="100%">
+        <Box flex="1">
+          <LessonTitle
+            lessonOrder={lessonOrder}
+            value={lesson.name}
+            onChange={handleLessonTitleChange}
+          />
+        </Box>
+        <Tooltip label={`Xoá Bài ${lessonOrder}`}>
+          <IconButton
+            aria-label="delete"
+            icon={<MdOutlineDelete size="1.5rem" />}
+            variant="ghost"
+            onClick={handleDeleteLesson(lesson)}
+          />
+        </Tooltip>
+      </Flex>
       <Flex justifyContent="flex-end" w="100%" gap="2rem">
         <Flex alignItems="center" gap="0.5rem">
           <Text fontSize="0.75rem">Type</Text>
