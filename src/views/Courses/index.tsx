@@ -16,8 +16,12 @@ const Courses = () => {
   const isLoading = isGetCousesLoading || isGetCoursesFetching;
 
   return (
-    <Flex flexDir="column" gap="1rem" minH="100vh">
-      <Text textTransform="uppercase" fontWeight="600">
+    <Flex flexDir="column" gap="1rem" minH="100vh" pb="1rem">
+      <Text
+        textTransform="uppercase"
+        fontWeight="600"
+        textAlign={{ base: "center", md: "left" }}
+      >
         Danh sách khoá học
       </Text>
       {isLoading && <Spinner color="orange.300" />}

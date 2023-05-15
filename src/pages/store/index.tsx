@@ -15,17 +15,16 @@ const StorePage = () => {
       </Head>
       <PageContainer>
         {userRole !== UserRole.student && (
-          <Flex
-            alignItems="center"
-            gap="0.5rem"
+          <Text
             p="0.5rem 1rem"
             mb="1rem"
             borderRadius="lg"
             bgColor="orange.200"
+            textAlign={{ base: "center", md: "left" }}
           >
-            <Text>Giỏ hàng chỉ được áp dụng cho tài khoản</Text>
-            <RoleTag role={UserRole.student} />
-          </Flex>
+            Giỏ hàng chỉ được áp dụng cho tài khoản{" "}
+            <RoleTag role={UserRole.student} as="span" />
+          </Text>
         )}
         <Courses />
       </PageContainer>

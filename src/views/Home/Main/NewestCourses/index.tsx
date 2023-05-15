@@ -16,7 +16,12 @@ const NewestCourses = () => {
 
   return (
     <Flex flexDir="column" gap="1rem" py="1rem">
-      <Text fontWeight="600" textTransform="uppercase" fontSize="1.25rem">
+      <Text
+        fontWeight="600"
+        textTransform="uppercase"
+        fontSize="1.25rem"
+        textAlign={{ base: "center", md: "left" }}
+      >
         Khoá học mới nhất
       </Text>
       {isLoading && <Spinner color="orange.300" />}

@@ -65,7 +65,7 @@ const CourseView = () => {
         />
         <Text fontWeight="600">KHÓA: {courseDetails.name}</Text>
       </Flex>
-      <Flex>
+      <Flex flexDir={{ base: "column", md: "row" }}>
         <Box flex="3">
           <CourseMain course={courseDetails} selectedLesson={selectedLesson} />
         </Box>

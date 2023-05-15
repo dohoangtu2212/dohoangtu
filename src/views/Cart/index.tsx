@@ -109,7 +109,7 @@ const Cart = () => {
         <Text textTransform="uppercase" fontWeight="600">
           Giỏ hàng của bạn
         </Text>
-        <Flex py="2rem" gap="4rem">
+        <Flex py="2rem" gap="4rem" flexDir={{ base: "column", md: "row" }}>
           <Flex flexDir="column" flex="3" gap="0.5rem">
             <Text
               fontWeight="600"

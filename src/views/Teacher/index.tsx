@@ -7,7 +7,12 @@ const TeacherHome = () => {
   const currentUser = useCurrentUserSelector();
   return (
     <Flex>
-      <Flex alignItems="center" gap="0.5rem">
+      <Flex
+        w="100%"
+        alignItems="center"
+        gap="0.5rem"
+        flexDir={{ base: "column", md: "row" }}
+      >
         <Text fontSize="0.875rem">Xin chào,</Text>
         <RoleTag role={UserRole.teacher} />
         <Text fontSize="0.875rem" fontWeight="500">

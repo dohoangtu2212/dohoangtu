@@ -7,6 +7,7 @@ import { displayPrice } from "@/utils/display";
 import { useCartCoursesSelector } from "@/store/slices/cart";
 import { IoMdCart } from "react-icons/io";
 import { DEFAULT_EXERCISE_THUMBNAIL } from "@/constants/exercise";
+import useMobile from "@/hooks/useMobile";
 
 type DisplayProps = {
   course: ICourse;
@@ -14,6 +15,7 @@ type DisplayProps = {
 };
 const Display = forwardRef<HTMLDivElement, DisplayProps>(
   ({ course, onToggleMenu = () => {} }, ref) => {
+    const { isMobile } = useMobile();
     const cartCourses = useCartCoursesSelector();
     const {
       name,
@@ -33,6 +35,9 @@ const Display = forwardRef<HTMLDivElement, DisplayProps>(
         cursor="pointer"
         position="relative"
         onMouseOver={() => onToggleMenu(true)}
+        onClick={() => {
+          if (isMobile) onToggleMenu(true);
+        }}
         ref={ref}
       >
         {isAddedToCard && (

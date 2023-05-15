@@ -19,7 +19,6 @@ import {
 import { getAuth } from "firebase/auth";
 import Form from "@/views/Auth/AuthForm/Form";
 import { useRouter } from "next/router";
-import { ROUTE } from "@/constants/route";
 import { FC, useCallback, useState } from "react";
 import { useUpdateUserRoleMutation } from "@/store/apis/user";
 import { UserRole } from "@/types/permission";
@@ -160,6 +159,7 @@ const SignUp: FC<SignUpProps> = ({ onDone }) => {
                   variant="outline"
                   onClick={handleSelectTeacher}
                   isLoading={isUpdateUserRoleLoading}
+                  isDisabled
                 >
                   Giáo viên
                 </Button>
