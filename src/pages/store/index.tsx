@@ -14,7 +14,7 @@ const StorePage = () => {
         <title>Cửa hàng</title>
       </Head>
       <PageContainer>
-        {userRole !== UserRole.student && (
+        {userRole === UserRole.teacher && (
           <Text
             p="0.5rem 1rem"
             mb="1rem"

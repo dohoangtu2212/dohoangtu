@@ -70,7 +70,7 @@ const Menu: FC<MenuProps> = ({ course }) => {
               flex="1"
               variant="outline"
               onClick={handleGoToCart}
-              isDisabled={userRole !== UserRole.student}
+              isDisabled={userRole === UserRole.teacher}
             >
               Xem giỏ hàng
             </Button>
@@ -79,7 +79,7 @@ const Menu: FC<MenuProps> = ({ course }) => {
               leftIcon={<BsCartPlus size="1.25rem" />}
               flex="1"
               onClick={handleAddToCart}
-              isDisabled={userRole !== UserRole.student}
+              isDisabled={userRole === UserRole.teacher}
             >
               Bỏ vào giỏ
             </Button>
@@ -87,7 +87,7 @@ const Menu: FC<MenuProps> = ({ course }) => {
           <IconButton
             aria-label="wishlist"
             icon={<BsHeart size="1.25rem" />}
-            isDisabled={userRole !== UserRole.student}
+            isDisabled={userRole === UserRole.teacher}
           />
         </Flex>
       </Flex>
