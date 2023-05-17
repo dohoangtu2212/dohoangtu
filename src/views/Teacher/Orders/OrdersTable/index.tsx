@@ -11,6 +11,15 @@ import {
   Text,
   Divider,
   Button,
+  IconButton,
+  Tooltip,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalBody,
+  useDisclosure,
+  ModalCloseButton,
+  Box,
 } from "@chakra-ui/react";
 import { useGetOrdersQuery } from "@/store/apis/db";
 import { IOrder } from "@/types/order";
@@ -18,11 +27,12 @@ import { FC } from "react";
 import { displayPrice } from "@/utils/display";
 import dayjs from "dayjs";
 import { MdCheck } from "react-icons/md";
+import { IoMdEye } from "react-icons/io";
 import {
   useUpdateStudentCoursesMutation,
   useConfirmOrderMutation,
 } from "@/store/apis/db";
-import { IStudentCourse } from "@/types/course";
+import Image from "next/image";
 
 const OrdersTable = () => {
   const {
@@ -43,8 +53,8 @@ const OrdersTable = () => {
               <Th>Học sinh</Th>
               <Th>Thời gian</Th>
               <Th>Khoá học bao gồm</Th>
+              <Th>Hình thức thanh toán</Th>
               <Th>Giá trị đơn hàng</Th>
-
               {/* Actions */}
               <Th />
             </Tr>
@@ -53,8 +63,11 @@ const OrdersTable = () => {
             {orders?.map((order) => (
               <Tr key={order.id}>
                 <TdStudent order={order} />
-                <Td>{dayjs(order.createdAt).format("DD/MM/YY HH:mm:ss")}</Td>
+                <Td fontSize="0.875rem">
+                  {dayjs(order.createdAt).format("DD/MM/YY HH:mm:ss")}
+                </Td>
                 <TdCourses order={order} />
+                <TdPaymentConfirmation order={order} />
                 <Td>{displayPrice(order.totalPrice)}</Td>
                 <TdActions order={order} />
               </Tr>
@@ -78,15 +91,65 @@ const TdStudent: FC<TdStudentProps> = ({ order }) => {
           <Text as="span" fontSize="0.75rem">
             Tên:{" "}
           </Text>
-          <Text as="span">{!!userName ? userName : "(trống)"}</Text>
+          <Text as="span" fontSize="0.875rem">
+            {!!userName ? userName : "(trống)"}
+          </Text>
         </Text>
         <Text>
           <Text as="span" fontSize="0.75rem">
             Email:{" "}
           </Text>
-          <Text as="span">{!!userEmail ? userEmail : "(trống)"}</Text>
+          <Text as="span" fontSize="0.875rem" fontWeight="600">
+            {!!userEmail ? userEmail : "(trống)"}
+          </Text>
         </Text>
       </Flex>
+    </Td>
+  );
+};
+
+type TdPaymentConfirmationProps = {
+  order: IOrder;
+};
+const TdPaymentConfirmation: FC<TdPaymentConfirmationProps> = ({ order }) => {
+  const { paymentMethod, screenshotUrl } = order;
+  const { isOpen, onClose, onOpen } = useDisclosure();
+  return (
+    <Td>
+      {!!paymentMethod && !!screenshotUrl && (
+        <>
+          <Flex justifyContent="center" alignItems="center" gap="0.5rem">
+            <Text>{paymentMethod}</Text>
+            <Tooltip label="Xem hình ảnh xác nhận">
+              <IconButton
+                aria-label="view"
+                icon={<IoMdEye size="1.5rem" />}
+                variant="ghost"
+                onClick={onOpen}
+              />
+            </Tooltip>
+          </Flex>
+          <Modal isOpen={isOpen} onClose={onClose}>
+            <ModalOverlay />
+            <ModalContent>
+              <ModalCloseButton fontSize="1rem" />
+              <ModalBody>
+                <Box position="relative" w="100%" h="40rem">
+                  <Image
+                    src={screenshotUrl}
+                    loader={() => screenshotUrl}
+                    alt="screenshot"
+                    fill
+                    style={{
+                      objectFit: "contain",
+                    }}
+                  />
+                </Box>
+              </ModalBody>
+            </ModalContent>
+          </Modal>
+        </>
+      )}
     </Td>
   );
 };
@@ -102,18 +165,20 @@ const TdCourses: FC<TdCoursesProps> = ({ order }) => {
         {courses.map((c, idx) => (
           <>
             {!!idx && <Divider />}
-            <Flex alignItems="center" gap="2rem">
-              <Text
-                maxW="15rem"
-                fontSize="0.75rem"
-                textOverflow="clip"
-                overflow="hidden"
-                whiteSpace="initial"
-              >
-                {c.name}
+            <Text
+              py="0.5rem"
+              maxW="15rem"
+              fontSize="0.75rem"
+              textOverflow="clip"
+              overflow="hidden"
+              whiteSpace="initial"
+            >
+              {c.name}
+              {" - "}
+              <Text fontSize="0.75rem" as="span" fontWeight="600">
+                {displayPrice(c.price)}
               </Text>
-              <Text fontSize="0.75rem">{displayPrice(c.price)}</Text>
-            </Flex>
+            </Text>
           </>
         ))}
       </Flex>

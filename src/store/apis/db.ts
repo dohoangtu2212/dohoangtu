@@ -32,6 +32,7 @@ const TAG = {
   course: "course",
   coursesDetails: "courses-details",
   courseDetails: "course-details",
+  orders: "orders",
 };
 
 const dbApis = createApi({
@@ -223,10 +224,20 @@ const dbApis = createApi({
     createOrder: build.mutation<{ id: string }, INewOrder>({
       async queryFn(order) {
         try {
+          const data = { ...order };
           const db = getDatabase();
           const newOrderKey = push(child(ref(db), DB_KEY.orders)).key;
+          if (!!data.screenshot) {
+            const storage = getStorage();
+            const fileRef = storageRef(storage, `order/${newOrderKey}`);
+            await uploadBytes(fileRef, data.screenshot);
+            const url = await getDownloadURL(fileRef);
+            data.screenshotUrl = url;
+          }
+          delete data.screenshot;
+
           const updates: Updates = {};
-          updates[`/${DB_KEY.orders}/` + newOrderKey] = order;
+          updates[`/${DB_KEY.orders}/` + newOrderKey] = data;
 
           await update(ref(db), updates);
           return { data: { id: newOrderKey as string } };
@@ -258,7 +269,7 @@ const dbApis = createApi({
           return { error: JSON.stringify(e) };
         }
       },
-      providesTags: [],
+      providesTags: [TAG.orders],
     }),
     confirmOrder: build.mutation<null, { orderId: string }>({
       async queryFn({ orderId }) {
@@ -273,7 +284,7 @@ const dbApis = createApi({
           return { error: JSON.stringify(e) };
         }
       },
-      invalidatesTags: [],
+      invalidatesTags: [TAG.orders],
     }),
 
     // USER

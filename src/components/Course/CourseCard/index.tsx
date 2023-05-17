@@ -26,7 +26,7 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => {
         <PopoverAnchor>
           <Display course={course} onToggleMenu={(val) => setShowMenu(val)} />
         </PopoverAnchor>
-        <PopoverContent w={{ base: "100vw", md: "fit-content" }}>
+        <PopoverContent w={{ base: "100vw", md: "20rem" }}>
           <PopoverArrow />
           {isMobile && (
             <PopoverCloseButton onClick={() => setShowMenu(false)} />

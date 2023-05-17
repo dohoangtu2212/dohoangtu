@@ -24,11 +24,17 @@ const CourseItem: FC<CourseItemProps> = ({ course }) => {
       alignItems="flex-start"
       justifyContent="space-between"
     >
-      <Basics course={course} />
-      <Flex gap="2rem">
-        <Actions course={course} />
+      <Flex w="100%">
+        <Basics course={course} />
+        <Flex gap="2rem" flex="1">
+          <Box flex="1">
+            <Actions course={course} />
+          </Box>
 
-        <Text fontWeight="600">{displayPrice(price)}</Text>
+          <Text fontWeight="600" flex="1" textAlign="right">
+            {displayPrice(price)}
+          </Text>
+        </Flex>
       </Flex>
     </Card>
   );
@@ -50,7 +56,7 @@ const Basics: FC<BasicsProps> = ({ course }) => {
     lessons,
   } = course;
   return (
-    <Flex gap="1rem">
+    <Flex gap="1rem" flex="2">
       <DisplayImage
         imageUrl={!!thumbnailUrl ? thumbnailUrl : DEFAULT_EXERCISE_THUMBNAIL}
         w="10rem"

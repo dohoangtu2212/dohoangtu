@@ -18,7 +18,7 @@ import {
 } from "@/store/slices/cart";
 import { displayPrice } from "@/utils/display";
 import CourseItem from "@/views/Cart/CourseItem";
-import { Fragment, useCallback } from "react";
+import { Fragment, useCallback, useState } from "react";
 import AuthForm from "@/views/Auth/AuthForm";
 import { DisplayMode } from "@/views/Auth/AuthForm/types";
 import type { ModalProps } from "@chakra-ui/react";
@@ -32,6 +32,8 @@ import { cartActions } from "@/store/slices/cart";
 import { AiOutlineShop } from "react-icons/ai";
 import { useRouter } from "next/router";
 import { ROUTE } from "@/constants/route";
+import PaymentModal from "@/views/Cart/PaymentModal";
+import type { IPaymentMethod } from "@/types/order";
 
 const Cart = () => {
   const toast = useToast({
@@ -42,69 +44,94 @@ const Cart = () => {
   const currentUser = useCurrentUserSelector();
   const cartCourses = useCartCoursesSelector();
   const totalPrice = useCartTotalPriceSelector();
+  const [createOrder, { isLoading: isCreateOrderLoading }] =
+    useCreateOrderMutation();
+  const {
+    isOpen: isPaymentModalOpen,
+    onOpen: onOpenPaymentModal,
+    onClose: onClosePaymentModal,
+  } = useDisclosure();
   const {
     isOpen: isAuthModalOpen,
     onOpen: onOpenAuthModal,
     onClose: onCloseAuthModal,
   } = useDisclosure();
-  const [createOrder, { isLoading: isCreateOrderLoading }] =
-    useCreateOrderMutation();
+  const [paymentMethod, setPaymentMethod] = useState<IPaymentMethod>("VCB");
+  const [screenshot, setScreenshot] = useState<File | null>(null);
 
-  const handleCheckout = useCallback(async () => {
-    if (!currentUser) onOpenAuthModal();
+  const handleSubmitOrder = useCallback(async () => {
+    if (!currentUser || !cartCourses || !totalPrice || !screenshot) return;
+    const order: INewOrder = {
+      userId: currentUser.uid,
+      userName: currentUser.displayName ?? "",
+      userEmail: currentUser.email ?? "",
+      courses: cartCourses.map((c) => ({
+        name: c.name,
+        courseId: c.id,
+        courseDetailsId: c.courseDetailsId,
+        price: c.price,
+        teacherName: c.teacherName,
+        progress: 0,
+        rating: null,
+        thumbnailUrl: c.thumbnailUrl,
+      })),
+      totalPrice: totalPrice,
+      createdAt: dayjs().toString(),
+      isConfirmed: false,
+      screenshot: screenshot,
+      paymentMethod: paymentMethod,
+    };
 
-    if (!!currentUser && !!cartCourses && totalPrice) {
-      const order: INewOrder = {
-        userId: currentUser.uid,
-        userName: currentUser.displayName ?? "",
-        userEmail: currentUser.email ?? "",
-        courses: cartCourses.map((c) => ({
-          name: c.name,
-          courseId: c.id,
-          courseDetailsId: c.courseDetailsId,
-          price: c.price,
-          teacherName: c.teacherName,
-          progress: 0,
-          rating: null,
-          thumbnailUrl: c.thumbnailUrl,
-        })),
-        totalPrice: totalPrice,
-        createdAt: dayjs().toString(),
-        isConfirmed: false,
-      };
-
-      try {
-        const res = await createOrder(order).unwrap();
-        toast({
-          title: "Thành công!",
-          description: "Đơn hàng đã được tạo.",
-          status: "success",
-          duration: 3000,
-          isClosable: true,
-        });
-        dispatch(cartActions.clearCart());
-      } catch (err) {
-        toast({
-          title: "Lỗi!",
-          description: "Tạo đơn hàng không thành công.",
-          status: "error",
-          duration: 3000,
-          isClosable: true,
-        });
-      }
+    try {
+      const res = await createOrder(order).unwrap();
+      onClosePaymentModal();
+      toast({
+        title: "Thành công!",
+        description: "Đơn hàng đã được tạo.",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+      dispatch(cartActions.clearCart());
+    } catch (err) {
+      toast({
+        title: "Lỗi!",
+        description: "Tạo đơn hàng không thành công.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
     }
   }, [
-    currentUser,
-    onOpenAuthModal,
     cartCourses,
     totalPrice,
     createOrder,
     toast,
     dispatch,
+    currentUser,
+    paymentMethod,
+    screenshot,
+    onClosePaymentModal,
   ]);
+
+  const handleCheckout = useCallback(async () => {
+    if (!currentUser) onOpenAuthModal();
+    onOpenPaymentModal();
+    return;
+  }, [currentUser, onOpenAuthModal, onOpenPaymentModal]);
 
   return (
     <>
+      <PaymentModal
+        isOpen={isPaymentModalOpen}
+        onClose={onClosePaymentModal}
+        onSubmit={handleSubmitOrder}
+        paymentMethod={paymentMethod}
+        onPaymentMethodChange={setPaymentMethod}
+        screenshot={screenshot}
+        onScreenshotChange={setScreenshot}
+        isLoading={isCreateOrderLoading}
+      />
       <Flex flexDir="column">
         <Text textTransform="uppercase" fontWeight="600">
           Giỏ hàng của bạn

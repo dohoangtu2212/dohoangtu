@@ -7,8 +7,18 @@ export const breakpoints = {
   xl: "1200px",
 };
 
+export const colors = {
+  whiteSatin: "#D6E5F2",
+  windmillWings: "#BBD2ED",
+  summerBlue: "#92B3E0",
+  blueLapis: "#6289C6",
+  twilightBlue: "#355496",
+  midnightNavy: "#333356",
+  starryNightBlue: "#333F76",
+};
+
 export const theme = extendTheme({
-  // breakpoints,
+  breakpoints,
   fonts: {
     body: "Montserrat, sans-serif",
   },

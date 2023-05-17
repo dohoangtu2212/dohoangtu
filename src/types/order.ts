@@ -9,6 +9,12 @@ export interface IOrder {
   totalPrice: number;
   createdAt: string;
   isConfirmed: boolean;
+  paymentMethod: IPaymentMethod;
+  screenshotUrl?: string;
 }
 
-export type INewOrder = Omit<IOrder, "id">;
+export type INewOrder = Omit<IOrder, "id"> & {
+  screenshot?: File;
+};
+
+export type IPaymentMethod = "VCB" | "Momo";

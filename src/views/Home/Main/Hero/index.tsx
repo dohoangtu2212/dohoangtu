@@ -13,15 +13,16 @@ const Hero = () => {
       <Flex
         flexDir="column"
         alignItems="center"
-        w={{ base: "100%", md: "25rem" }}
-        h={{ base: "30rem", md: "40rem" }}
+        w={{ base: "fit-content", md: "25rem" }}
+        h={{ base: "25rem", md: "35rem" }}
         overflow="hidden"
+        borderRadius="lg"
       >
         <Image
-          src="/images/tu-1.jpeg"
+          src="/images/tu-2.jpeg"
           alt="Hero"
           width={isMobile ? 300 : 400}
-          height={600}
+          height={800}
         />
       </Flex>
 
