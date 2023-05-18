@@ -55,12 +55,13 @@ const CourseView = () => {
   if (!courseDetails) return null;
 
   return (
-    <Flex minH="100vh" flexDir="column">
+    <Flex minH="100vh" flexDir="column" pt="1rem">
       <Flex px="2rem" alignItems="center" gap="0.5rem">
         <IconButton
           aria-label="back"
           icon={<MdArrowBackIos size="1.5rem" />}
           variant="ghost"
+          p="0"
           onClick={() => router.back()}
         />
         <Text fontWeight="600">KHÓA: {courseDetails.name}</Text>

@@ -45,7 +45,7 @@ const Form: FC<FormProps> = ({ onSubmit, action = "Đăng nhập" }) => {
   );
 
   return (
-    <Flex flexDir="column" gap="2rem">
+    <Flex flexDir="column" gap="2rem" py="1rem">
       <form onSubmit={handleSubmit} noValidate>
         <Flex flexDir="column" gap="1rem">
           <Input
@@ -69,13 +69,16 @@ const Form: FC<FormProps> = ({ onSubmit, action = "Đăng nhập" }) => {
               {formErrorMessage}
             </Text>
           )}
-          <Button
-            isLoading={isSubmitting}
-            type="submit"
-            isDisabled={isDisabled}
-          >
-            {action}
-          </Button>
+          <Flex justifyContent="center">
+            <Button
+              w="100%"
+              isLoading={isSubmitting}
+              type="submit"
+              isDisabled={isDisabled}
+            >
+              {action}
+            </Button>
+          </Flex>
         </Flex>
       </form>
     </Flex>

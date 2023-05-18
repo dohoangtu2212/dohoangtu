@@ -6,7 +6,7 @@ type PageContainerProps = FlexProps & {};
 const PageContainer: FC<PageContainerProps> = ({ children, ...flexProps }) => {
   return (
     <Flex
-      p={{ base: "0rem 1rem", md: "0rem 6rem" }}
+      p={{ base: "0rem 1rem", md: "1rem 6rem" }}
       flexDir="column"
       alignItems="center"
       {...flexProps}

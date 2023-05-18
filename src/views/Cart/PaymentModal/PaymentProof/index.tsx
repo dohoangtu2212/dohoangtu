@@ -2,6 +2,7 @@ import FileInput from "@/components/Input/FileInput";
 import { Flex, Box } from "@chakra-ui/react";
 import { FC, useCallback, useEffect, useState } from "react";
 import Image from "next/image";
+import { COLORS } from "@/constants/theme";
 
 type PaymentProofProps = {
   image: File | null;
@@ -34,7 +35,7 @@ const PaymentProof: FC<PaymentProofProps> = ({ onChange, image }) => {
           w="100%"
           h="20rem"
           border="1px"
-          borderColor="gray.300"
+          borderColor={COLORS.summerBlue}
           borderRadius="lg"
         >
           <Image

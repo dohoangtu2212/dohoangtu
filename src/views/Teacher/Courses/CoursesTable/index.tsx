@@ -167,6 +167,7 @@ const TdActions: FC<TdActionsProps> = ({ course }) => {
             aria-label="play"
             variant="ghost"
             icon={<MdPlayArrow size="1.75rem" />}
+            p="0"
             onClick={handleView}
           />
         </Tooltip>
@@ -174,7 +175,7 @@ const TdActions: FC<TdActionsProps> = ({ course }) => {
           <IconButton
             aria-label="Edit"
             variant="ghost"
-            w="fit-content"
+            p="0"
             icon={<MdOutlineEdit size="1.5rem" />}
             onClick={handleEdit}
           />

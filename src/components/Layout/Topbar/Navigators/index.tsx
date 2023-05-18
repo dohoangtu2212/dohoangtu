@@ -8,7 +8,7 @@ import {
 import { useRouter } from "next/router";
 import NavigatorsContainer from "@/components/Layout/Navigation/NavigatorsContainer";
 import type { FC } from "react";
-import { PUBLIC_ROUTES } from "@/constants/route";
+import { PUBLIC_ROUTES, ROUTE } from "@/constants/route";
 import useMobile from "@/hooks/useMobile";
 import {
   IconButton,
@@ -25,15 +25,13 @@ import { useMemo } from "react";
 import { AiOutlineMenu } from "react-icons/ai";
 import { useUserRoleSelector } from "@/store/slices/user";
 import { UserRole } from "@/types/permission";
-import type { INavigator } from "@/types/navigator";
+import { COLORS } from "@/constants/theme";
 
 type NavigatorsProps = {};
 const Navigators: FC<NavigatorsProps> = () => {
   const { isMobile } = useMobile();
   const router = useRouter();
   const { pathname } = router;
-
-  const activeNavigator = NAVIGATORS.find((nav) => nav.link === pathname);
 
   if (isMobile)
     return (
@@ -43,37 +41,9 @@ const Navigators: FC<NavigatorsProps> = () => {
     );
 
   return (
-    <Popover placement="right-end">
-      <Flex alignItems="center" gap="0.5rem">
-        <PopoverTrigger>
-          <IconButton
-            aria-label="navigators"
-            variant="ghost"
-            icon={<AiOutlineMenu size="1.5rem" />}
-          />
-        </PopoverTrigger>
-
-        {!!activeNavigator && (
-          <Box bgColor="orange.100" p="0.25rem 0.5rem" borderRadius="lg">
-            <Text
-              fontWeight="600"
-              textTransform="uppercase"
-              fontSize="0.875rem"
-            >
-              {activeNavigator?.name}
-            </Text>
-          </Box>
-        )}
-      </Flex>
-      <PopoverContent w="fit-content">
-        <PopoverArrow />
-        <PopoverBody>
-          <Flex alignItems="center">
-            <NavigatorsList />
-          </Flex>
-        </PopoverBody>
-      </PopoverContent>
-    </Popover>
+    <Flex alignItems="center" gap="0.5rem">
+      <NavigatorsList />
+    </Flex>
   );
 };
 
@@ -99,14 +69,21 @@ const NavigatorsList: FC<NavigatorsListProps> = () => {
     <>
       {navigators.map((nav) => {
         const isActive = pathname === nav.link;
+        const isHomePage = nav.link === ROUTE.home;
+
         return (
           <NavItem
             key={nav.id}
             onClick={() => router.push(nav.link)}
-            color={isActive ? "orange.400" : "base"}
+            color={isActive ? COLORS.whiteSatin : COLORS.windmillWings}
+            letterSpacing="1px"
             fontWeight={isActive ? "600" : "400"}
+            gap="0.5rem"
+            fontSize={isHomePage ? "1.125rem" : "0.875rem"}
+            textTransform={isHomePage ? "uppercase" : "none"}
           >
-            {nav.name}
+            {!!nav.Icon && <nav.Icon size="1.5rem" />}
+            <Text>{nav.name}</Text>
           </NavItem>
         );
       })}

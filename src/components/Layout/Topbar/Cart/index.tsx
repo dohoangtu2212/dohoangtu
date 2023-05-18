@@ -5,6 +5,7 @@ import type { FlexProps } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { ROUTE } from "@/constants/route";
 import { useCartCoursesSelector } from "@/store/slices/cart";
+import { COLORS } from "@/constants/theme";
 
 const Cart = () => {
   const router = useRouter();
@@ -19,6 +20,8 @@ const Cart = () => {
       {!!cartCourses.length && <Counter count={cartCourses.length} />}
       <IconButton
         icon={<MdOutlineShoppingCart size="1.5rem" />}
+        color={COLORS.whiteSatin}
+        p="0"
         aria-label="cart"
         variant="ghost"
         onClick={handleGoToCard}
@@ -34,9 +37,10 @@ const Counter: FC<CounterProps> = ({ count }) => {
   return (
     <Flex
       position="absolute"
-      top="-0.25rem"
-      right="-0.25rem"
-      bg="orange.400"
+      top="-0.125rem"
+      right="-0.125rem"
+      bgColor={COLORS.blueLapis}
+      color={COLORS.whiteSatin}
       w="1.25rem"
       h="1.25rem"
       borderRadius="1rem"

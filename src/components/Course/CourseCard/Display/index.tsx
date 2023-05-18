@@ -8,6 +8,7 @@ import { useCartCoursesSelector } from "@/store/slices/cart";
 import { IoMdCart } from "react-icons/io";
 import { DEFAULT_EXERCISE_THUMBNAIL } from "@/constants/exercise";
 import useMobile from "@/hooks/useMobile";
+import { COLORS } from "@/constants/theme";
 
 type DisplayProps = {
   course: ICourse;
@@ -42,12 +43,12 @@ const Display = forwardRef<HTMLDivElement, DisplayProps>(
       >
         {isAddedToCard && (
           <Box
-            color="orange.400"
+            color={COLORS.summerBlue}
             position="absolute"
             zIndex="2"
             right="0.5rem"
             top="0.5rem"
-            bgColor="blackAlpha.700"
+            bgColor={COLORS.starryNightBlue}
             p="0.25rem"
             borderRadius="lg"
           >
@@ -62,23 +63,19 @@ const Display = forwardRef<HTMLDivElement, DisplayProps>(
             w="100%"
             h="10rem"
             alt={name}
-            border="1px"
-            borderColor="gray.300"
             borderRadius="md"
           />
           <Text fontWeight="600" lineHeight="1.25">
             {name}
           </Text>
 
-          <Flex alignItems="center" gap="0.5rem">
+          <Flex alignItems="center" gap="0.5rem" color={COLORS.twilightBlue}>
             <BsPerson />
-            <Text fontSize="0.75rem" color="gray">
-              {teacherName}
-            </Text>
+            <Text fontSize="0.75rem">{teacherName}</Text>
           </Flex>
-          <Flex alignItems="center" gap="0.5rem">
+          <Flex alignItems="center" gap="0.5rem" color={COLORS.twilightBlue}>
             <BsStar />
-            <Text fontSize="0.75rem" color="gray">
+            <Text fontSize="0.75rem">
               <Text as="span">
                 Đánh giá: {!!rating ? `${rating}/5` : "Cập nhật..."}
               </Text>{" "}
@@ -93,7 +90,7 @@ const Display = forwardRef<HTMLDivElement, DisplayProps>(
               <Text
                 fontSize="0.875rem"
                 textDecoration="line-through"
-                color="gray"
+                color={COLORS.summerBlue}
               >
                 {displayPrice(previousPrice)}
               </Text>

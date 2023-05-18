@@ -12,12 +12,12 @@ import {
   Tooltip,
 } from "@chakra-ui/react";
 import { FC } from "react";
-import type { EditableProps } from "@chakra-ui/react";
 import { ICourseFormValues, ICourseSection } from "@/types/course";
 import { FormikHelpers } from "formik";
 import SectionTitle from "@/views/Teacher/CoursesNew/Form/Structure/Sections/SectionTitle";
 import Lessons from "@/views/Teacher/CoursesNew/Form/Structure/Sections/Lessons";
-import { MdDelete, MdOutlineDelete } from "react-icons/md";
+import { MdOutlineDelete } from "react-icons/md";
+import { COLORS } from "@/constants/theme";
 
 type SectionsProps = {
   values: ICourseFormValues;
@@ -54,7 +54,7 @@ const Sections: FC<SectionsProps> = ({
             allowMultiple
             borderLeft="1px"
             borderRight="1px"
-            borderColor="gray.300"
+            borderColor={COLORS.summerBlue}
             maxH="100%"
             overflow="auto"
             key={section.order}

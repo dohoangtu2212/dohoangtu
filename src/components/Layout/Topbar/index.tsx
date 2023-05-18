@@ -10,7 +10,7 @@ import { UserRole } from "@/types/permission";
 type TopbarProps = {};
 const Topbar: FC<TopbarProps> = () => {
   const userRole = useUserRoleSelector();
-  const showCart = userRole === UserRole.student;
+  const showCart = userRole !== UserRole.teacher;
 
   return (
     <TopbarContainer>

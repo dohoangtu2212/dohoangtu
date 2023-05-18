@@ -1385,10 +1385,10 @@
   resolved "https://registry.yarnpkg.com/@firebase/webchannel-wrapper/-/webchannel-wrapper-0.10.0.tgz#92ee8c88682bb1ff0938b751f88f108e7a73165a"
   integrity sha512-2I8y+vJVrPfPFJrnRGpao1Qc2Gu7wmYoo5ed2s5zK/DUGgcyY1Yr/xC0YdnKM4pi7rG3HqwW9ehAKUXoTMLdoA==
 
-"@fontsource/montserrat@^4.5.14":
-  version "4.5.14"
-  resolved "https://registry.yarnpkg.com/@fontsource/montserrat/-/montserrat-4.5.14.tgz#5f4bfc5e7f234a986d94d9e7e7193f852e6971e3"
-  integrity sha512-fTvrteVzuFUePhr4QYBGoK8G/YHLJ3IhF1HhKg0AxcFvZajJT7rM7ULdmKLSd2PkX44R3aaFZq1zDbmjbGGI+w==
+"@fontsource/lora@^4.5.13":
+  version "4.5.13"
+  resolved "https://registry.yarnpkg.com/@fontsource/lora/-/lora-4.5.13.tgz#f68fe5a43699f3ac2921c894ec190de9a6decb45"
+  integrity sha512-SV8z2btHCVpjfyLpuqHNyKH56YuzJdv0tjqbi/Mb7hkXGWgz44RuGYSNAoYCes9y2fzJ2zpYUwfCrvcAEjDqMQ==
 
 "@google-cloud/firestore@^6.5.0":
   version "6.5.0"

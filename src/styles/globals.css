@@ -19,3 +19,23 @@ a {
   box-shadow: none !important;
   outline: none;
 }
+
+*::-webkit-scrollbar {
+  width: 0.5rem;
+  height: 0.5rem;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 8px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #333F76;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+*[data-focus] {
+  box-shadow: none !important;
+}

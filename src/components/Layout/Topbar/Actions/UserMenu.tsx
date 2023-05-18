@@ -10,7 +10,6 @@ import {
 } from "@chakra-ui/react";
 import { getAuth } from "firebase/auth";
 import RoleTag from "@/components/Role/RoleTag";
-import { UserRole } from "@/types/permission";
 import { MdPerson, MdLogout } from "react-icons/md";
 import { useUserRoleSelector } from "@/store/slices/user";
 
@@ -39,6 +38,7 @@ const UserMenu = () => {
           <Flex flexDir="column" gap="1rem">
             {!!userRole && <RoleTag role={userRole} />}
             <Button
+              w="100%"
               variant="ghost"
               leftIcon={<MdPerson size="1.25rem" />}
               fontSize="0.875rem"
@@ -48,6 +48,7 @@ const UserMenu = () => {
             </Button>
             <Button
               variant="ghost"
+              w="100%"
               leftIcon={<MdLogout size="1.25rem" />}
               onClick={handleLogout}
               fontSize="0.875rem"

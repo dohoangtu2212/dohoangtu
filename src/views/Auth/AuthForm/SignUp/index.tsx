@@ -128,7 +128,7 @@ const SignUp: FC<SignUpProps> = ({ onDone }) => {
 
   return (
     <>
-      <Form onSubmit={signUp} action="Đăng ký" />
+      <Form onSubmit={signUp} action="Đăng kí" />
       <Modal
         isOpen={isOpen}
         onClose={onClose}

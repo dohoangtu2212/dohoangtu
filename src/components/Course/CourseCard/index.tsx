@@ -22,7 +22,7 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => {
 
   return (
     <Box onMouseLeave={() => setShowMenu(false)} px="0.5rem">
-      <Popover isOpen={showMenu} placement={isMobile ? "bottom" : "right"}>
+      <Popover isOpen={showMenu} placement={isMobile ? "bottom" : "right-end"}>
         <PopoverAnchor>
           <Display course={course} onToggleMenu={(val) => setShowMenu(val)} />
         </PopoverAnchor>

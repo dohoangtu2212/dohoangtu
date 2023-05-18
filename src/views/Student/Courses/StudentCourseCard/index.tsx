@@ -40,6 +40,7 @@ const StudentCourseCard: FC<StudentCourseCardProps> = ({ course }) => {
               borderRadius="50%"
               w="3rem"
               h="3rem"
+              p="0"
               icon={<MdPlayArrow size="1.75rem" />}
               onClick={() =>
                 router.push({

@@ -3,7 +3,7 @@ import type { FlexProps } from "@chakra-ui/react";
 import type { FC } from "react";
 import { LAYER } from "@/constants/layer";
 import { useRouter } from "next/router";
-import { PUBLIC_ROUTES } from "@/constants/route";
+import { COLORS } from "@/constants/theme";
 
 type TopbarContainerProps = FlexProps & {};
 
@@ -13,16 +13,17 @@ const TopbarContainer: FC<TopbarContainerProps> = ({
 }) => {
   const router = useRouter();
   const { pathname } = router;
-  const isPublicRoute = PUBLIC_ROUTES.includes(pathname);
 
   return (
     <Flex
       alignItems="center"
       justifyContent="space-between"
       as="header"
-      padding={{ base: "0.75rem 1rem", md: "1rem 2rem" }}
+      padding={{ base: "0.75rem 1rem", md: "0.5rem 1.5rem" }}
       position="sticky"
       top="0"
+      bgColor={COLORS.starryNightBlue}
+      color={COLORS.whiteSatin}
       zIndex={LAYER.TOPBAR}
       {...flexProps}
     >

@@ -13,6 +13,7 @@ const Video = dynamic(() => import("@/components/DynTube/Video"), {
 import { MdSearch } from "react-icons/md";
 import { ICourseDetails, ICourseLesson } from "@/types/course";
 import { FC } from "react";
+import { COLORS } from "@/constants/theme";
 
 type CourseMainProps = {
   course: ICourseDetails;
@@ -37,7 +38,7 @@ const CourseMain: FC<CourseMainProps> = ({ course, selectedLesson }) => {
       />
       <Flex
         alignItems="center"
-        bg="white"
+        bg={COLORS.white}
         py="0.25rem"
         flexWrap="wrap"
         px={{ base: "0", md: "1rem" }}

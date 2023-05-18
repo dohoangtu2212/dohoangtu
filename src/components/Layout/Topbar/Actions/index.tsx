@@ -13,10 +13,11 @@ import {
 import { MdHome } from "react-icons/md";
 import { UserRole } from "@/types/permission";
 import RoleTag from "@/components/Role/RoleTag";
+import { COLORS } from "@/constants/theme";
 
 type ActionsProps = {};
 const Actions: FC<ActionsProps> = () => {
-  const isMobile = useMobile();
+  const { isMobile } = useMobile();
   const router = useRouter();
   const currentUser = useCurrentUserSelector();
   const userRole = useUserRoleSelector();
@@ -61,23 +62,27 @@ const Actions: FC<ActionsProps> = () => {
 
   if (isUnauthenticatedAndNotOnAuthPage) {
     return (
-      <Flex gap="0.5rem" bg="white" p="0.125rem" borderRadius="md">
+      <Flex gap="0.5rem" p="0.125rem" borderRadius="md">
         <Button
-          onClick={handleSignIn}
-          fontSize="0.875rem"
-          h="fit-content"
-          py="0.5rem"
-        >
-          Đăng nhập
-        </Button>
-        <Button
-          variant="outline"
+          variant="ghost"
+          color={COLORS.whiteSatin}
           onClick={handleSignUp}
           fontSize="0.875rem"
           h="fit-content"
           py="0.5rem"
         >
-          Đăng ký
+          Đăng kí
+        </Button>
+        <Button
+          onClick={handleSignIn}
+          fontSize="0.875rem"
+          h="fit-content"
+          py="0.5rem"
+          variant="outline"
+          color={COLORS.whiteSatin}
+          borderColor={COLORS.whiteSatin}
+        >
+          Đăng nhập
         </Button>
       </Flex>
     );
@@ -96,6 +101,7 @@ const Actions: FC<ActionsProps> = () => {
         }
       >
         <Button
+          color={COLORS.whiteSatin}
           onClick={handleEnterApp}
           aria-label="enter-app"
           variant="ghost"
