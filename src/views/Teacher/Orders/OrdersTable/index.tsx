@@ -23,7 +23,7 @@ import {
 } from "@chakra-ui/react";
 import { useGetOrdersQuery } from "@/store/apis/db";
 import { IOrder } from "@/types/order";
-import { FC } from "react";
+import { FC, Fragment } from "react";
 import { displayPrice } from "@/utils/display";
 import dayjs from "dayjs";
 import { MdCheck } from "react-icons/md";
@@ -163,7 +163,7 @@ const TdCourses: FC<TdCoursesProps> = ({ order }) => {
     <Td>
       <Flex flexDir="column">
         {courses.map((c, idx) => (
-          <>
+          <Fragment key={c.courseId}>
             {!!idx && <Divider />}
             <Text
               py="0.5rem"
@@ -179,7 +179,7 @@ const TdCourses: FC<TdCoursesProps> = ({ order }) => {
                 {displayPrice(c.price)}
               </Text>
             </Text>
-          </>
+          </Fragment>
         ))}
       </Flex>
     </Td>

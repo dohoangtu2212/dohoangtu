@@ -71,7 +71,7 @@ const Lessons: FC<LessonsProps> = ({
 
   return (
     <Flex flexDir="column" gap="1rem" alignItems="flex-start">
-      {lessons.map((lesson, lessonIdx) => (
+      {lessons?.map((lesson, lessonIdx) => (
         <Lesson
           key={`lesson-${lesson.order}`}
           section={section}

@@ -67,7 +67,7 @@ const NavigatorsList: FC<NavigatorsListProps> = () => {
 
   return (
     <>
-      {navigators.map((nav) => {
+      {navigators?.map((nav) => {
         const isActive = pathname === nav.link;
         const isHomePage = nav.link === ROUTE.home;
 

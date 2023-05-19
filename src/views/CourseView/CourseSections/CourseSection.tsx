@@ -50,37 +50,39 @@ const CourseSection: FC<CourseSectionProps> = ({
         </h2>
         <AccordionPanel pb={4}>
           <Flex flexDir="column" gap="1rem">
-            {section.lessons.map((lesson) => (
-              <Flex
-                alignItems="flex-start"
-                gap="1rem"
-                key={lesson.order}
-                cursor="pointer"
-                onClick={() =>
-                  onLessonSelected({
-                    ...lesson,
-                    order: `${section.order}.${lesson.order}`,
-                  })
-                }
-              >
-                <Box py="0.125rem">
-                  <Checkbox isChecked={false} isDisabled />
-                </Box>
-                <Box>
-                  <Text fontSize="0.875rem" fontWeight="500">
-                    Bài {section.order}.{lesson.order}: {lesson.name}
-                  </Text>
-                  <Flex gap="0.5rem" alignItems="center" color="gray.500">
-                    {lesson.type === ICourseLessonType.video ? (
-                      <MdOndemandVideo />
-                    ) : (
-                      <MdAssignment />
-                    )}
-                    <Text fontSize="0.675rem">7 phút</Text>
-                  </Flex>
-                </Box>
-              </Flex>
-            ))}
+            {section.lessons?.map((lesson) => {
+              return (
+                <Flex
+                  alignItems="flex-start"
+                  gap="1rem"
+                  key={lesson.order}
+                  cursor="pointer"
+                  onClick={() =>
+                    onLessonSelected({
+                      ...lesson,
+                      order: `${section.order}.${lesson.order}`,
+                    })
+                  }
+                >
+                  <Box py="0.125rem">
+                    <Checkbox isChecked={false} isDisabled />
+                  </Box>
+                  <Box>
+                    <Text fontSize="0.875rem" fontWeight="500">
+                      Bài {section.order}.{lesson.order}: {lesson.name}
+                    </Text>
+                    <Flex gap="0.5rem" alignItems="center" color="gray.500">
+                      {lesson.type === ICourseLessonType.video ? (
+                        <MdOndemandVideo />
+                      ) : (
+                        <MdAssignment />
+                      )}
+                      <Text fontSize="0.675rem">7 phút</Text>
+                    </Flex>
+                  </Box>
+                </Flex>
+              );
+            })}
           </Flex>
         </AccordionPanel>
       </AccordionItem>

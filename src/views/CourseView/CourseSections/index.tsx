@@ -41,7 +41,7 @@ const CourseSections: FC<CourseSectionsProps> = ({
           />
         </Flex>
       )}
-      {sections.map((sec) => (
+      {sections?.map((sec) => (
         <CourseSection
           section={sec}
           key={sec.order}
