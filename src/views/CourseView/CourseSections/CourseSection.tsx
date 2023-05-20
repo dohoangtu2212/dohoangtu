@@ -14,8 +14,12 @@ import {
   Flex,
   Checkbox,
 } from "@chakra-ui/react";
+import { reduce } from "lodash";
 import { FC } from "react";
 import { MdOndemandVideo, MdAssignment } from "react-icons/md";
+import dayjs from "dayjs";
+import duration from "dayjs/plugin/duration";
+dayjs.extend(duration);
 
 type CourseSectionProps = {
   section: ICourseSection;
@@ -25,6 +29,17 @@ const CourseSection: FC<CourseSectionProps> = ({
   section,
   onLessonSelected = () => {},
 }) => {
+  const sectionLessons = section.lessons ?? [];
+  const sectionDuration =
+    reduce(
+      sectionLessons,
+      (totalDuration, lesson) => totalDuration + lesson.duration,
+      0
+    ) ?? 0;
+  const dayjsDuration = dayjs.duration(sectionDuration * 1000);
+  const sectionDurationInMinutes =
+    Math.round(dayjsDuration.asMinutes() * 100) / 100;
+
   return (
     <Accordion
       allowMultiple
@@ -40,8 +55,9 @@ const CourseSection: FC<CourseSectionProps> = ({
                 <Text fontWeight="600" textAlign="left">
                   CHƯƠNG {section.order}: {section.name}
                 </Text>
+                {/* TODO: Add completion status */}
                 <Text textAlign="left" fontSize="0.675rem" color="gray.500">
-                  4/4 | 12 phút
+                  {0}/4 | {sectionDurationInMinutes ?? 0} phút
                 </Text>
               </Box>
               <AccordionIcon />
@@ -51,6 +67,12 @@ const CourseSection: FC<CourseSectionProps> = ({
         <AccordionPanel pb={4}>
           <Flex flexDir="column" gap="1rem">
             {section.lessons?.map((lesson) => {
+              const dayjsLessonDuration = dayjs.duration(
+                (lesson.duration ?? 0) * 1000
+              );
+              const lessonDurationInMinutes =
+                Math.round(dayjsLessonDuration.asMinutes() * 100) / 100;
+
               return (
                 <Flex
                   alignItems="flex-start"
@@ -77,7 +99,9 @@ const CourseSection: FC<CourseSectionProps> = ({
                       ) : (
                         <MdAssignment />
                       )}
-                      <Text fontSize="0.675rem">7 phút</Text>
+                      <Text fontSize="0.675rem">
+                        {lessonDurationInMinutes} phút
+                      </Text>
                     </Flex>
                   </Box>
                 </Flex>
