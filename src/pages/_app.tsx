@@ -6,7 +6,7 @@ import { Provider as ReduxProvider } from "react-redux";
 import { wrapper } from "@/store";
 import Layout from "@/components/Layout";
 import { theme } from "@/constants/theme";
-import "@fontsource/lora"
+import "@fontsource/quicksand";
 
 export default function App({ Component, ...rest }: AppProps) {
   const { store, props } = wrapper.useWrappedStore(rest);

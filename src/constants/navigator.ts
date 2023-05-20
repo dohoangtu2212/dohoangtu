@@ -5,7 +5,7 @@ import { MdHome } from "react-icons/md";
 export const NAVIGATOR: { [key: string]: INavigator } = {
   home: {
     id: "home",
-    name: "Trang chủ",
+    name: "dohoangtu",
     link: ROUTE.home,
     Icon: MdHome,
   },

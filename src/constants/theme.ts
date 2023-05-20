@@ -311,7 +311,7 @@ const PopoverStyles = {
 export const theme = extendTheme({
   breakpoints,
   fonts: {
-    body: "Lora, ˝serif",
+    body: "Quicksand, sans-serif",
   },
   styles: {
     global: {

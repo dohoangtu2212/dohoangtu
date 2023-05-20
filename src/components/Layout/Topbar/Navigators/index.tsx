@@ -31,7 +31,6 @@ type NavigatorsProps = {};
 const Navigators: FC<NavigatorsProps> = () => {
   const { isMobile } = useMobile();
   const router = useRouter();
-  const { pathname } = router;
 
   if (isMobile)
     return (
@@ -77,10 +76,9 @@ const NavigatorsList: FC<NavigatorsListProps> = () => {
             onClick={() => router.push(nav.link)}
             color={isActive ? COLORS.whiteSatin : COLORS.windmillWings}
             letterSpacing="1px"
-            fontWeight={isActive ? "600" : "400"}
+            fontWeight={isActive ? "700" : "400"}
             gap="0.5rem"
-            fontSize={isHomePage ? "1.125rem" : "0.875rem"}
-            textTransform={isHomePage ? "uppercase" : "none"}
+            fontSize={isHomePage ? "1.25rem" : "0.875rem"}
           >
             {!!nav.Icon && <nav.Icon size="1.5rem" />}
             <Text>{nav.name}</Text>
