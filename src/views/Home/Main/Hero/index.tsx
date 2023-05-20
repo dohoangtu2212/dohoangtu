@@ -41,17 +41,25 @@ const Hero = () => {
 
   return (
     <Flex
-      gap="2rem"
-      flexDir={{ base: "column-reverse", md: "row" }}
-      py="4rem"
-      h={`calc(100vh - 6rem)`}
+      gap={{ base: "1rem", md: "2rem" }}
+      flexDir={{ base: "column", md: "row" }}
+      py={{ base: "1rem", md: "4rem" }}
+      h={{ base: "auto", md: `calc(100vh - 6rem)` }}
     >
       <Flex flex="1" flexDir="column" alignItems="center">
-        <Box w="30rem">
+        <Box w={{ base: "100%", md: "30rem" }}>
           <Box fontFamily="Roboto Slab">
-            <Text fontSize="2.75rem">Chinh phục môn Toán</Text>
-            <Flex gap="1rem" alignItems="flex-start">
-              <Text fontSize="1.75rem">kì thi THPT QG</Text>
+            <Text fontSize={{ base: "2rem", md: "2.75rem" }}>
+              Chinh phục môn Toán
+            </Text>
+            <Flex
+              gap="1rem"
+              alignItems="flex-start"
+              justifyContent={{ base: "center", md: "flex-start" }}
+            >
+              <Text fontSize={{ base: "1.25rem", md: "1.75rem" }}>
+                kì thi THPT QG
+              </Text>
               <Text
                 fontSize="4rem"
                 lineHeight="4rem"
@@ -66,13 +74,17 @@ const Hero = () => {
             color={COLORS.midnightNavy}
             mx="auto"
             fontWeight="600"
-            my="2rem"
+            my={{ base: "1rem", md: "2rem" }}
           >
             Toàn bộ bài giảng được xây dựng dưới dạng hình ảnh chuyển động cực
             kì trực quan, bắt mắt và dễ hiểu
           </Text>
-          <Box py="3rem">
-            <Flex gap="1rem" w="fit-content">
+          <Box py={{ base: "0", md: "3rem" }}>
+            <Flex
+              gap="1rem"
+              w={{ base: "100%", md: "fit-content" }}
+              justifyContent={{ base: "center", md: "flex-start" }}
+            >
               <Button
                 px="2.5rem"
                 bgColor="red.500"
@@ -96,7 +108,7 @@ const Hero = () => {
             <Flex alignItems="flex-end">
               <Text
                 fontWeight="700"
-                w="10rem"
+                w={{ base: "12rem", md: "10rem" }}
                 fontFamily="Sedgwick Ave"
                 textAlign="right"
                 color={COLORS.midnightNavy}
@@ -105,7 +117,12 @@ const Hero = () => {
               >
                 Học thử ngay
               </Text>
-              <Box position="relative" w="10rem" h="8rem" ml="-1rem">
+              <Box
+                position="relative"
+                w={{ base: "6rem", md: "10rem" }}
+                h={{ base: "6rem", md: "8rem" }}
+                ml="-1rem"
+              >
                 <Image
                   src="/images/sticker-arrow.png"
                   alt="arrow"
@@ -120,16 +137,28 @@ const Hero = () => {
         </Box>
       </Flex>
       <Flex flex="1" flexDir="column">
-        <Flex w="40rem" flexDir="column" alignItems="center">
+        <Flex
+          w={{ base: "100%", md: "40rem" }}
+          flexDir="column"
+          alignItems="center"
+        >
           <Box borderRadius="lg" overflow="hidden">
             <video loop poster="/images/thumbnail.png" controls>
               <source src={DEMO_VIDEO_URL} type="video/mp4" />
             </video>
           </Box>
-          <Flex alignItems="center" gap="2rem" py="3rem">
+          <Flex
+            alignItems="center"
+            gap={{ base: "1rem", md: "2rem" }}
+            py={{ base: "0", md: "3rem" }}
+          >
             {STICKERS.map((sticker) => (
               <Flex flexDir="column" alignItems="center" key={sticker.text}>
-                <Box position="relative" w="10rem" h="8rem">
+                <Box
+                  position="relative"
+                  w={{ base: "6rem", md: "10rem" }}
+                  h={{ base: "6rem", md: "8rem" }}
+                >
                   <Image
                     src={sticker.imageUrl}
                     alt={sticker.text}
@@ -139,7 +168,13 @@ const Hero = () => {
                     }}
                   />
                 </Box>
-                <Text fontWeight="700">{sticker.text}</Text>
+                <Text
+                  fontWeight="700"
+                  fontSize={{ base: "0.875rem", md: "1rem" }}
+                  textAlign="center"
+                >
+                  {sticker.text}
+                </Text>
               </Flex>
             ))}
           </Flex>
