@@ -1,5 +1,4 @@
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
-import useMobile from "@/hooks/useMobile";
 import "@fontsource/roboto-slab";
 import "@fontsource/sedgwick-ave";
 import { COLORS } from "@/constants/theme";
@@ -27,7 +26,6 @@ const STICKERS = [
 ];
 
 const Hero = () => {
-  const { isMobile } = useMobile();
   const router = useRouter();
 
   const handleSignUp = () => {
@@ -43,8 +41,7 @@ const Hero = () => {
     <Flex
       gap={{ base: "1rem", md: "2rem" }}
       flexDir={{ base: "column", md: "row" }}
-      py={{ base: "1rem", md: "4rem" }}
-      h={{ base: "auto", md: `calc(100vh - 6rem)` }}
+      py={{ base: "1rem", md: "2rem" }}
     >
       <Flex flex="1" flexDir="column" alignItems="center">
         <Box w={{ base: "100%", md: "30rem" }}>
