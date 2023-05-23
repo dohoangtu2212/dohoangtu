@@ -3,8 +3,8 @@ export const ROUTE = {
   home: "/",
   studentHome: "/student",
   studentCourses: "/student/courses",
-  studentCourseView: "/student/courses/[courseDetailsId]/view",
-  teacherCourseView: "/teacher/courses/[courseDetailsId]/view",
+  studentCourseView: "/student/courses/[courseId]/view",
+  teacherCourseView: "/teacher/courses/[courseId]/view",
   teacherHome: "/teacher",
   teacherCourses: "/teacher/courses",
   teacherOrders: "/teacher/orders",
@@ -16,6 +16,7 @@ export const ROUTE = {
   contact: "/contact",
   features: "/features",
   cart: "/cart",
+  demoCourseView: "/demo/courses/[courseId]/view",
 };
 
 export const PUBLIC_ROUTES = [
@@ -28,4 +29,5 @@ export const PUBLIC_ROUTES = [
   ROUTE.contact,
   ROUTE.features,
   ROUTE.cart,
+  ROUTE.demoCourseView,
 ];

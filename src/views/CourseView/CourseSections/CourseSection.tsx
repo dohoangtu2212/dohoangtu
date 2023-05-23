@@ -2,6 +2,7 @@ import {
   ICourseSection,
   ICourseLesson,
   ICourseLessonType,
+  IDisabledLesson,
 } from "@/types/course";
 import {
   Accordion,
@@ -23,11 +24,15 @@ dayjs.extend(duration);
 
 type CourseSectionProps = {
   section: ICourseSection;
+  disabledLessons: IDisabledLesson[];
   onLessonSelected: (lesson: ICourseLesson) => void;
+  onDisabledLessonSelected: () => void;
 };
 const CourseSection: FC<CourseSectionProps> = ({
   section,
-  onLessonSelected = () => {},
+  disabledLessons = [],
+  onLessonSelected,
+  onDisabledLessonSelected,
 }) => {
   const sectionLessons = section.lessons ?? [];
   const sectionDuration =
@@ -67,6 +72,12 @@ const CourseSection: FC<CourseSectionProps> = ({
         <AccordionPanel pb={4}>
           <Flex flexDir="column" gap="1rem">
             {section.lessons?.map((lesson) => {
+              const isDisabled = !!disabledLessons.find(
+                (dL) =>
+                  dL.lessonOrder === lesson.order &&
+                  dL.sectionOrder === section.order
+              );
+
               const dayjsLessonDuration = dayjs.duration(
                 (lesson.duration ?? 0) * 1000
               );
@@ -78,13 +89,14 @@ const CourseSection: FC<CourseSectionProps> = ({
                   alignItems="flex-start"
                   gap="1rem"
                   key={lesson.order}
-                  cursor="pointer"
-                  onClick={() =>
-                    onLessonSelected({
+                  cursor={isDisabled ? "not-allowed" : "pointer"}
+                  onClick={() => {
+                    if (isDisabled) return onDisabledLessonSelected?.();
+                    onLessonSelected?.({
                       ...lesson,
                       order: `${section.order}.${lesson.order}`,
-                    })
-                  }
+                    });
+                  }}
                 >
                   <Box py="0.125rem">
                     <Checkbox isChecked={false} isDisabled />

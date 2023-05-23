@@ -21,7 +21,7 @@ import { useDispatch } from "react-redux";
 import { courseActions } from "@/store/slices/course";
 import { useRouter } from "next/router";
 import { ROUTE } from "@/constants/route";
-import { DEFAULT_EXERCISE_THUMBNAIL } from "@/constants/exercise";
+import { DEFAULT_COURSE_THUMBNAIL } from "@/constants/course";
 import { FC } from "react";
 
 const CoursesTable = () => {
@@ -90,7 +90,7 @@ const TdThumbnail: FC<TdThumbnailProps> = ({ course }) => {
         imageUrl={
           !!course.thumbnailUrl
             ? course.thumbnailUrl
-            : DEFAULT_EXERCISE_THUMBNAIL
+            : DEFAULT_COURSE_THUMBNAIL
         }
         w="10rem"
         h="6rem"
@@ -155,7 +155,7 @@ const TdActions: FC<TdActionsProps> = ({ course }) => {
     router.push({
       pathname: ROUTE.teacherCourseView,
       query: {
-        courseDetailsId: course.courseDetailsId,
+        courseId: course.id,
       },
     });
 

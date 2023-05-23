@@ -271,7 +271,7 @@ const ModalStyles = {
     dialogContainer: {},
     closeButton: {
       color: COLORS.twilightBlue,
-      fontSize: "1rem",
+      fontSize: "0.875rem",
     },
     overlay: {},
   },

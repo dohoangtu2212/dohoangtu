@@ -105,7 +105,7 @@ const Actions: FC<ActionsProps> = () => {
           onClick={handleEnterApp}
           aria-label="enter-app"
           variant="ghost"
-          px="0"
+          px="0.5rem"
           leftIcon={<BsBoxArrowInRight size="1.5rem" />}
         >
           {!!userRole && <RoleTag role={userRole} fontSize="1rem" />}

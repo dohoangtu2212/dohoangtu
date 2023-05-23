@@ -6,7 +6,7 @@ import { BsPerson, BsStar } from "react-icons/bs";
 import { displayPrice } from "@/utils/display";
 import { useCartCoursesSelector } from "@/store/slices/cart";
 import { IoMdCart } from "react-icons/io";
-import { DEFAULT_EXERCISE_THUMBNAIL } from "@/constants/exercise";
+import { DEFAULT_COURSE_THUMBNAIL } from "@/constants/course";
 import useMobile from "@/hooks/useMobile";
 import { COLORS } from "@/constants/theme";
 
@@ -58,7 +58,7 @@ const Display = forwardRef<HTMLDivElement, DisplayProps>(
         <Flex flexDir="column" gap="0.5rem">
           <DisplayImage
             imageUrl={
-              !!thumbnailUrl ? thumbnailUrl : DEFAULT_EXERCISE_THUMBNAIL
+              !!thumbnailUrl ? thumbnailUrl : DEFAULT_COURSE_THUMBNAIL
             }
             w="100%"
             h="10rem"

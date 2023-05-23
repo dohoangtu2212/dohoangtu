@@ -2,7 +2,7 @@ import { Flex, Text, Card, Progress, Box, IconButton } from "@chakra-ui/react";
 import DisplayImage from "@/components/UI/DisplayImage";
 import { IStudentCourse } from "@/types/course";
 import { FC, useState } from "react";
-import { DEFAULT_EXERCISE_THUMBNAIL } from "@/constants/exercise";
+import { DEFAULT_COURSE_THUMBNAIL } from "@/constants/course";
 import { BsPerson } from "react-icons/bs";
 import { MdPlayArrow } from "react-icons/md";
 import { useRouter } from "next/router";
@@ -12,7 +12,7 @@ type StudentCourseCardProps = {
   course: IStudentCourse;
 };
 const StudentCourseCard: FC<StudentCourseCardProps> = ({ course }) => {
-  const { thumbnailUrl, name, teacherName, progress, courseDetailsId } = course;
+  const { thumbnailUrl, name, teacherName, progress, courseDetailsId, courseId } = course;
   const router = useRouter();
   const [showMenu, setShowMenu] = useState(false);
 
@@ -46,7 +46,7 @@ const StudentCourseCard: FC<StudentCourseCardProps> = ({ course }) => {
                 router.push({
                   pathname: ROUTE.studentCourseView,
                   query: {
-                    courseDetailsId,
+                    courseId,
                   },
                 })
               }
@@ -54,7 +54,7 @@ const StudentCourseCard: FC<StudentCourseCardProps> = ({ course }) => {
           </Flex>
           <DisplayImage
             imageUrl={
-              !!thumbnailUrl ? thumbnailUrl : DEFAULT_EXERCISE_THUMBNAIL
+              !!thumbnailUrl ? thumbnailUrl : DEFAULT_COURSE_THUMBNAIL
             }
             w="100%"
             h="10rem"

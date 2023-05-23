@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { ROUTE } from "@/constants/route";
 import { AuthMode } from "@/constants/auth";
+import { DEMO_COURSE_ID } from "@/constants/course";
 
 const DEMO_VIDEO_URL =
   "https://firebasestorage.googleapis.com/v0/b/online-classroom-de70d.appspot.com/o/assets%2FDemo1.mp4?alt=media&token=83867c46-3507-4416-8391-1c1240fdaa1d";
@@ -33,6 +34,15 @@ const Hero = () => {
       pathname: ROUTE.auth,
       query: {
         mode: AuthMode.signUp,
+      },
+    });
+  };
+
+  const handleViewDemoCourse = () => {
+    router.push({
+      pathname: ROUTE.demoCourseView,
+      query: {
+        courseId: DEMO_COURSE_ID,
       },
     });
   };
@@ -98,6 +108,7 @@ const Hero = () => {
                 py="0.5rem"
                 h="fit-content"
                 fontSize="1.25rem"
+                onClick={handleViewDemoCourse}
               >
                 Học thử
               </Button>

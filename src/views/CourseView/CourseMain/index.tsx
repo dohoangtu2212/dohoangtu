@@ -11,16 +11,27 @@ const Video = dynamic(() => import("@/components/DynTube/Video"), {
   ssr: false,
 });
 import { MdSearch } from "react-icons/md";
-import { ICourseDetails, ICourseLesson } from "@/types/course";
+import { ICourseDetails, ICourseLesson, IDisabledLesson } from "@/types/course";
 import { FC } from "react";
 import { COLORS } from "@/constants/theme";
 
 type CourseMainProps = {
   course: ICourseDetails;
+  disabledLessons: IDisabledLesson[];
   selectedLesson: ICourseLesson | null;
 };
-const CourseMain: FC<CourseMainProps> = ({ course, selectedLesson }) => {
-  const videoKey = selectedLesson?.dyntubeKey ?? "";
+const CourseMain: FC<CourseMainProps> = ({
+  course,
+  selectedLesson,
+  disabledLessons = [],
+}) => {
+  const isDisabled = disabledLessons.find(
+    (dL) => `${dL.sectionOrder}.${dL.lessonOrder}` === selectedLesson?.order
+  );
+  const videoKey =
+    !!selectedLesson?.dyntubeKey && !isDisabled
+      ? selectedLesson.dyntubeKey
+      : "";
 
   if (!course || !videoKey) return null;
 

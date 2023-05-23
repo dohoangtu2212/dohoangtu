@@ -85,3 +85,8 @@ export interface ICourseFormValues {
   previousPrice?: number;
   sections: ICourseSection[];
 }
+
+export type IDisabledLesson = {
+  sectionOrder: number;
+  lessonOrder: number | string;
+};

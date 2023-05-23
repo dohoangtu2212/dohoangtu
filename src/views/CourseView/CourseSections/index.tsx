@@ -2,16 +2,21 @@ import { Flex, Text, IconButton } from "@chakra-ui/react";
 import { MdClose } from "react-icons/md";
 import CourseSection from "@/views/CourseView/CourseSections/CourseSection";
 import { ICourseDetails, ICourseLesson } from "@/types/course";
-import type { FC } from "react";
+import { FC } from "react";
 import useMobile from "@/hooks/useMobile";
+import type { IDisabledLesson } from "@/types/course";
 
 type CourseSectionsProps = {
   course: ICourseDetails;
+  disabledLessons: IDisabledLesson[];
   onLessonSelected: (lesson: ICourseLesson) => void;
+  onDisabledLessonSelected: () => void;
 };
 const CourseSections: FC<CourseSectionsProps> = ({
   course,
+  disabledLessons = [],
   onLessonSelected = () => {},
+  onDisabledLessonSelected,
 }) => {
   const { sections } = course;
   const { isMobile } = useMobile();
@@ -43,9 +48,11 @@ const CourseSections: FC<CourseSectionsProps> = ({
       )}
       {sections?.map((sec) => (
         <CourseSection
+          disabledLessons={disabledLessons}
           section={sec}
           key={sec.order}
           onLessonSelected={onLessonSelected}
+          onDisabledLessonSelected={onDisabledLessonSelected}
         />
       ))}
     </Flex>
