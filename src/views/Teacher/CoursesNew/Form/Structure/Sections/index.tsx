@@ -44,7 +44,9 @@ const Sections: FC<SectionsProps> = ({
         const handleDeleteSection = (section: ICourseSection) => () => {
           handleSetFieldValue(
             `sections`,
-            values.sections.filter((s) => s.order !== section.order)
+            values.sections
+              .filter((s) => s.order !== section.order)
+              .map((section, idx) => ({ ...section, order: idx }))
           );
         };
 
@@ -74,16 +76,14 @@ const Sections: FC<SectionsProps> = ({
                     onChange={handleSectionTitleChange}
                   />
                 </Box>
-                {section.order.toString() === "0" && (
-                  <Tooltip label={`Xoá CHƯƠNG ${section.order.toString()}`}>
-                    <IconButton
-                      aria-label="delete"
-                      icon={<MdOutlineDelete size="1.5rem" />}
-                      variant="ghost"
-                      onClick={handleDeleteSection(section)}
-                    />
-                  </Tooltip>
-                )}
+                <Tooltip label={`Xoá CHƯƠNG ${section.order.toString()}`}>
+                  <IconButton
+                    aria-label="delete"
+                    icon={<MdOutlineDelete size="1.5rem" />}
+                    variant="ghost"
+                    onClick={handleDeleteSection(section)}
+                  />
+                </Tooltip>
                 <AccordionButton pl="2rem" w="fit-content" p="1rem">
                   <AccordionIcon />
                 </AccordionButton>
