@@ -13,6 +13,7 @@ import { AuthFormValues } from "@/types/auth";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  signOut,
   AuthErrorCodes,
   AuthError,
 } from "firebase/auth";
@@ -85,6 +86,7 @@ const SignUp: FC<SignUpProps> = ({ onDone }) => {
         duration: 3000,
         isClosable: true,
       });
+      await auth.signOut();
       await signInWithEmailAndPassword(auth, email, password);
       onDone?.();
     } catch (err) {

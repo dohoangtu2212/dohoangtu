@@ -3,26 +3,14 @@ import {
   PUBLIC_NAVIGATORS,
   STUDENT_NAVIGATORS,
   TEACHER_NAVIGATORS,
-  NAVIGATORS,
 } from "@/constants/navigator";
 import { useRouter } from "next/router";
 import NavigatorsContainer from "@/components/Layout/Navigation/NavigatorsContainer";
 import type { FC } from "react";
 import { PUBLIC_ROUTES, ROUTE } from "@/constants/route";
 import useMobile from "@/hooks/useMobile";
-import {
-  IconButton,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverArrow,
-  PopoverBody,
-  Flex,
-  Text,
-  Box,
-} from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
 import { useMemo } from "react";
-import { AiOutlineMenu } from "react-icons/ai";
 import { useUserRoleSelector } from "@/store/slices/user";
 import { UserRole } from "@/types/permission";
 import { COLORS } from "@/constants/theme";
@@ -30,7 +18,6 @@ import { COLORS } from "@/constants/theme";
 type NavigatorsProps = {};
 const Navigators: FC<NavigatorsProps> = () => {
   const { isMobile } = useMobile();
-  const router = useRouter();
 
   if (isMobile)
     return (
