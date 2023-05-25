@@ -10,10 +10,8 @@ export const getAdmin: () => admin.app.App = () => {
           "firebase-adminsdk-m4onf@online-classroom-de70d.iam.gserviceaccount.com",
       }),
     });
-    console.log({ app, key: process.env.FIREBASE_ADMIN_PRIVATE_KEY });
     return app;
   } catch (err) {
-    console.log({ err });
     const currentAdmin = admin.app();
     return currentAdmin;
   }
