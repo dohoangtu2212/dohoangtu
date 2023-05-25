@@ -1,6 +1,9 @@
 import admin from "firebase-admin";
 
 export const getAdmin: () => admin.app.App = () => {
+  const currentAdmin = admin.app();
+  if (!!currentAdmin) return currentAdmin;
+
   try {
     const app = admin.initializeApp({
       credential: admin.credential.cert({

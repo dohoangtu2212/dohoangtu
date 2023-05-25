@@ -13,14 +13,11 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  console.log({ req });
   if (req.method === "PATCH") {
     const admin = getAdmin();
 
     const body = req.body;
     const { phone, email, role } = body as IPatchBody;
-    console.log({ phone, email, role });
-
     if ((!phone && !email) || !role)
       return res.status(400).json({ msg: "Bad request." });
     if (!!phone) {
