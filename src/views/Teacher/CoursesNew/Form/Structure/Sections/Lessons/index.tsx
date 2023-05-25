@@ -51,7 +51,7 @@ const Lessons: FC<LessonsProps> = ({
 }) => {
   const { lessons } = section;
   const handleAddNewLesson = () => {
-    const { lessons } = section;
+    const { lessons = [] } = section;
     const order = !lessons.length
       ? 1
       : (lessons[lessons.length - 1].order as number) + 1;
