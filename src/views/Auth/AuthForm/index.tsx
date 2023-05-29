@@ -37,8 +37,8 @@ const AuthForm: FC<AuthFormProps> = ({ mode, onLoggedIn }) => {
     onLoggedIn?.();
     const userRole = await getUserRole();
     if (mode === DisplayMode.modal) return;
-    if (userRole === UserRole.student) router.push(ROUTE.studentHome);
-    if (userRole === UserRole.teacher) router.push(ROUTE.teacherHome);
+    if (userRole === UserRole.student) router.push(ROUTE.studentCourses);
+    if (userRole === UserRole.teacher) router.push(ROUTE.teacherCourses);
   }, [onLoggedIn, mode, router]);
 
   return (

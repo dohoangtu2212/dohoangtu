@@ -15,7 +15,7 @@ const Topbar: FC<TopbarProps> = () => {
   return (
     <TopbarContainer>
       <Navigators />
-      <Flex alignItems="center" gap="1rem">
+      <Flex alignItems="center" gap="0.5rem">
         {showCart && <Cart />}
         <Actions />
       </Flex>

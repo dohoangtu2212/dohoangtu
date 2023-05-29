@@ -20,7 +20,6 @@ const Actions: FC<ActionsProps> = () => {
   const { isMobile } = useMobile();
   const router = useRouter();
   const currentUser = useCurrentUserSelector();
-  const userRole = useUserRoleSelector();
   const authenticated = !!currentUser;
   const { pathname } = router;
 
@@ -42,21 +41,10 @@ const Actions: FC<ActionsProps> = () => {
     });
   };
 
-  const handleEnterApp = useCallback(() => {
-    if (userRole === UserRole.student) {
-      return router.push(ROUTE.studentHome);
-    }
-    if (userRole === UserRole.teacher) {
-      return router.push(ROUTE.teacherHome);
-    }
-  }, [userRole, router]);
-
   const handleGoToHome = () => {
     router.push(ROUTE.home);
   };
 
-  const isAuthenticatedAndOnPublicPages =
-    authenticated && PUBLIC_ROUTES.includes(pathname);
   const isUnauthenticatedAndNotOnAuthPage =
     !authenticated && pathname !== ROUTE.auth;
 
@@ -85,32 +73,6 @@ const Actions: FC<ActionsProps> = () => {
           Đăng nhập
         </Button>
       </Flex>
-    );
-  }
-
-  if (isAuthenticatedAndOnPublicPages) {
-    return (
-      <Tooltip
-        hasArrow
-        borderRadius="md"
-        placement="left"
-        label={
-          <Box>
-            <Text>Vào ứng dụng</Text>
-          </Box>
-        }
-      >
-        <Button
-          color={COLORS.whiteSatin}
-          onClick={handleEnterApp}
-          aria-label="enter-app"
-          variant="ghost"
-          px="0.5rem"
-          leftIcon={<BsBoxArrowInRight size="1.5rem" />}
-        >
-          {!!userRole && <RoleTag role={userRole} fontSize="1rem" />}
-        </Button>
-      </Tooltip>
     );
   }
 

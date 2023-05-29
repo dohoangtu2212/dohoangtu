@@ -7,7 +7,7 @@ import {
 import { useRouter } from "next/router";
 import NavigatorsContainer from "@/components/Layout/Navigation/NavigatorsContainer";
 import type { FC } from "react";
-import { PUBLIC_ROUTES, ROUTE } from "@/constants/route";
+import { ROUTE } from "@/constants/route";
 import useMobile from "@/hooks/useMobile";
 import { Flex, Text } from "@chakra-ui/react";
 import { useMemo } from "react";
@@ -40,16 +40,14 @@ const NavigatorsList: FC<NavigatorsListProps> = () => {
 
   const { pathname } = router;
 
-  const showPublicNavigators = PUBLIC_ROUTES.includes(pathname);
   const isRoleStudent = userRole === UserRole.student;
   const isRoleTeacher = userRole === UserRole.teacher;
 
   const navigators = useMemo(() => {
-    if (showPublicNavigators) return PUBLIC_NAVIGATORS;
-    if (isRoleStudent) return STUDENT_NAVIGATORS;
-    if (isRoleTeacher) return TEACHER_NAVIGATORS;
-    return [];
-  }, [isRoleStudent, showPublicNavigators, isRoleTeacher]);
+    if (isRoleStudent) return [...PUBLIC_NAVIGATORS, ...STUDENT_NAVIGATORS];
+    if (isRoleTeacher) return [...PUBLIC_NAVIGATORS, ...TEACHER_NAVIGATORS];
+    return PUBLIC_NAVIGATORS;
+  }, [isRoleStudent, isRoleTeacher]);
 
   return (
     <>

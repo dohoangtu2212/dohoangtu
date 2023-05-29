@@ -33,6 +33,7 @@ import {
   useConfirmOrderMutation,
 } from "@/store/apis/db";
 import Image from "next/image";
+import { COLORS } from "@/constants/theme";
 
 const OrdersTable = () => {
   const {
@@ -45,7 +46,7 @@ const OrdersTable = () => {
 
   return (
     <>
-      {isLoading && <Spinner color="orange.400" />}
+      {isLoading && <Spinner color={COLORS.twilightBlue} />}
       <TableContainer>
         <Table variant="simple">
           <Thead>

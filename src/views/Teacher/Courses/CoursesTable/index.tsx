@@ -23,6 +23,7 @@ import { useRouter } from "next/router";
 import { ROUTE } from "@/constants/route";
 import { DEFAULT_COURSE_THUMBNAIL } from "@/constants/course";
 import { FC } from "react";
+import { COLORS } from "@/constants/theme";
 
 const CoursesTable = () => {
   const {
@@ -35,7 +36,7 @@ const CoursesTable = () => {
 
   return (
     <>
-      {isLoading && <Spinner color="orange.400" />}
+      {isLoading && <Spinner color={COLORS.twilightBlue} />}
       <TableContainer>
         <Table variant="simple">
           <Thead>
@@ -88,9 +89,7 @@ const TdThumbnail: FC<TdThumbnailProps> = ({ course }) => {
       <DisplayImage
         alt={course.name}
         imageUrl={
-          !!course.thumbnailUrl
-            ? course.thumbnailUrl
-            : DEFAULT_COURSE_THUMBNAIL
+          !!course.thumbnailUrl ? course.thumbnailUrl : DEFAULT_COURSE_THUMBNAIL
         }
         w="10rem"
         h="6rem"

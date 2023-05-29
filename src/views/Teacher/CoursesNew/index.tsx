@@ -25,6 +25,7 @@ import { useEditingCourseSelector } from "@/store/slices/course";
 import type { FormikConfig } from "formik";
 import { useUploadCourseThumbnailMutation } from "@/store/apis/storage";
 import { ICourseLessonType } from "@/types/course";
+import { COLORS } from "@/constants/theme";
 
 const INITIAL_VALUES: ICourseFormValues = {
   name: "",
@@ -277,7 +278,7 @@ const TeacherCoursesNew = () => {
           >
             Trở về
           </Button>
-          {isLoading && <Spinner color="orange.300" />}
+          {isLoading && <Spinner color={COLORS.twilightBlue} />}
         </Flex>
         <Button
           onClick={submitForm}

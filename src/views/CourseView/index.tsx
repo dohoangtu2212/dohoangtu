@@ -25,6 +25,7 @@ import AddToCartModal from "@/views/CourseView/AddToCartModal";
 import { useDispatch } from "react-redux";
 import { cartActions } from "@/store/slices/cart";
 import { ROUTE } from "@/constants/route";
+import { COLORS } from "@/constants/theme";
 
 const CourseView = () => {
   const dispatch = useDispatch();
@@ -135,7 +136,7 @@ const CourseView = () => {
   if (isLoading)
     return (
       <Box p="1rem">
-        <Spinner color="orange.300" />
+        <Spinner color={COLORS.twilightBlue} />
       </Box>
     );
 

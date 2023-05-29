@@ -6,6 +6,7 @@ import { AiOutlineShop } from "react-icons/ai";
 import { useRouter } from "next/router";
 import { ROUTE } from "@/constants/route";
 import StudentCourseCard from "@/views/Student/Courses/StudentCourseCard";
+import { COLORS } from "@/constants/theme";
 
 const StudentCourses = () => {
   const { isMobile } = useMobile();
@@ -33,7 +34,7 @@ const StudentCourses = () => {
           <Text fontWeight="600" textTransform="uppercase">
             Các khoá học đã đăng ký
           </Text>
-          {isLoading && <Spinner color="orange.400" />}
+          {isLoading && <Spinner color={COLORS.twilightBlue} />}
         </Flex>
         <Button
           leftIcon={<AiOutlineShop size="1.25rem" />}

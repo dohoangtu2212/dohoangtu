@@ -37,7 +37,7 @@ export const NAVIGATOR: { [key: string]: INavigator } = {
   },
   studentCourses: {
     id: "student-courses",
-    name: "Khoá học",
+    name: "Khoá học của tôi",
     link: ROUTE.studentCourses,
   },
   // TEACHER
@@ -48,7 +48,7 @@ export const NAVIGATOR: { [key: string]: INavigator } = {
   },
   teacherCourses: {
     id: "teacher-courses",
-    name: "Khoá học",
+    name: "Quản lý khoá học",
     link: ROUTE.teacherCourses,
   },
   teacherOrders: {
@@ -62,7 +62,7 @@ export const NAVIGATORS = Object.values(NAVIGATOR);
 export const PUBLIC_NAVIGATORS: INavigator[] = [
   NAVIGATOR.home,
   NAVIGATOR.store,
-  NAVIGATOR.features,
+  // NAVIGATOR.features,
   NAVIGATOR.contact,
   // {
   //   id: "books",
@@ -79,14 +79,11 @@ export const PUBLIC_NAVIGATORS: INavigator[] = [
 ];
 
 export const STUDENT_NAVIGATORS: INavigator[] = [
-  NAVIGATOR.home,
-  NAVIGATOR.store,
-  NAVIGATOR.student,
+  // NAVIGATOR.student,
   NAVIGATOR.studentCourses,
 ];
 
 export const TEACHER_NAVIGATORS: INavigator[] = [
-  NAVIGATOR.home,
   NAVIGATOR.teacherCourses,
   NAVIGATOR.teacherOrders,
 ];
