@@ -11,7 +11,7 @@ const StorePage = () => {
   return (
     <>
       <Head>
-        <title>Cửa hàng</title>
+        <title>Khoá học</title>
       </Head>
       <PageContainer>
         {userRole === UserRole.teacher && (

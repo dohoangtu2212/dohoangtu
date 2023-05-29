@@ -11,7 +11,7 @@ export const NAVIGATOR: { [key: string]: INavigator } = {
   },
   store: {
     id: "store",
-    name: "Cửa hàng",
+    name: "Khoá học",
     link: ROUTE.store,
   },
   features: {

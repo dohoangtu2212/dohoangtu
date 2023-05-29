@@ -49,26 +49,30 @@ const Hero = () => {
 
   return (
     <Flex
-      gap={{ base: "1rem", md: "2rem" }}
+      gap={{ base: "1rem", md: "1rem" }}
       flexDir={{ base: "column", md: "row" }}
       py={{ base: "1rem", md: "2rem" }}
     >
       <Flex flex="1" flexDir="column" alignItems="center">
-        <Box w={{ base: "100%", md: "30rem" }}>
+        <Box w={{ base: "100%", md: "35rem" }}>
           <Box fontFamily="Roboto Slab">
-            <Text fontSize={{ base: "2rem", md: "2.75rem" }}>
-              Chinh phục môn Toán
+            <Text
+              fontSize={{ base: "2rem", md: "3.25rem" }}
+              textAlign="right"
+              w="max-content"
+            >
+              Chinh phục môn TOÁN
             </Text>
             <Flex
               gap="1rem"
               alignItems="flex-start"
-              justifyContent={{ base: "center", md: "flex-start" }}
+              justifyContent={{ base: "center", md: "flex-end" }}
             >
-              <Text fontSize={{ base: "1.25rem", md: "1.75rem" }}>
+              <Text fontSize={{ base: "1.25rem", md: "2.5rem" }}>
                 kì thi THPT QG
               </Text>
               <Text
-                fontSize="4rem"
+                fontSize="6rem"
                 lineHeight="4rem"
                 fontWeight="700"
                 textShadow={`3px 3px ${COLORS.summerBlue}`}
@@ -81,23 +85,32 @@ const Hero = () => {
             color={COLORS.midnightNavy}
             mx="auto"
             fontWeight="600"
-            my={{ base: "1rem", md: "2rem" }}
+            fontSize="1.25rem"
+            my={{ base: "1rem", md: "3rem" }}
+            textAlign="right"
           >
-            Toàn bộ bài giảng được xây dựng dưới dạng hình ảnh chuyển động cực
-            kì trực quan, bắt mắt và dễ hiểu
+            Toàn bộ bài giảng được xây dựng dưới dạng hình ảnh <br /> chuyển
+            động cực kì trực quan, bắt mắt và dễ hiểu
           </Text>
-          <Box py={{ base: "0", md: "3rem" }}>
+          <Box py={{ base: "0", md: "2rem" }}>
             <Flex
               gap="1rem"
-              w={{ base: "100%", md: "fit-content" }}
-              justifyContent={{ base: "center", md: "flex-start" }}
+              w={{ base: "100%", md: "100%" }}
+              justifyContent={{ base: "center", md: "center" }}
             >
               <Button
                 px="2.5rem"
-                bgColor="red.500"
+                bgColor="#ec5265"
+                border="1px solid #ec5265"
+                _hover={{
+                  bgColor: "transparent",
+                  color: "#ec5265",
+                  border: "1px solid #ec5265",
+                }}
                 py="0.5rem"
                 h="fit-content"
                 fontSize="1.25rem"
+                variant="solid"
                 onClick={handleSignUp}
               >
                 Đăng kí
@@ -116,7 +129,7 @@ const Hero = () => {
             <Flex alignItems="flex-end">
               <Text
                 fontWeight="700"
-                w={{ base: "12rem", md: "10rem" }}
+                w={{ base: "12rem", md: "18rem" }}
                 fontFamily="Sedgwick Ave"
                 textAlign="right"
                 color={COLORS.midnightNavy}
@@ -158,14 +171,14 @@ const Hero = () => {
           <Flex
             alignItems="center"
             gap={{ base: "1rem", md: "2rem" }}
-            py={{ base: "0", md: "3rem" }}
+            py={{ base: "0", md: "1rem" }}
           >
             {STICKERS.map((sticker) => (
               <Flex flexDir="column" alignItems="center" key={sticker.text}>
                 <Box
                   position="relative"
-                  w={{ base: "6rem", md: "10rem" }}
-                  h={{ base: "6rem", md: "8rem" }}
+                  w={{ base: "6rem", md: "13.5rem" }}
+                  h={{ base: "6rem", md: "12rem" }}
                 >
                   <Image
                     src={sticker.imageUrl}
@@ -178,7 +191,7 @@ const Hero = () => {
                 </Box>
                 <Text
                   fontWeight="700"
-                  fontSize={{ base: "0.875rem", md: "1rem" }}
+                  fontSize={{ base: "0.875rem", md: "1.25rem" }}
                   textAlign="center"
                 >
                   {sticker.text}

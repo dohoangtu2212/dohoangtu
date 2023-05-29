@@ -8,13 +8,15 @@ import { ImageProps } from "next/image";
 const Guide = () => {
   return (
     <Flex flexDir="column" position="relative" alignItems="center" py="2rem">
-      <Text fontSize="1.75rem" fontWeight="700">
+      <Text fontSize="2.5rem" fontWeight="700">
         Quy trình đăng kí học
       </Text>
       <Flex py="2rem" alignItems="center">
         <Container zIndex="40">
           <DescriptionContainer>
-            <Text w="max-content">đăng kí tài khoản</Text>
+            <Text w="max-content" fontSize="1.5rem">
+              đăng kí tài khoản
+            </Text>
             <Divider
               orientation="vertical"
               borderColor={COLORS.starryNightBlue}
@@ -35,14 +37,14 @@ const Guide = () => {
               orientation="vertical"
               borderColor={COLORS.starryNightBlue}
             />
-            <Text textAlign="center" w="max-content">
+            <Text textAlign="center" w="max-content" fontSize="1.5rem">
               chọn khoá học
             </Text>
           </DescriptionContainer>
         </Container>
         <Container zIndex="20">
           <DescriptionContainer>
-            <Text textAlign="center" w="max-content">
+            <Text textAlign="center" w="max-content" fontSize="1.5rem">
               nộp học phí
             </Text>
             <Divider
@@ -65,7 +67,7 @@ const Guide = () => {
               orientation="vertical"
               borderColor={COLORS.starryNightBlue}
             />
-            <Text textAlign="center" w="max-content">
+            <Text textAlign="center" w="max-content" fontSize="1.5rem">
               bắt đầu học
             </Text>
           </DescriptionContainer>
