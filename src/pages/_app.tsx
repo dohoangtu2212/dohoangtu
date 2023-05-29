@@ -7,6 +7,7 @@ import { wrapper } from "@/store";
 import Layout from "@/components/Layout";
 import { theme } from "@/constants/theme";
 import "@fontsource/quicksand";
+import Script from "next/script";
 
 export default function App({ Component, ...rest }: AppProps) {
   const { store, props } = wrapper.useWrappedStore(rest);
@@ -15,6 +16,7 @@ export default function App({ Component, ...rest }: AppProps) {
   return (
     <ChakraProvider theme={theme}>
       <ReduxProvider store={store}>
+        <Script type="text/javascript" src="/static/dyntube-script.js" />
         <Layout>
           <Component {...pageProps} />
         </Layout>
