@@ -8,6 +8,9 @@ import {
   InputProps,
   Tooltip,
   Box,
+  Input,
+  FormControl,
+  FormLabel,
 } from "@chakra-ui/react";
 import { FC, Fragment } from "react";
 import {
@@ -29,6 +32,7 @@ import VideoUploadModal from "@/views/Teacher/CoursesNew/Form/Structure/Sections
 import { IUploadVideoResponse } from "@/types/dyntube";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
+import VideoPreviewModal from "@/views/Teacher/CoursesNew/Form/Structure/Sections/Lessons/VideoPreviewModal";
 dayjs.extend(duration);
 
 type LessonsProps = {
@@ -63,7 +67,6 @@ const Lessons: FC<LessonsProps> = ({
         type: ICourseLessonType.video,
         duration: 0,
         dyntubeKey: "",
-        dyntubeVideoId: "",
       },
     ]);
     handleSetFieldValue("lessons", values.lessons + 1);
@@ -132,19 +135,6 @@ const Lesson: FC<LessonProps> = ({
     );
   };
 
-  const handleLessonVideoChange: (video: IUploadVideoResponse) => void = (
-    video
-  ) => {
-    handleSetFieldValue(
-      `sections[${sectionIdx}].lessons[${lessonIdx}].dyntubeKey`,
-      video.channelKey
-    );
-    handleSetFieldValue(
-      `sections[${sectionIdx}].lessons[${lessonIdx}].dyntubeVideoId`,
-      video.videoId
-    );
-  };
-
   const handleLessonDurationChange: (dur: number) => void = (dur) => {
     const dayjsDuration = dayjs.duration(dur * 1000);
     const hours = Math.round(dayjsDuration.asHours() * 100) / 100;
@@ -167,16 +157,8 @@ const Lesson: FC<LessonProps> = ({
     );
   };
 
-  const isVideoUploaded = !!lesson.dyntubeKey;
-
   return (
     <Fragment>
-      <VideoUploadModal
-        isOpen={isUploadVideoModalOpen}
-        onClose={onCloseUploadVideoModal}
-        onUploaded={handleLessonVideoChange}
-        onDurationChange={handleLessonDurationChange}
-      />
       <Flex alignItems="center" w="100%">
         <Box flex="1">
           <LessonTitle
@@ -194,36 +176,115 @@ const Lesson: FC<LessonProps> = ({
           />
         </Tooltip>
       </Flex>
-      <Flex justifyContent="flex-end" w="100%" gap="2rem">
-        <Flex alignItems="center" gap="0.5rem">
-          <Text fontSize="0.75rem">Type</Text>
-          <IconButton
-            aria-label="video"
-            variant="outline"
-            bgColor={isVideoLesson ? "green.400" : "transparent"}
-            icon={<MdOndemandVideo />}
-            onClick={() => handleLessonTypeChange(ICourseLessonType.video)}
-          />
-          <IconButton
-            aria-label="video"
-            variant="outline"
-            bgColor={!isVideoLesson ? "green.400" : "transparent"}
-            // TODO: support assignment
-            isDisabled
-            icon={<MdAssignment />}
-            onClick={() => handleLessonTypeChange(ICourseLessonType.assignment)}
+      <Flex w="100%">
+        <Box flex="1" />
+        <Flex flexDir="column" alignItems="flex-end" flex="2" gap="1rem">
+          <Flex alignItems="center" gap="0.5rem">
+            <Text>Type</Text>
+            <IconButton
+              aria-label="video"
+              variant="outline"
+              bgColor={isVideoLesson ? "green.400" : "transparent"}
+              icon={<MdOndemandVideo />}
+              onClick={() => handleLessonTypeChange(ICourseLessonType.video)}
+            />
+            <IconButton
+              aria-label="video"
+              variant="outline"
+              bgColor={!isVideoLesson ? "green.400" : "transparent"}
+              // TODO: support assignment
+              isDisabled
+              icon={<MdAssignment />}
+              onClick={() =>
+                handleLessonTypeChange(ICourseLessonType.assignment)
+              }
+            />
+          </Flex>
+          <VideoLesson
+            section={section}
+            sectionIdx={sectionIdx}
+            lesson={lesson}
+            lessonIdx={lessonIdx}
+            handleSetFieldValue={handleSetFieldValue}
+            handleSetFieldTouched={handleSetFieldTouched}
           />
         </Flex>
-        <Button
+
+        {/* <Button
           variant="outline"
           leftIcon={isVideoUploaded ? <MdCheck color="green" /> : <MdAdd />}
           onClick={onOpenUploadVideoModal}
         >
           Video
-        </Button>
+        </Button> */}
       </Flex>
       <Divider />
     </Fragment>
+  );
+};
+
+type VideoLessonProps = {
+  section: ICourseSection;
+  sectionIdx: number;
+  lesson: ICourseLesson;
+  lessonIdx: number;
+  handleSetFieldValue: FormikHelpers<
+    Partial<ICourseFormValues>
+  >["setFieldValue"];
+  handleSetFieldTouched: FormikHelpers<
+    Partial<ICourseFormValues>
+  >["setFieldTouched"];
+};
+const VideoLesson: FC<VideoLessonProps> = ({
+  section,
+  sectionIdx,
+  lesson,
+  lessonIdx,
+  handleSetFieldValue,
+  handleSetFieldTouched,
+}) => {
+  const {
+    isOpen: isPreviewModalOpen,
+    onOpen: openPreviewModal,
+    onClose: closePreviewModal,
+  } = useDisclosure();
+
+  const handleLessonVideoKeyChange: (videoKey: string) => void = (videoKey) => {
+    handleSetFieldValue(
+      `sections[${sectionIdx}].lessons[${lessonIdx}].dyntubeKey`,
+      videoKey
+    );
+  };
+
+  const previewVideoKey = lesson.dyntubeKey;
+
+  return (
+    <Flex flexDir="column" w="100%" gap="0.5rem">
+      {!!previewVideoKey && (
+        <VideoPreviewModal
+          dynTubeKey={previewVideoKey}
+          isOpen={isPreviewModalOpen}
+          onClose={closePreviewModal}
+        />
+      )}
+      <Flex alignItems="center" justifyContent="space-between">
+        <Text>Video Key</Text>
+        <Button
+          p="0.25rem 1rem"
+          h="fit-content"
+          isDisabled={!previewVideoKey}
+          onClick={openPreviewModal}
+        >
+          Xem thử
+        </Button>
+      </Flex>
+      <Input
+        type="text"
+        placeholder="Nhập Video Key"
+        value={lesson.dyntubeKey}
+        onChange={(e) => handleLessonVideoKeyChange(e.target.value)}
+      />
+    </Flex>
   );
 };
 

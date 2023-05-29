@@ -47,7 +47,6 @@ const INITIAL_VALUES: ICourseFormValues = {
           type: ICourseLessonType.video,
           duration: 0,
           dyntubeKey: "",
-          dyntubeVideoId: "",
         },
       ],
     },

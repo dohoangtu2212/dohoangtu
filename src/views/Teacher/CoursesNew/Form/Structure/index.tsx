@@ -38,7 +38,6 @@ const Structure: FC<StructureProps> = ({
             type: ICourseLessonType.video,
             duration: 0,
             dyntubeKey: "",
-            dyntubeVideoId: "",
           },
         ],
       },
