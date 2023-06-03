@@ -63,7 +63,10 @@ const NavigatorsList: FC<NavigatorsListProps> = () => {
             letterSpacing="1px"
             fontWeight={isActive ? "700" : "400"}
             gap="0.5rem"
-            fontSize={isHomePage ? "1.25rem" : "0.875rem"}
+            fontSize={{
+              base: isHomePage ? "1.25rem" : "1rem",
+              md: isHomePage ? "1.25rem" : "0.875rem",
+            }}
           >
             {!!nav.Icon && <nav.Icon size="1.5rem" />}
             <Text>{nav.name}</Text>

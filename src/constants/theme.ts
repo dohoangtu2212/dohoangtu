@@ -302,9 +302,33 @@ const PopoverStyles = {
     arrow: {
       bg: `${COLORS.white} !important`,
     },
-    closeButton: {},
+    closeButton: {
+      color: COLORS.twilightBlue,
+      fontSize: "0.875rem",
+    },
   },
   variants: {},
+  defaultProps: {},
+};
+
+const DrawerStyles = {
+  baseStyle: {
+    dialog: {
+      bgColor: COLORS.starryNightBlue,
+    },
+    closeButton: {
+      color: COLORS.whiteSatin,
+      fontSize: "0.875rem",
+      _hover: {},
+    },
+    header: {
+      bgColor: COLORS.starryNightBlue,
+    },
+    body: {
+      bgColor: COLORS.starryNightBlue,
+    },
+    footer: {},
+  },
   defaultProps: {},
 };
 
@@ -332,5 +356,6 @@ export const theme = extendTheme({
     Modal: ModalStyles,
     Menu: MenuStyles,
     Popover: PopoverStyles,
+    Drawer: DrawerStyles,
   },
 });
