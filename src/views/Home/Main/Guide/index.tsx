@@ -8,13 +8,13 @@ import { ImageProps } from "next/image";
 const Guide = () => {
   return (
     <Flex flexDir="column" position="relative" alignItems="center" py="2rem">
-      <Text fontSize="2.5rem" fontWeight="700">
+      <Text fontSize={{ base: "1.75rem", md: "2.5rem" }} fontWeight="700">
         Quy trình đăng kí học
       </Text>
-      <Flex py="2rem" alignItems="center">
+      <Flex py="2rem" alignItems="center" justifyContent="center">
         <Container zIndex="40">
           <DescriptionContainer>
-            <Text w="max-content" fontSize="1.5rem">
+            <Text w="max-content" fontSize={{ base: "1rem", md: "1.5rem" }}>
               đăng kí tài khoản
             </Text>
             <Divider
@@ -37,14 +37,22 @@ const Guide = () => {
               orientation="vertical"
               borderColor={COLORS.starryNightBlue}
             />
-            <Text textAlign="center" w="max-content" fontSize="1.5rem">
+            <Text
+              textAlign="center"
+              w="max-content"
+              fontSize={{ base: "1rem", md: "1.5rem" }}
+            >
               chọn khoá học
             </Text>
           </DescriptionContainer>
         </Container>
         <Container zIndex="20">
           <DescriptionContainer>
-            <Text textAlign="center" w="max-content" fontSize="1.5rem">
+            <Text
+              textAlign="center"
+              w="max-content"
+              fontSize={{ base: "1rem", md: "1.5rem" }}
+            >
               nộp học phí
             </Text>
             <Divider
@@ -67,7 +75,11 @@ const Guide = () => {
               orientation="vertical"
               borderColor={COLORS.starryNightBlue}
             />
-            <Text textAlign="center" w="max-content" fontSize="1.5rem">
+            <Text
+              textAlign="center"
+              w="max-content"
+              fontSize={{ base: "1rem", md: "1.5rem" }}
+            >
               bắt đầu học
             </Text>
           </DescriptionContainer>
@@ -80,7 +92,12 @@ const Guide = () => {
 type ContainerProps = FlexProps & {};
 const Container: FC<ContainerProps> = ({ children, ...flexProps }) => {
   return (
-    <Flex pl="0.5rem" flexDir="column" h="15rem" w="8rem" {...flexProps}>
+    <Flex
+      flexDir="column"
+      h="15rem"
+      w={{ base: "4rem", md: "8rem" }}
+      {...flexProps}
+    >
       {children}
     </Flex>
   );
@@ -96,7 +113,7 @@ const DescriptionContainer: FC<DescriptionContainerProps> = ({
       flex="1"
       alignItems="center"
       flexDir="column"
-      pl="3.5rem"
+      pl={{ base: "2rem", md: "3.5rem" }}
       {...flexProps}
     >
       {children}
@@ -110,11 +127,11 @@ type DisplayImageProps = {
 const DisplayImage: FC<DisplayImageProps> = ({ imageSrc }) => {
   return (
     <Box
-      w="4.5rem"
-      h="4.5rem"
+      w={{ base: "2.5rem", md: "4.5rem" }}
+      h={{ base: "2.25rem", md: "4.5rem" }}
       position="absolute"
-      left="3.25rem"
-      top="0.75rem"
+      left={{ base: "1.5rem", md: "3.25rem" }}
+      top={{ base: "0.5rem", md: "0.75rem" }}
       zIndex="10"
     >
       <Image

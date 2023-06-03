@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import { ROUTE } from "@/constants/route";
 import { AuthMode } from "@/constants/auth";
 import { DEMO_COURSE_ID } from "@/constants/course";
+import useMobile from "@/hooks/useMobile";
 
 const DEMO_VIDEO_URL =
   "https://firebasestorage.googleapis.com/v0/b/online-classroom-de70d.appspot.com/o/assets%2FDemo1.mp4?alt=media&token=83867c46-3507-4416-8391-1c1240fdaa1d";
@@ -27,6 +28,8 @@ const STICKERS = [
 ];
 
 const Hero = () => {
+  const { isMobile } = useMobile();
+
   const router = useRouter();
 
   const handleSignUp = () => {
@@ -66,13 +69,13 @@ const Hero = () => {
             <Flex
               gap="1rem"
               alignItems="flex-start"
-              justifyContent={{ base: "center", md: "flex-end" }}
+              justifyContent={{ base: "flex-end", md: "flex-end" }}
             >
               <Text fontSize={{ base: "1.25rem", md: "2.5rem" }}>
                 kì thi THPT QG
               </Text>
               <Text
-                fontSize="6rem"
+                fontSize={{ base: "4rem", md: "6rem" }}
                 lineHeight="4rem"
                 fontWeight="700"
                 textShadow={`3px 3px ${COLORS.summerBlue}`}
@@ -85,12 +88,13 @@ const Hero = () => {
             color={COLORS.midnightNavy}
             mx="auto"
             fontWeight="600"
-            fontSize="1.25rem"
+            fontSize={{ base: "1rem", md: "1.25rem" }}
             my={{ base: "1rem", md: "3rem" }}
-            textAlign="right"
+            textAlign={{ base: "center", md: "right" }}
           >
-            Toàn bộ bài giảng được xây dựng dưới dạng hình ảnh <br /> chuyển
-            động cực kì trực quan, bắt mắt và dễ hiểu
+            Toàn bộ bài giảng được xây dựng dưới dạng hình ảnh
+            {!isMobile && <br />} chuyển động cực kì trực quan, bắt mắt và dễ
+            hiểu
           </Text>
           <Box py={{ base: "0", md: "2rem" }}>
             <Flex

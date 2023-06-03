@@ -15,7 +15,7 @@ export const COLORS = {
   blueLapis: "#6289C6",
   twilightBlue: "#355496",
   midnightNavy: "#333356",
-  starryNightBlue: "#333F76",
+  starryNightBlue: "#334076",
 };
 
 const InputStyles = {
