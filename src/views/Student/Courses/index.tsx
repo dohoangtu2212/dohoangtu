@@ -22,6 +22,7 @@ const StudentCourses = () => {
     },
     {
       skip: !currentUser?.uid,
+      refetchOnMountOrArgChange: true
     }
   );
 

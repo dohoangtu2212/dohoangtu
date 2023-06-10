@@ -10,7 +10,7 @@ export interface ICourse {
   lessons: number;
   tag?: ICourseTag;
   price: number;
-  previousPrice?: number;
+  previousPrice: number | null;
   updatedAt: string;
   courseDetailsId: string;
   slug?: string;
@@ -71,6 +71,9 @@ export interface IStudentCourse {
   rating: number | null;
   price: ICourse["price"];
   thumbnailUrl: ICourse["thumbnailUrl"];
+  viewsCount?: {
+    [dynTubeKey: string]: number;
+  } | null;
 }
 
 export interface ICourseFormValues {
@@ -82,7 +85,7 @@ export interface ICourseFormValues {
   hours: number;
   lessons: number;
   price: number;
-  previousPrice?: number;
+  previousPrice: number | null;
   sections: ICourseSection[];
 }
 

@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { RootState } from "@/store";
 import { useSelector } from "react-redux";
-import { ICourseFormValues } from "@/types/course";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
 type IEditingCourse = {

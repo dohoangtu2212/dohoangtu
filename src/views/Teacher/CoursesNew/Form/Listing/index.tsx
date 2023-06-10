@@ -128,7 +128,7 @@ const Listing: FC<ListingProps> = ({
         <Input
           type="number"
           placeholder="Nhập giá tham chiếu"
-          value={values.previousPrice}
+          value={values.previousPrice ?? 0}
           onChange={(e) => handleChangePreviousPrice(e.target.valueAsNumber)}
         />
       </FormControl>

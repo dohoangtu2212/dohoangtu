@@ -109,7 +109,7 @@ const TeacherCoursesNew = () => {
         hours: courseDetails.hours,
         lessons: course?.lessons,
         price: course.price,
-        previousPrice: course.previousPrice,
+        previousPrice: course.previousPrice ?? null,
         sections: courseDetails.sections ?? [],
         thumbnailFile: null,
       };
@@ -185,7 +185,7 @@ const TeacherCoursesNew = () => {
               : courseData.thumbnailUrl,
           },
           courseId,
-        });
+        }).unwrap();
       } else {
         const resCreateCourseDetails = await createCourseDetails({
           data: { ...courseDetailsData, thumbnailFile: values.thumbnailFile },

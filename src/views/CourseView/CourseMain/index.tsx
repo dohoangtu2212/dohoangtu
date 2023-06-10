@@ -14,6 +14,15 @@ import { MdSearch } from "react-icons/md";
 import { ICourseDetails, ICourseLesson, IDisabledLesson } from "@/types/course";
 import { FC } from "react";
 import { COLORS } from "@/constants/theme";
+import {
+  useGetStudentViewsCountQuery,
+  useUpdateStudentViewsCountMutation,
+} from "@/store/apis/db";
+import {
+  useCurrentUserSelector,
+  useUserRoleSelector,
+} from "@/store/slices/user";
+import { UserRole } from "@/types/permission";
 
 type CourseMainProps = {
   course: ICourseDetails;
@@ -25,6 +34,23 @@ const CourseMain: FC<CourseMainProps> = ({
   selectedLesson,
   disabledLessons = [],
 }) => {
+  const currentUser = useCurrentUserSelector();
+  const userRole = useUserRoleSelector();
+  const [updateStudentViewsCount] = useUpdateStudentViewsCountMutation();
+
+  const {
+    data: viewsCount,
+    isLoading: isGetStudentViewsCountLoading,
+    isFetching: isGetStudentViewsCountFetching,
+  } = useGetStudentViewsCountQuery(
+    {
+      studentId: currentUser?.uid as string,
+    },
+    {
+      skip: !currentUser?.uid || userRole !== UserRole.student,
+    }
+  );
+
   const isDisabled = disabledLessons.find(
     (dL) => `${dL.sectionOrder}.${dL.lessonOrder}` === selectedLesson?.order
   );
@@ -33,7 +59,15 @@ const CourseMain: FC<CourseMainProps> = ({
       ? selectedLesson.dyntubeKey
       : "";
 
+  const viewsCountOfCurrentVideo = viewsCount?.[videoKey] ?? 0;
+
   if (!course || !videoKey) return null;
+
+  const handlePauseVideo = () => {};
+
+  const handleEndVideo = () => {};
+
+  const handlePlayVideo = () => {};
 
   return (
     <Flex flexDir="column" w="100%">
@@ -46,6 +80,9 @@ const CourseMain: FC<CourseMainProps> = ({
         dynTubeKey={videoKey}
         w="100%"
         minH={{ base: "fit-content", md: "30rem" }}
+        onEnded={handleEndVideo}
+        onPause={handlePauseVideo}
+        onPlay={handlePlayVideo}
       />
       <Flex
         alignItems="center"

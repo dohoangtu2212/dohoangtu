@@ -105,7 +105,7 @@ const CourseView = () => {
   }, [course, closeAddToCartModal, dispatch, router]);
 
   useEffect(() => {
-    if (!!courseDetails) {
+    if (!!courseDetails && !!courseDetails.sections[0].lessons?.[0]) {
       setSelectedLesson({
         ...courseDetails.sections[0].lessons[0],
         order: `${courseDetails.sections[0].order}.${courseDetails.sections[0].lessons[0].order}`,
@@ -113,6 +113,7 @@ const CourseView = () => {
     }
   }, [courseDetails]);
 
+  // For public view
   const disabledLessons: IDisabledLesson[] = useMemo(() => {
     if (!courseDetails) return [];
     if (!isPreviewMode) return [];
@@ -126,17 +127,17 @@ const CourseView = () => {
     return slice(flatten(sectionOrderAndLessons), 3);
   }, [isPreviewMode, courseDetails]);
 
-  if (!courseId || !courseDetails)
-    return (
-      <Box p="1rem">
-        <Text>Không tìm thấy khoá học này</Text>
-      </Box>
-    );
-
   if (isLoading)
     return (
       <Box p="1rem">
         <Spinner color={COLORS.twilightBlue} />
+      </Box>
+    );
+
+  if (!courseId || !courseDetails)
+    return (
+      <Box p="1rem">
+        <Text>Không tìm thấy khoá học này</Text>
       </Box>
     );
 

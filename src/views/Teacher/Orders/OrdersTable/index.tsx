@@ -21,9 +21,9 @@ import {
   ModalCloseButton,
   Box,
 } from "@chakra-ui/react";
-import { useGetOrdersQuery } from "@/store/apis/db";
+import { useGetOrdersQuery, useGetStudentCoursesQuery } from "@/store/apis/db";
 import { IOrder } from "@/types/order";
-import { FC, Fragment } from "react";
+import { FC, Fragment, useCallback } from "react";
 import { displayPrice } from "@/utils/display";
 import dayjs from "dayjs";
 import { MdCheck } from "react-icons/md";
@@ -40,7 +40,9 @@ const OrdersTable = () => {
     data: orders = [],
     isLoading: isGetOrdersLoading,
     isFetching: isGetOrdersFetching,
-  } = useGetOrdersQuery();
+  } = useGetOrdersQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+  });
 
   const isLoading = isGetOrdersLoading || isGetOrdersFetching;
 
@@ -191,19 +193,27 @@ type TdActionsProps = {
   order: IOrder;
 };
 const TdActions: FC<TdActionsProps> = ({ order }) => {
+  const { data: studentCourses = [] } = useGetStudentCoursesQuery(
+    {
+      userId: order.userId,
+    },
+    {
+      skip: !order?.userId,
+    }
+  );
   const [updateStudentCourses, { isLoading: isUpdateStudentCoursesLoading }] =
     useUpdateStudentCoursesMutation();
   const [confirmOrder, { isLoading: isConfirmModalLoading }] =
     useConfirmOrderMutation();
   const { isConfirmed, userName, userEmail } = order;
 
-  const handleConfirm = async () => {
+  const handleConfirm = useCallback(async () => {
     await updateStudentCourses({
-      userId: order.userId,
-      courses: order.courses,
+      studentId: order.userId,
+      courses: [...studentCourses, ...order.courses],
     });
     await confirmOrder({ orderId: order.id });
-  };
+  }, [studentCourses, updateStudentCourses, confirmOrder, order]);
 
   const isSubmitting = isUpdateStudentCoursesLoading || isConfirmModalLoading;
 

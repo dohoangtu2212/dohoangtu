@@ -39,7 +39,7 @@ const UserMenu = () => {
           />
         </Button>
       </PopoverTrigger>
-      <PopoverContent w="fit-content">
+      <PopoverContent w="fit-content" bgColor="white">
         <PopoverArrow />
         <PopoverBody>
           <Flex flexDir="column" gap="1rem">

@@ -5,6 +5,12 @@ import { ICourseDetails, ICourseLesson } from "@/types/course";
 import { FC } from "react";
 import useMobile from "@/hooks/useMobile";
 import type { IDisabledLesson } from "@/types/course";
+import { useGetStudentViewsCountQuery } from "@/store/apis/db";
+import {
+  useUserRoleSelector,
+  useCurrentUserSelector,
+} from "@/store/slices/user";
+import { UserRole } from "@/types/permission";
 
 type CourseSectionsProps = {
   course: ICourseDetails;
@@ -21,12 +27,26 @@ const CourseSections: FC<CourseSectionsProps> = ({
   const { sections } = course;
   const { isMobile } = useMobile();
 
+  const userRole = useUserRoleSelector();
+  const currentUser = useCurrentUserSelector();
+  const {
+    data: viewsCount,
+    isLoading: isGetStudentViewsCountLoading,
+    isFetching: isGetStudentViewsCountFetching,
+  } = useGetStudentViewsCountQuery(
+    {
+      studentId: currentUser?.uid as string,
+    },
+    {
+      skip: !currentUser?.uid || userRole !== UserRole.student,
+    }
+  );
+
   return (
     <Flex
       flexDir="column"
       position="sticky"
       top="0"
-      zIndex="30"
       maxH="100vh"
       overflowY="auto"
     >
@@ -48,6 +68,7 @@ const CourseSections: FC<CourseSectionsProps> = ({
       )}
       {sections?.map((sec) => (
         <CourseSection
+          viewsCount={viewsCount}
           disabledLessons={disabledLessons}
           section={sec}
           key={sec.order}

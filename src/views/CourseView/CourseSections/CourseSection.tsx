@@ -3,6 +3,7 @@ import {
   ICourseLesson,
   ICourseLessonType,
   IDisabledLesson,
+  IStudentCourse,
 } from "@/types/course";
 import {
   Accordion,
@@ -27,12 +28,14 @@ type CourseSectionProps = {
   disabledLessons: IDisabledLesson[];
   onLessonSelected: (lesson: ICourseLesson) => void;
   onDisabledLessonSelected: () => void;
+  viewsCount?: IStudentCourse["viewsCount"];
 };
 const CourseSection: FC<CourseSectionProps> = ({
   section,
   disabledLessons = [],
   onLessonSelected,
   onDisabledLessonSelected,
+  viewsCount,
 }) => {
   const sectionLessons = section.lessons ?? [];
   const sectionDuration =
@@ -72,6 +75,9 @@ const CourseSection: FC<CourseSectionProps> = ({
         <AccordionPanel pb={4}>
           <Flex flexDir="column" gap="1rem">
             {section.lessons?.map((lesson) => {
+              const lessionVideoViewsCount =
+                viewsCount?.[lesson.dyntubeKey] ?? 0;
+
               const isDisabled = !!disabledLessons.find(
                 (dL) =>
                   dL.lessonOrder === lesson.order &&
@@ -105,14 +111,23 @@ const CourseSection: FC<CourseSectionProps> = ({
                     <Text fontSize="0.875rem" fontWeight="500">
                       Bài {section.order}.{lesson.order}: {lesson.name}
                     </Text>
-                    <Flex gap="0.5rem" alignItems="center" color="gray.500">
-                      {lesson.type === ICourseLessonType.video ? (
-                        <MdOndemandVideo />
-                      ) : (
-                        <MdAssignment />
-                      )}
+                    <Flex
+                      alignItems="center"
+                      color="gray.500"
+                      justifyContent="space-between"
+                    >
+                      <Flex alignItems="center" gap="0.5rem">
+                        {lesson.type === ICourseLessonType.video ? (
+                          <MdOndemandVideo />
+                        ) : (
+                          <MdAssignment />
+                        )}
+                        <Text fontSize="0.675rem">
+                          {lessonDurationInMinutes} phút
+                        </Text>
+                      </Flex>
                       <Text fontSize="0.675rem">
-                        {lessonDurationInMinutes} phút
+                        Lượt xem: {lessionVideoViewsCount}/20
                       </Text>
                     </Flex>
                   </Box>

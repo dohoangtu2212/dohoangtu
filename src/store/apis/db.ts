@@ -33,6 +33,7 @@ const TAG = {
   coursesDetails: "courses-details",
   courseDetails: "course-details",
   orders: "orders",
+  studentCourses: "student-courses",
 };
 
 const dbApis = createApi({
@@ -99,10 +100,10 @@ const dbApis = createApi({
           const updates: Updates = {};
           updates[`/${DB_KEY.courses}/${courseId}`] = courseData;
 
-          await update(ref(db), updates);
+          const res = await update(ref(db), updates);
           return { data: { id: courseId as string } };
-        } catch (e) {
-          return { error: JSON.stringify(e) };
+        } catch (error) {
+          return { error };
         }
       },
       invalidatesTags: [TAG.courses],
@@ -131,6 +132,7 @@ const dbApis = createApi({
       },
       providesTags: [TAG.courses],
     }),
+
     // COURSE-DETAILS
     createCourseDetails: build.mutation<
       { id: string; thumbnailUrl: string },
@@ -190,7 +192,7 @@ const dbApis = createApi({
           updates[`/${DB_KEY.coursesDetails}/${courseDetailsId}`] =
             courseDetailsData;
 
-          await update(ref(db), updates);
+          const res = await update(ref(db), updates);
           return { data: { id: courseDetailsId as string } };
         } catch (e) {
           return { error: JSON.stringify(e) };
@@ -287,24 +289,24 @@ const dbApis = createApi({
       invalidatesTags: [TAG.orders],
     }),
 
-    // USER
+    // STUDENT
     updateStudentCourses: build.mutation<
       unknown,
-      { courses: IStudentCourse[]; userId: string }
+      { courses: IStudentCourse[]; studentId: string }
     >({
-      async queryFn({ courses, userId }) {
+      async queryFn({ courses, studentId }) {
         try {
           const db = getDatabase();
           const updates: Updates = {};
-          updates[`/${DB_KEY.students}/${userId}/courses`] = courses;
+          updates[`/${DB_KEY.students}/${studentId}/courses`] = courses;
 
           await update(ref(db), updates);
-          return { data: { id: userId as string } };
+          return { data: { id: studentId as string } };
         } catch (e) {
           return { error: JSON.stringify(e) };
         }
       },
-      invalidatesTags: [],
+      invalidatesTags: [TAG.studentCourses],
     }),
     getStudentCourses: build.query<IStudentCourse[], { userId: string }>({
       async queryFn({ userId }) {
@@ -330,7 +332,52 @@ const dbApis = createApi({
           return { error: JSON.stringify(e) };
         }
       },
+      providesTags: [TAG.studentCourses],
+    }),
+    getStudentViewsCount: build.query<
+      IStudentCourse["viewsCount"] | null,
+      { studentId: string }
+    >({
+      async queryFn({ studentId }) {
+        try {
+          const db = getDatabase();
+          const dbRef = ref(db);
+
+          const snapshot = await get(
+            child(dbRef, `${DB_KEY.students}/${studentId}/viewsCount`)
+          );
+          if (snapshot.exists()) {
+            const value = snapshot.val();
+
+            return { data: { a: 1 } };
+          } else {
+            return { data: null };
+          }
+        } catch (e) {
+          return { error: JSON.stringify(e) };
+        }
+      },
       providesTags: [],
+    }),
+    updateStudentViewsCount: build.mutation<
+      number,
+      { studentId: string; dyntubeVideoKey: string; count: number }
+    >({
+      async queryFn({ studentId, dyntubeVideoKey, count }) {
+        try {
+          const db = getDatabase();
+          const updates: Updates = {};
+          updates[
+            `/${DB_KEY.students}/${studentId}/viewsCount/${dyntubeVideoKey}`
+          ] = count;
+
+          await update(ref(db), updates);
+          return { data: count };
+        } catch (e) {
+          return { error: JSON.stringify(e) };
+        }
+      },
+      invalidatesTags: [],
     }),
   }),
 });
@@ -348,5 +395,7 @@ export const {
   useUpdateStudentCoursesMutation,
   useConfirmOrderMutation,
   useGetStudentCoursesQuery,
+  useGetStudentViewsCountQuery,
+  useUpdateStudentViewsCountMutation,
 } = dbApis;
 export default dbApis;
