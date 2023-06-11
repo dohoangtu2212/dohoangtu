@@ -116,6 +116,7 @@ const CourseMain: FC<CourseMainProps> = ({
     if (hasStarted) {
       showToastAndSubmitViewsCount();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hasStarted]);
 
   useEffect(() => {

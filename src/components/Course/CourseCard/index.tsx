@@ -15,7 +15,7 @@ import useMobile from "@/hooks/useMobile";
 
 type CourseCardProps = {
   course: ICourse;
-  isPurchased: boolean;
+  isPurchased?: boolean;
 };
 const CourseCard: FC<CourseCardProps> = ({ course, isPurchased }) => {
   const { isMobile } = useMobile();

@@ -15,7 +15,7 @@ import { COLORS } from "@/constants/theme";
 
 type MenuProps = {
   course: ICourse;
-  isPurchased: boolean;
+  isPurchased?: boolean;
 };
 const Menu: FC<MenuProps> = ({ course, isPurchased }) => {
   const { name, description, hours, lessons, updatedAt } = course;
