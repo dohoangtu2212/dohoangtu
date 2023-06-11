@@ -1,10 +1,9 @@
-import { Flex, Box, Button, useToast, Spinner } from "@chakra-ui/react";
+import { Flex, Box, Button, Spinner } from "@chakra-ui/react";
 import { useMemo } from "react";
 import Form from "@/views/Teacher/CoursesNew/Form";
 import { useFormik } from "formik";
 import { formikGetErrorMessages, formikGetIsDisabled } from "@/utils/formik";
 import {
-  ICourseDetails,
   ICourseFormValues,
   INewCourse,
   INewCourseDetails,
@@ -26,6 +25,7 @@ import type { FormikConfig } from "formik";
 import { useUploadCourseThumbnailMutation } from "@/store/apis/storage";
 import { ICourseLessonType } from "@/types/course";
 import { COLORS } from "@/constants/theme";
+import useCustomToast from "@/hooks/useCustomToast";
 
 const INITIAL_VALUES: ICourseFormValues = {
   name: "",
@@ -56,9 +56,7 @@ const INITIAL_VALUES: ICourseFormValues = {
 
 const TeacherCoursesNew = () => {
   const editingCourse = useEditingCourseSelector();
-  const toast = useToast({
-    position: "bottom",
-  });
+  const toast = useCustomToast();
   const router = useRouter();
 
   // QUERY
@@ -199,28 +197,17 @@ const TeacherCoursesNew = () => {
           },
         });
       }
-
-      toast({
-        title: "Thành công!",
-        description: `Khoá học "${name} đã được ${
-          isEditMode ? "cập nhật" : "lưu"
-        }."`,
-        status: "success",
-        duration: 3000,
-        isClosable: true,
-      });
+      toast(
+        `Khoá học "${name} đã được ${isEditMode ? "cập nhật" : "lưu"}."`,
+        "success"
+      );
       router.push(ROUTE.teacherCourses);
       resetForm();
     } catch (err) {
-      toast({
-        title: "Lỗi!",
-        description: `${
-          isEditMode ? "Cập nhật" : "Lưu"
-        } khoá học không thành công.`,
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
+      toast(
+        `${isEditMode ? "Cập nhật" : "Lưu"} khoá học không thành công.`,
+        "error"
+      );
     }
   };
   const formik = useFormik<ICourseFormValues>({

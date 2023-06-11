@@ -1,4 +1,4 @@
-import { useToast, useDisclosure } from "@chakra-ui/react";
+import { useDisclosure } from "@chakra-ui/react";
 import { AuthFormValues } from "@/types/auth";
 import {
   signInWithEmailAndPassword,
@@ -10,6 +10,7 @@ import Form from "@/views/Auth/AuthForm/Form";
 import { FC, useCallback, useState } from "react";
 import { getUserRole } from "@/utils/firebase";
 import SetRoleModal from "@/views/Auth/AuthForm/SignUp/SetRoleModal";
+import useCustomToast from "@/hooks/useCustomToast";
 
 type SignInProps = {
   onDone: () => void;
@@ -22,10 +23,7 @@ const SignIn: FC<SignInProps> = ({ onDone }) => {
   } = useDisclosure();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  const toast = useToast({
-    position: "bottom",
-  });
+  const toast = useCustomToast();
 
   const signIn = useCallback(
     async (values: AuthFormValues) => {
@@ -34,14 +32,7 @@ const SignIn: FC<SignInProps> = ({ onDone }) => {
 
       try {
         await signInWithEmailAndPassword(auth, email, password);
-
-        toast({
-          title: "Đăng nhập thành công!",
-          description: "Chào mừng bạn.",
-          status: "success",
-          duration: 3000,
-          isClosable: true,
-        });
+        toast("Đăng nhập thành công!", "success");
 
         const role = await getUserRole();
         if (!role) {
@@ -63,14 +54,7 @@ const SignIn: FC<SignInProps> = ({ onDone }) => {
         if (code === AuthErrorCodes.USER_DELETED) {
           message = "Tài khoản chưa đăng ký.";
         }
-
-        toast({
-          title: "Đăng nhập thất bại!",
-          description: message,
-          status: "error",
-          duration: 3000,
-          isClosable: true,
-        });
+        toast("Đăng nhập thất bại!", "error");
       }
     },
     [onDone, toast, openRoleModal]

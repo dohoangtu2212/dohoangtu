@@ -10,7 +10,6 @@ import {
   ModalContent,
   ModalCloseButton,
   ModalBody,
-  useToast,
 } from "@chakra-ui/react";
 import {
   useCartCoursesSelector,
@@ -35,11 +34,10 @@ import { ROUTE } from "@/constants/route";
 import PaymentModal from "@/views/Cart/PaymentModal";
 import type { IPaymentMethod } from "@/types/order";
 import { COLORS } from "@/constants/theme";
+import useCustomToast from "@/hooks/useCustomToast";
 
 const Cart = () => {
-  const toast = useToast({
-    position: "bottom",
-  });
+  const toast = useCustomToast();
   const router = useRouter();
   const dispatch = useDispatch();
   const currentUser = useCurrentUserSelector();
@@ -86,22 +84,10 @@ const Cart = () => {
     try {
       const res = await createOrder(order).unwrap();
       onClosePaymentModal();
-      toast({
-        title: "Thành công!",
-        description: "Đơn hàng đã được tạo.",
-        status: "success",
-        duration: 3000,
-        isClosable: true,
-      });
+      toast("Đơn hàng đã được tạo.", "success");
       dispatch(cartActions.clearCart());
     } catch (err) {
-      toast({
-        title: "Lỗi!",
-        description: "Tạo đơn hàng không thành công.",
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
+      toast("Tạo đơn hàng không thành công.", "error");
     }
   }, [
     cartCourses,

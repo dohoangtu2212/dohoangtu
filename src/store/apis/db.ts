@@ -34,6 +34,7 @@ const TAG = {
   courseDetails: "course-details",
   orders: "orders",
   studentCourses: "student-courses",
+  studentViewsCount: "student-views-count",
 };
 
 const dbApis = createApi({
@@ -348,8 +349,7 @@ const dbApis = createApi({
           );
           if (snapshot.exists()) {
             const value = snapshot.val();
-
-            return { data: { a: 1 } };
+            return { data: value };
           } else {
             return { data: null };
           }
@@ -357,7 +357,7 @@ const dbApis = createApi({
           return { error: JSON.stringify(e) };
         }
       },
-      providesTags: [],
+      providesTags: [TAG.studentViewsCount],
     }),
     updateStudentViewsCount: build.mutation<
       number,
@@ -377,7 +377,7 @@ const dbApis = createApi({
           return { error: JSON.stringify(e) };
         }
       },
-      invalidatesTags: [],
+      invalidatesTags: [TAG.studentViewsCount],
     }),
   }),
 });

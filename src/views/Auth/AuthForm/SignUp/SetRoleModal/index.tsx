@@ -1,5 +1,4 @@
 import {
-  useToast,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -14,6 +13,7 @@ import { getAuth } from "firebase/auth";
 import { FC, useCallback, useState } from "react";
 import { useUpdateUserRoleMutation } from "@/store/apis/user";
 import { UserRole } from "@/types/permission";
+import useCustomToast from "@/hooks/useCustomToast";
 
 type SetRoleModalProps = Omit<ModalProps, "children"> & {
   email: string;
@@ -26,9 +26,7 @@ const SetRoleModal: FC<SetRoleModalProps> = ({
   onDone,
   ...modalProps
 }) => {
-  const toast = useToast({
-    position: "bottom",
-  });
+  const toast = useCustomToast();
   const [updateUserRole, { isLoading: isUpdateUserRoleLoading }] =
     useUpdateUserRoleMutation();
 
@@ -40,24 +38,12 @@ const SetRoleModal: FC<SetRoleModalProps> = ({
         email: email,
         role: UserRole.student,
       });
-      toast({
-        title: "Thành công!",
-        description: 'Bạn đang truy cập hệ thống với vai trò "Học sinh".',
-        status: "success",
-        duration: 3000,
-        isClosable: true,
-      });
+      toast('Bạn đang truy cập hệ thống với vai trò "Học sinh".', "success");
       await auth.signOut();
       await signInWithEmailAndPassword(auth, email, password);
       onDone?.();
     } catch (err) {
-      toast({
-        title: "Lỗi!",
-        description: "Cập nhật vai trò thất bại.",
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
+      toast("Thiết lập vai trò thất bại.", "error");
     }
   }, [email, password, toast, updateUserRole, onDone]);
 
@@ -69,23 +55,11 @@ const SetRoleModal: FC<SetRoleModalProps> = ({
         email: email,
         role: UserRole.teacher,
       });
-      toast({
-        title: "Thành công!",
-        description: 'Bạn đang truy cập hệ thống với vai trò "Giáo viên".',
-        status: "success",
-        duration: 3000,
-        isClosable: true,
-      });
+      toast('Bạn đang truy cập hệ thống với vai trò "Giáo viên".', "success");
       await signInWithEmailAndPassword(auth, email, password);
       onDone?.();
     } catch (err) {
-      toast({
-        title: "Lỗi!",
-        description: "Cập nhật vai trò thất bại.",
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
+      toast("Thiết lập vai trò thất bại.", "error");
     }
   }, [email, password, onDone, toast, updateUserRole]);
 

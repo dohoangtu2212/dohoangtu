@@ -1,4 +1,4 @@
-import { useToast, useDisclosure } from "@chakra-ui/react";
+import { useDisclosure } from "@chakra-ui/react";
 import { AuthFormValues } from "@/types/auth";
 import {
   createUserWithEmailAndPassword,
@@ -9,6 +9,7 @@ import { getAuth } from "firebase/auth";
 import Form from "@/views/Auth/AuthForm/Form";
 import { FC, useState } from "react";
 import SetRoleModal from "@/views/Auth/AuthForm/SignUp/SetRoleModal";
+import useCustomToast from "@/hooks/useCustomToast";
 
 type SignUpProps = {
   onDone: () => void;
@@ -23,9 +24,7 @@ const SignUp: FC<SignUpProps> = ({ onDone }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const toast = useToast({
-    position: "bottom",
-  });
+  const toast = useCustomToast();
 
   const signUp = async (values: AuthFormValues) => {
     const auth = getAuth();
@@ -48,13 +47,7 @@ const SignUp: FC<SignUpProps> = ({ onDone }) => {
         message = "Tài khoản chưa đăng ký.";
       }
 
-      toast({
-        title: "Đăng ký thất bại!",
-        description: message,
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
+      toast("Đăng ký thất bại!", "success");
     }
   };
 

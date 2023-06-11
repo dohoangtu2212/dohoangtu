@@ -21,6 +21,8 @@ import { FC } from "react";
 import { MdOndemandVideo, MdAssignment } from "react-icons/md";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
+import { useUserRoleSelector } from "@/store/slices/user";
+import { UserRole } from "@/types/permission";
 dayjs.extend(duration);
 
 type CourseSectionProps = {
@@ -37,6 +39,9 @@ const CourseSection: FC<CourseSectionProps> = ({
   onDisabledLessonSelected,
   viewsCount,
 }) => {
+  const userRole = useUserRoleSelector();
+  const isStudent = userRole === UserRole.student;
+
   const sectionLessons = section.lessons ?? [];
   const sectionDuration =
     reduce(
@@ -107,7 +112,7 @@ const CourseSection: FC<CourseSectionProps> = ({
                   <Box py="0.125rem">
                     <Checkbox isChecked={false} isDisabled />
                   </Box>
-                  <Box>
+                  <Box w="100%">
                     <Text fontSize="0.875rem" fontWeight="500">
                       Bài {section.order}.{lesson.order}: {lesson.name}
                     </Text>
@@ -126,9 +131,11 @@ const CourseSection: FC<CourseSectionProps> = ({
                           {lessonDurationInMinutes} phút
                         </Text>
                       </Flex>
-                      <Text fontSize="0.675rem">
-                        Lượt xem: {lessionVideoViewsCount}/20
-                      </Text>
+                      {isStudent && (
+                        <Text fontSize="0.675rem">
+                          Lượt xem: {lessionVideoViewsCount}/20
+                        </Text>
+                      )}
                     </Flex>
                   </Box>
                 </Flex>
