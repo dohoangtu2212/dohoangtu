@@ -15,14 +15,18 @@ import useMobile from "@/hooks/useMobile";
 
 type CourseCardProps = {
   course: ICourse;
+  isPurchased: boolean;
 };
-const CourseCard: FC<CourseCardProps> = ({ course }) => {
+const CourseCard: FC<CourseCardProps> = ({ course, isPurchased }) => {
   const { isMobile } = useMobile();
   const [showMenu, setShowMenu] = useState(false);
 
   return (
     <Box onMouseLeave={() => setShowMenu(false)} px="0.5rem">
-      <Popover isOpen={showMenu} placement={isMobile ? "bottom" : "right-end"}>
+      <Popover
+        isOpen={showMenu}
+        placement={isMobile ? "bottom" : "right-start"}
+      >
         <PopoverAnchor>
           <Display course={course} onToggleMenu={(val) => setShowMenu(val)} />
         </PopoverAnchor>
@@ -32,7 +36,7 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => {
             <PopoverCloseButton onClick={() => setShowMenu(false)} />
           )}
           <PopoverBody>
-            <Menu course={course} />
+            <Menu course={course} isPurchased={isPurchased} />
           </PopoverBody>
         </PopoverContent>
       </Popover>

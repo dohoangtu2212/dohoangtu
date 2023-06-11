@@ -292,15 +292,13 @@ const MenuStyles = {
 
 const PopoverStyles = {
   baseStyle: {
-    content: {
-      bgColor: COLORS.white,
-    },
+    content: {},
     header: {},
     body: {},
     footer: {},
     popper: {},
     arrow: {
-      bg: `${COLORS.white} !important`,
+      // bg: `${COLORS.white} !important`,
     },
     closeButton: {
       color: COLORS.twilightBlue,

@@ -32,9 +32,11 @@ const Display = forwardRef<HTMLDivElement, DisplayProps>(
 
     return (
       <Card
-        variant="unstyled"
+        variant="outline"
+        p="0.75rem"
         cursor="pointer"
         position="relative"
+        h="100%"
         onMouseOver={() => onToggleMenu(true)}
         onClick={() => {
           if (isMobile) onToggleMenu(true);
@@ -57,21 +59,21 @@ const Display = forwardRef<HTMLDivElement, DisplayProps>(
         )}
         <Flex flexDir="column" gap="0.5rem">
           <DisplayImage
-            imageUrl={
-              !!thumbnailUrl ? thumbnailUrl : DEFAULT_COURSE_THUMBNAIL
-            }
+            imageUrl={!!thumbnailUrl ? thumbnailUrl : DEFAULT_COURSE_THUMBNAIL}
             w="100%"
             h="10rem"
             alt={name}
             borderRadius="md"
           />
           <Text fontWeight="600" lineHeight="1.25">
-            {name}
+            {!!name ? name : "[Tên khoá học]"}
           </Text>
 
           <Flex alignItems="center" gap="0.5rem" color={COLORS.twilightBlue}>
             <BsPerson />
-            <Text fontSize="0.75rem">{teacherName}</Text>
+            <Text fontSize="0.75rem">
+              {!!teacherName ? teacherName : "[Tên giáo viên]"}
+            </Text>
           </Flex>
           <Flex alignItems="center" gap="0.5rem" color={COLORS.twilightBlue}>
             <BsStar />
