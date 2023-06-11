@@ -42,6 +42,8 @@ const CourseMain: FC<CourseMainProps> = ({
   const [hasPaused, setHasPaused] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
 
+  const isStudent = userRole === UserRole.student;
+
   const {
     data: viewsCount,
     isLoading: isGetStudentViewsCountLoading,
@@ -51,7 +53,7 @@ const CourseMain: FC<CourseMainProps> = ({
       studentId: currentUser?.uid as string,
     },
     {
-      skip: !currentUser?.uid || userRole !== UserRole.student,
+      skip: !currentUser?.uid || !isStudent,
     }
   );
 
@@ -77,7 +79,7 @@ const CourseMain: FC<CourseMainProps> = ({
   };
 
   const showToastAndSubmitViewsCount = useCallback(async () => {
-    if (hasPaused || !currentUser?.uid || !videoKey) return;
+    if (hasPaused || !currentUser?.uid || !videoKey || !isStudent) return;
     const newViewsCount = viewsCountOfCurrentVideo + 1;
     try {
       await updateStudentViewsCount({
@@ -96,6 +98,7 @@ const CourseMain: FC<CourseMainProps> = ({
     videoKey,
     currentUser,
     updateStudentViewsCount,
+    isStudent,
   ]);
 
   const handleClickDisablingBox = useCallback(() => {
