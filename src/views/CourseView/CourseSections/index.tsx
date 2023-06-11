@@ -15,11 +15,13 @@ import { UserRole } from "@/types/permission";
 type CourseSectionsProps = {
   course: ICourseDetails;
   disabledLessons: IDisabledLesson[];
+  selectedLesson: ICourseLesson | null;
   onLessonSelected: (lesson: ICourseLesson) => void;
   onDisabledLessonSelected: () => void;
 };
 const CourseSections: FC<CourseSectionsProps> = ({
   course,
+  selectedLesson,
   disabledLessons = [],
   onLessonSelected = () => {},
   onDisabledLessonSelected,
@@ -68,6 +70,7 @@ const CourseSections: FC<CourseSectionsProps> = ({
       )}
       {sections?.map((sec) => (
         <CourseSection
+          selectedLesson={selectedLesson}
           viewsCount={viewsCount}
           disabledLessons={disabledLessons}
           section={sec}

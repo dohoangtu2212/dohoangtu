@@ -29,11 +29,13 @@ type CourseMainProps = {
   course: ICourseDetails;
   disabledLessons: IDisabledLesson[];
   selectedLesson: ICourseLesson | null;
+  onVideoEnded: () => void;
 };
 const CourseMain: FC<CourseMainProps> = ({
   course,
   selectedLesson,
   disabledLessons = [],
+  onVideoEnded,
 }) => {
   const currentUser = useCurrentUserSelector();
   const userRole = useUserRoleSelector();
@@ -72,7 +74,9 @@ const CourseMain: FC<CourseMainProps> = ({
     setHasPaused(true);
   };
 
-  const handleEndVideo = () => {};
+  const handleEndVideo = () => {
+    onVideoEnded?.();
+  };
 
   const handlePlayVideo = () => {
     setHasStarted(true);

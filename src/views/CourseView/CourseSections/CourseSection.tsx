@@ -23,17 +23,20 @@ import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import { useUserRoleSelector } from "@/store/slices/user";
 import { UserRole } from "@/types/permission";
+import { COLORS } from "@/constants/theme";
 dayjs.extend(duration);
 
 type CourseSectionProps = {
   section: ICourseSection;
   disabledLessons: IDisabledLesson[];
+  selectedLesson: ICourseLesson | null;
   onLessonSelected: (lesson: ICourseLesson) => void;
   onDisabledLessonSelected: () => void;
   viewsCount?: IStudentCourse["viewsCount"];
 };
 const CourseSection: FC<CourseSectionProps> = ({
   section,
+  selectedLesson,
   disabledLessons = [],
   onLessonSelected,
   onDisabledLessonSelected,
@@ -82,6 +85,8 @@ const CourseSection: FC<CourseSectionProps> = ({
             {section.lessons?.map((lesson) => {
               const lessionVideoViewsCount =
                 viewsCount?.[lesson.dyntubeKey] ?? 0;
+              const isActive =
+                selectedLesson?.order === `${section.order}.${lesson.order}`;
 
               const isDisabled = !!disabledLessons.find(
                 (dL) =>
@@ -98,6 +103,8 @@ const CourseSection: FC<CourseSectionProps> = ({
               return (
                 <Flex
                   alignItems="flex-start"
+                  p="0.5rem"
+                  borderRadius="lg"
                   gap="1rem"
                   key={lesson.order}
                   cursor={isDisabled ? "not-allowed" : "pointer"}
@@ -108,6 +115,7 @@ const CourseSection: FC<CourseSectionProps> = ({
                       order: `${section.order}.${lesson.order}`,
                     });
                   }}
+                  bgColor={isActive ? COLORS.whiteSatin : "initial"}
                 >
                   <Box py="0.125rem">
                     <Checkbox isChecked={false} isDisabled />

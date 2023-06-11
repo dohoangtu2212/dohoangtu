@@ -104,11 +104,39 @@ const CourseView = () => {
     router.push(ROUTE.cart);
   }, [course, closeAddToCartModal, dispatch, router]);
 
+  const handleCurrentVideoEnded = useCallback(() => {
+    if (!selectedLesson || !courseDetails) return;
+    const { order } = selectedLesson;
+    const [sectionOrder, lessonOrder] = order.toString().split(".");
+
+    const { sections } = courseDetails;
+    const sectionIdx = sections.findIndex(
+      (s) => s.order.toString() === sectionOrder.toString()
+    );
+    let section = sections[sectionIdx];
+    if (!section) return;
+    const lessonIdx = section.lessons.findIndex(
+      (l) => l.order.toString() === lessonOrder.toString()
+    );
+    let nextLesson = section.lessons[lessonIdx + 1];
+    if (!nextLesson) {
+      section = sections[sectionIdx + 1];
+      nextLesson = section.lessons[0];
+    }
+
+    setSelectedLesson({
+      ...nextLesson,
+      order: `${section.order}.${nextLesson.order}`,
+    });
+  }, [selectedLesson, courseDetails]);
+
   useEffect(() => {
     if (!!courseDetails && !!courseDetails.sections[0].lessons?.[0]) {
+      const section = courseDetails.sections[0];
+      const lesson = section.lessons[0];
       setSelectedLesson({
-        ...courseDetails.sections[0].lessons[0],
-        order: `${courseDetails.sections[0].order}.${courseDetails.sections[0].lessons[0].order}`,
+        ...lesson,
+        order: `${section.order}.${lesson.order}`,
       });
     }
   }, [courseDetails]);
@@ -164,6 +192,7 @@ const CourseView = () => {
         <Flex flexDir={{ base: "column", md: "row" }}>
           <Box flex="3">
             <CourseMain
+              onVideoEnded={handleCurrentVideoEnded}
               course={courseDetails}
               selectedLesson={selectedLesson}
               disabledLessons={disabledLessons}
@@ -172,6 +201,8 @@ const CourseView = () => {
           <Box flex="1">
             <CourseSections
               disabledLessons={disabledLessons}
+              selectedLesson={selectedLesson}
+
               course={courseDetails}
               onLessonSelected={setSelectedLesson}
               onDisabledLessonSelected={handleSelectDisabledLesson}
