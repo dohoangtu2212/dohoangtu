@@ -12,7 +12,10 @@ export const ROUTE = {
   courses: "/courses",
   books: "/books",
   documents: "/documents",
+
   store: "/store",
+  storeCourseDetails: "/store/courses/[courseId]",
+
   contact: "/contact",
   features: "/features",
   cart: "/cart",
@@ -30,4 +33,5 @@ export const PUBLIC_ROUTES = [
   ROUTE.features,
   ROUTE.cart,
   ROUTE.demoCourseView,
+  ROUTE.storeCourseDetails,
 ];

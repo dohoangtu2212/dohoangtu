@@ -8,7 +8,7 @@ const TeacherCoursesPage = () => {
       <Head>
         <title>GV | Khoá học</title>
       </Head>
-      <PageContainer>
+      <PageContainer w="100%">
         <TeacherCourses />
       </PageContainer>
     </>

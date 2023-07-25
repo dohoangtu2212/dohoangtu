@@ -52,11 +52,11 @@ const Hero = () => {
 
   return (
     <Flex
-      gap={{ base: "1rem", md: "1rem" }}
+      gap={{ base: "1rem", md: "2rem" }}
       flexDir={{ base: "column", md: "row" }}
       py={{ base: "1rem", md: "2rem" }}
     >
-      <Flex flex="1" flexDir="column" alignItems="center">
+      <Flex flex="1" flexDir="column" alignItems="center" pr='2rem'>
         <Box w={{ base: "100%", md: "35rem" }}>
           <Box fontFamily="Roboto Slab">
             <Text

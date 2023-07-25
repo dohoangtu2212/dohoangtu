@@ -17,7 +17,7 @@ const TeacherCourses = () => {
 
   return (
     <Flex flexDir="column">
-      <Flex alignItems="center" justifyContent="space-between">
+      <Flex alignItems="flex-start" justifyContent="space-between">
         <Text fontWeight="600" textTransform="uppercase">
           Khoá học đã tạo
         </Text>

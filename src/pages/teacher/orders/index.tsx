@@ -8,7 +8,7 @@ const TeacherOrdersPage = () => {
       <Head>
         <title>GV | Đơn hàng</title>
       </Head>
-      <PageContainer>
+      <PageContainer w="100%">
         <TeacherOrders />
       </PageContainer>
     </>

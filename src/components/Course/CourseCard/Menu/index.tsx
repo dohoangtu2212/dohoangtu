@@ -1,5 +1,5 @@
 import { ICourse } from "@/types/course";
-import { Text, Flex, Button, IconButton, Tag, Box } from "@chakra-ui/react";
+import { Text, Flex, Button, IconButton } from "@chakra-ui/react";
 import { FC } from "react";
 import { BsCartPlus, BsHeart, BsEye } from "react-icons/bs";
 import dayjs from "dayjs";
@@ -32,7 +32,7 @@ const Menu: FC<MenuProps> = ({ course, isPurchased }) => {
     router.push(ROUTE.cart);
   };
 
-  const isAddedToCard = cartCourses.find((c) => c.id === course.id);
+  const isAddedToCard = !!cartCourses.find((c) => c.id === course.id);
 
   return (
     <Flex flexDir="column" p="0.5rem" gap="0.5rem">
@@ -52,61 +52,87 @@ const Menu: FC<MenuProps> = ({ course, isPurchased }) => {
       </Text>
       <Text fontSize="0.875rem">{description}</Text>
       {!isPurchased && (
-        <Flex pt="1rem" flexDir="column" gap="0.5rem">
-          {isAddedToCard && (
-            <Flex
-              color="orange.400"
-              w="fit-content"
-              gap="0.5rem"
-              alignItems="center"
-            >
-              <MdCheck size="1.25rem" />
-              <Text fontSize="0.75rem" fontWeight="500">
-                Đã được thêm vào giỏ
-              </Text>
-            </Flex>
-          )}
-          <Flex alignItems="center" gap="1rem">
-            {isAddedToCard ? (
-              <Button
-                leftIcon={<BsEye size="1.25rem" />}
-                flex="1"
-                variant="outline"
-                onClick={handleGoToCart}
-                isDisabled={userRole === UserRole.teacher}
-              >
-                Xem giỏ hàng
-              </Button>
-            ) : (
-              <Button
-                leftIcon={<BsCartPlus size="1.25rem" />}
-                flex="1"
-                onClick={handleAddToCart}
-                isDisabled={userRole === UserRole.teacher}
-              >
-                Bỏ vào giỏ
-              </Button>
-            )}
-            <IconButton
-              aria-label="wishlist"
-              icon={<BsHeart size="1.25rem" />}
-              isDisabled={userRole === UserRole.teacher}
-            />
-          </Flex>
-        </Flex>
+        <PublicActions
+          isAddedToCard={isAddedToCard}
+          onGoToCart={handleGoToCart}
+          onAddToCart={handleAddToCart}
+        />
       )}
-      {isPurchased && (
+      {isPurchased && <PrivateActions />}
+    </Flex>
+  );
+};
+
+type PublicActionsProps = {
+  isAddedToCard?: boolean;
+  onGoToCart?: () => void;
+  onAddToCart?: () => void;
+};
+const PublicActions: FC<PublicActionsProps> = ({
+  isAddedToCard,
+  onGoToCart,
+  onAddToCart,
+}) => {
+  const userRole = useUserRoleSelector();
+
+  return (
+    <Flex pt="1rem" flexDir="column" gap="0.5rem">
+      {isAddedToCard && (
         <Flex
-          alignItems="center"
+          color="orange.400"
+          w="fit-content"
           gap="0.5rem"
-          bgColor={COLORS.whiteSatin}
-          p="0.25rem 0.5rem"
-          borderRadius="lg"
+          alignItems="center"
         >
-          <MdCheckCircle size="1.25rem" />
-          <Text>Bạn đã sở hữu khoá học này</Text>
+          <MdCheck size="1.25rem" />
+          <Text fontSize="0.75rem" fontWeight="500">
+            Đã được thêm vào giỏ
+          </Text>
         </Flex>
       )}
+      <Flex alignItems="center" gap="1rem">
+        {isAddedToCard ? (
+          <Button
+            leftIcon={<BsEye size="1.25rem" />}
+            flex="1"
+            variant="outline"
+            onClick={onGoToCart}
+            isDisabled={userRole === UserRole.teacher}
+          >
+            Xem giỏ hàng
+          </Button>
+        ) : (
+          <Button
+            leftIcon={<BsCartPlus size="1.25rem" />}
+            flex="1"
+            onClick={onAddToCart}
+            isDisabled={userRole === UserRole.teacher}
+          >
+            Bỏ vào giỏ
+          </Button>
+        )}
+        <IconButton
+          aria-label="wishlist"
+          icon={<BsHeart size="1.25rem" />}
+          isDisabled={userRole === UserRole.teacher}
+        />
+      </Flex>
+    </Flex>
+  );
+};
+
+type PrivateActionsProps = {};
+const PrivateActions: FC<PrivateActionsProps> = () => {
+  return (
+    <Flex
+      alignItems="center"
+      gap="0.5rem"
+      bgColor={COLORS.whiteSatin}
+      p="0.25rem 0.5rem"
+      borderRadius="lg"
+    >
+      <MdCheckCircle size="1.25rem" />
+      <Text>Bạn đã sở hữu khoá học này</Text>
     </Flex>
   );
 };

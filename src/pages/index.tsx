@@ -8,9 +8,7 @@ const HomePage = () => {
       <Head>
         <title>Trang chủ</title>
       </Head>
-      <PageContainer>
-        <Home />
-      </PageContainer>
+      <Home />
     </>
   );
 };

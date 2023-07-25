@@ -9,6 +9,9 @@ import { IoMdCart } from "react-icons/io";
 import { DEFAULT_COURSE_THUMBNAIL } from "@/constants/course";
 import useMobile from "@/hooks/useMobile";
 import { COLORS } from "@/constants/theme";
+import { motion } from "framer-motion";
+import { useRouter } from "next/router";
+import { ROUTE } from "@/constants/route";
 
 type DisplayProps = {
   course: ICourse;
@@ -17,6 +20,7 @@ type DisplayProps = {
 const Display = forwardRef<HTMLDivElement, DisplayProps>(
   ({ course, onToggleMenu = () => {} }, ref) => {
     const { isMobile } = useMobile();
+    const router = useRouter();
     const cartCourses = useCartCoursesSelector();
     const {
       name,
@@ -26,20 +30,32 @@ const Display = forwardRef<HTMLDivElement, DisplayProps>(
       ratingCount,
       price,
       previousPrice,
+      id: courseId,
     } = course;
 
     const isAddedToCard = !!cartCourses.find((c) => c.id === course.id);
 
     return (
       <Card
-        variant="outline"
-        p="0.75rem"
+        as={motion.div}
+        whileHover={{ scale: 1.1 }}
+        variant="unstyled"
         cursor="pointer"
         position="relative"
         h="100%"
         onMouseOver={() => onToggleMenu(true)}
         onClick={() => {
-          if (isMobile) onToggleMenu(true);
+          // TODO: handle different navigation for mobile
+          if (isMobile) {
+            return onToggleMenu(true);
+          }
+
+          router.push({
+            pathname: ROUTE.storeCourseDetails,
+            query: {
+              courseId,
+            },
+          });
         }}
         ref={ref}
       >
@@ -65,38 +81,39 @@ const Display = forwardRef<HTMLDivElement, DisplayProps>(
             alt={name}
             borderRadius="md"
           />
-          <Text fontWeight="600" lineHeight="1.25">
-            {!!name ? name : "[Tên khoá học]"}
-          </Text>
-
-          <Flex alignItems="center" gap="0.5rem" color={COLORS.twilightBlue}>
-            <BsPerson />
-            <Text fontSize="0.75rem">
-              {!!teacherName ? teacherName : "[Tên giáo viên]"}
+          <Flex flexDir="column" p="0.25rem 0.75rem 1rem" gap="0.5rem">
+            <Text fontWeight="600" lineHeight="1.25">
+              {!!name ? name : "[Tên khoá học]"}
             </Text>
-          </Flex>
-          <Flex alignItems="center" gap="0.5rem" color={COLORS.twilightBlue}>
-            <BsStar />
-            <Text fontSize="0.75rem">
-              <Text as="span">
-                Đánh giá: {!!rating ? `${rating}/5` : "Cập nhật..."}
-              </Text>{" "}
-              {!!ratingCount && (
-                <Text as="span">({ratingCount?.toLocaleString()})</Text>
-              )}
-            </Text>
-          </Flex>
-          <Flex alignItems="flex-end" gap="0.5rem">
-            <Text fontWeight="600">{displayPrice(price)}</Text>
-            {!!previousPrice && (
-              <Text
-                fontSize="0.875rem"
-                textDecoration="line-through"
-                color={COLORS.summerBlue}
-              >
-                {displayPrice(previousPrice)}
+            <Flex alignItems="center" gap="0.5rem" color={COLORS.twilightBlue}>
+              <BsPerson />
+              <Text fontSize="0.75rem">
+                {!!teacherName ? teacherName : "[Tên giáo viên]"}
               </Text>
-            )}
+            </Flex>
+            <Flex alignItems="center" gap="0.5rem" color={COLORS.twilightBlue}>
+              <BsStar />
+              <Text fontSize="0.75rem">
+                <Text as="span">
+                  Đánh giá: {!!rating ? `${rating}/5` : "Cập nhật..."}
+                </Text>{" "}
+                {!!ratingCount && (
+                  <Text as="span">({ratingCount?.toLocaleString()})</Text>
+                )}
+              </Text>
+            </Flex>
+            <Flex alignItems="flex-end" gap="0.5rem">
+              <Text fontWeight="600">{displayPrice(price)}</Text>
+              {!!previousPrice && (
+                <Text
+                  fontSize="0.875rem"
+                  textDecoration="line-through"
+                  color={COLORS.summerBlue}
+                >
+                  {displayPrice(previousPrice)}
+                </Text>
+              )}
+            </Flex>
           </Flex>
         </Flex>
       </Card>

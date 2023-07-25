@@ -331,7 +331,7 @@ const DrawerStyles = {
 };
 
 export const theme = extendTheme({
-  breakpoints,
+  // breakpoints,
   fonts: {
     body: "Quicksand, sans-serif",
   },

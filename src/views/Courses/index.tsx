@@ -48,12 +48,18 @@ const Courses = () => {
         Danh sách khoá học
       </Text>
       {isLoading && <Spinner color={COLORS.twilightBlue} />}
-      <Grid templateColumns={`repeat(${isMobile ? 1 : 5}, 1fr)`} gap="1rem">
+      <Grid templateColumns={`repeat(${isMobile ? 1 : 4}, 1fr)`} gap="1rem">
         {courses?.map((course) => {
           const isPurchased = !!studentCourses.find(
             (c) => c.courseId === course.id
           );
-          return <CourseCard course={course} key={course.id} isPurchased={isPurchased}/>;
+          return (
+            <CourseCard
+              course={course}
+              key={course.id}
+              isPurchased={isPurchased}
+            />
+          );
         })}
       </Grid>
     </Flex>

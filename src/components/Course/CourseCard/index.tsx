@@ -12,6 +12,7 @@ import { FC, useState } from "react";
 import Menu from "@/components/Course/CourseCard/Menu";
 import Display from "@/components/Course/CourseCard/Display";
 import useMobile from "@/hooks/useMobile";
+import { useRouter } from "next/router";
 
 type CourseCardProps = {
   course: ICourse;
@@ -22,7 +23,7 @@ const CourseCard: FC<CourseCardProps> = ({ course, isPurchased }) => {
   const [showMenu, setShowMenu] = useState(false);
 
   return (
-    <Box onMouseLeave={() => setShowMenu(false)} px="0.5rem">
+    <Box onMouseLeave={() => setShowMenu(false)}>
       <Popover
         isOpen={showMenu}
         placement={isMobile ? "bottom" : "right-start"}
