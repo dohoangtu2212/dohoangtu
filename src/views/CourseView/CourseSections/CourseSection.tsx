@@ -28,10 +28,10 @@ dayjs.extend(duration);
 
 type CourseSectionProps = {
   section: ICourseSection;
-  disabledLessons: IDisabledLesson[];
-  selectedLesson: ICourseLesson | null;
-  onLessonSelected: (lesson: ICourseLesson) => void;
-  onDisabledLessonSelected: () => void;
+  disabledLessons?: IDisabledLesson[];
+  selectedLesson?: ICourseLesson | null;
+  onLessonSelected?: (lesson: ICourseLesson) => void;
+  onDisabledLessonSelected?: () => void;
   viewsCount?: IStudentCourse["viewsCount"];
 };
 const CourseSection: FC<CourseSectionProps> = ({

@@ -15,10 +15,10 @@ import { COLORS } from "@/constants/theme";
 
 type CourseSectionsProps = {
   course: ICourseDetails;
-  disabledLessons: IDisabledLesson[];
-  selectedLesson: ICourseLesson | null;
-  onLessonSelected: (lesson: ICourseLesson) => void;
-  onDisabledLessonSelected: () => void;
+  disabledLessons?: IDisabledLesson[];
+  selectedLesson?: ICourseLesson | null;
+  onLessonSelected?: (lesson: ICourseLesson) => void;
+  onDisabledLessonSelected?: () => void;
 };
 const CourseSections: FC<CourseSectionsProps> = ({
   course,
@@ -68,11 +68,11 @@ const CourseSections: FC<CourseSectionsProps> = ({
             <Text fontWeight="600">MỤC LỤC</Text>
             {isLoading && <Spinner size="sm" color={COLORS.twilightBlue} />}
           </Flex>
-          <IconButton
+          {/* <IconButton
             aria-label="close"
             icon={<MdClose size="1.25rem" />}
             variant="ghost"
-          />
+          /> */}
         </Flex>
       )}
       {sections?.map((sec) => (

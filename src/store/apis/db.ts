@@ -52,7 +52,7 @@ const dbApis = createApi({
           const snapshot = await get(child(dbRef, `${DB_KEY.courses}/${id}`));
           if (snapshot.exists()) {
             const data = snapshot.val() as ICourse;
-            return { data };
+            return { data: { ...data, id } };
           } else {
             throw new Error("No data available");
           }
@@ -418,6 +418,6 @@ export const {
   useGetStudentCoursesQuery,
   useGetStudentViewsCountQuery,
   useUpdateStudentViewsCountMutation,
-  useUpdateStudentCourseProgressMutation
+  useUpdateStudentCourseProgressMutation,
 } = dbApis;
 export default dbApis;

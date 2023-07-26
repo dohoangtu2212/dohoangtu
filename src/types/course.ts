@@ -56,6 +56,7 @@ export interface ICourseDetails {
   hours: number;
   courseId?: string;
   sections: ICourseSection[];
+  overview?: string;
 }
 
 export type INewCourseDetails = Omit<ICourseDetails, "id"> & {

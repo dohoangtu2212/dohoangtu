@@ -19,21 +19,6 @@ type MenuProps = {
 };
 const Menu: FC<MenuProps> = ({ course, isPurchased }) => {
   const { name, description, hours, lessons, updatedAt } = course;
-  const dispatch = useDispatch();
-  const userRole = useUserRoleSelector();
-  const cartCourses = useCartCoursesSelector();
-  const router = useRouter();
-
-  const handleAddToCart = () => {
-    dispatch(cartActions.addCourse(course));
-  };
-
-  const handleGoToCart = () => {
-    router.push(ROUTE.cart);
-  };
-
-  const isAddedToCard = !!cartCourses.find((c) => c.id === course.id);
-
   return (
     <Flex flexDir="column" p="0.5rem" gap="0.5rem">
       <Text fontWeight="600" lineHeight="1.25">
@@ -51,29 +36,30 @@ const Menu: FC<MenuProps> = ({ course, isPurchased }) => {
         {hours} giờ | {lessons} bài giảng
       </Text>
       <Text fontSize="0.875rem">{description}</Text>
-      {!isPurchased && (
-        <PublicActions
-          isAddedToCard={isAddedToCard}
-          onGoToCart={handleGoToCart}
-          onAddToCart={handleAddToCart}
-        />
-      )}
+      {!isPurchased && <PublicActions course={course} />}
       {isPurchased && <PrivateActions />}
     </Flex>
   );
 };
 
 type PublicActionsProps = {
-  isAddedToCard?: boolean;
-  onGoToCart?: () => void;
-  onAddToCart?: () => void;
+  course: ICourse;
 };
-const PublicActions: FC<PublicActionsProps> = ({
-  isAddedToCard,
-  onGoToCart,
-  onAddToCart,
-}) => {
+const PublicActions: FC<PublicActionsProps> = ({ course }) => {
+  const dispatch = useDispatch();
   const userRole = useUserRoleSelector();
+  const cartCourses = useCartCoursesSelector();
+  const router = useRouter();
+
+  const handleAddToCart = () => {
+    dispatch(cartActions.addCourse(course));
+  };
+
+  const handleGoToCart = () => {
+    router.push(ROUTE.cart);
+  };
+
+  const isAddedToCard = !!cartCourses.find((c) => c.id === course.id);
 
   return (
     <Flex pt="1rem" flexDir="column" gap="0.5rem">
@@ -96,7 +82,7 @@ const PublicActions: FC<PublicActionsProps> = ({
             leftIcon={<BsEye size="1.25rem" />}
             flex="1"
             variant="outline"
-            onClick={onGoToCart}
+            onClick={handleGoToCart}
             isDisabled={userRole === UserRole.teacher}
           >
             Xem giỏ hàng
@@ -105,7 +91,7 @@ const PublicActions: FC<PublicActionsProps> = ({
           <Button
             leftIcon={<BsCartPlus size="1.25rem" />}
             flex="1"
-            onClick={onAddToCart}
+            onClick={handleAddToCart}
             isDisabled={userRole === UserRole.teacher}
           >
             Bỏ vào giỏ
