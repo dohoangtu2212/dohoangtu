@@ -63,7 +63,7 @@ export type INewCourseDetails = Omit<ICourseDetails, "id"> & {
 };
 
 export interface IStudentCourse {
-  id: string;
+  id?: string;
   courseId: string;
   courseDetailsId: string;
   progress: number;

@@ -165,7 +165,7 @@ const CourseView = () => {
       !viewsCount ||
       isUnauthorizedStudent ||
       !currentUser ||
-      !matchedStudentCourse
+      !matchedStudentCourse?.id
     )
       return;
     const courseViewedVideoKeys = courseVideoKeys.filter((key) =>
