@@ -141,6 +141,7 @@ const TdPaymentConfirmation: FC<TdPaymentConfirmationProps> = ({ order }) => {
                   <Image
                     src={screenshotUrl}
                     loader={() => screenshotUrl}
+                    unoptimized
                     alt="screenshot"
                     fill
                     style={{

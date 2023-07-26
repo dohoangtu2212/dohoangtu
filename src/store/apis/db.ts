@@ -309,6 +309,27 @@ const dbApis = createApi({
       },
       invalidatesTags: [TAG.studentCourses],
     }),
+    updateStudentCourseProgress: build.mutation<
+      number,
+      { studentId: string; studentCourseId: string; progress: number }
+    >({
+      async queryFn({ studentId, studentCourseId, progress }) {
+        try {
+          const db = getDatabase();
+          const updates: Updates = {};
+          updates[
+            `/${DB_KEY.students}/${studentId}/courses/${studentCourseId}/progress`
+          ] = progress;
+
+          await update(ref(db), updates);
+          return { data: progress };
+        } catch (e) {
+          return { error: JSON.stringify(e) };
+        }
+      },
+      invalidatesTags: [TAG.studentCourses],
+    }),
+    // TODO: optimize method of updating this
     getStudentCourses: build.query<IStudentCourse[], { userId: string }>({
       async queryFn({ userId }) {
         try {
@@ -397,5 +418,6 @@ export const {
   useGetStudentCoursesQuery,
   useGetStudentViewsCountQuery,
   useUpdateStudentViewsCountMutation,
+  useUpdateStudentCourseProgressMutation
 } = dbApis;
 export default dbApis;

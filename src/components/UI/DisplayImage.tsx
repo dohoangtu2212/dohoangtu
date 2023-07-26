@@ -14,7 +14,7 @@ const DisplayImage: FC<DisplayImageProps> = ({
 }) => {
   return (
     <Box position="relative" overflow="hidden" {...boxProps}>
-      <Image loader={() => imageUrl} src={imageUrl} alt={alt} fill />
+      <Image loader={() => imageUrl} src={imageUrl} alt={alt} fill unoptimized/>
     </Box>
   );
 };

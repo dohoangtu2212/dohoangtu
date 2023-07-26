@@ -1,5 +1,7 @@
 import { Flex, Text, Spinner, Grid, Button } from "@chakra-ui/react";
-import { useGetStudentCoursesQuery } from "@/store/apis/db";
+import {
+  useGetStudentCoursesQuery,
+} from "@/store/apis/db";
 import { useCurrentUserSelector } from "@/store/slices/user";
 import useMobile from "@/hooks/useMobile";
 import { AiOutlineShop } from "react-icons/ai";
@@ -22,7 +24,7 @@ const StudentCourses = () => {
     },
     {
       skip: !currentUser?.uid,
-      refetchOnMountOrArgChange: true
+      refetchOnMountOrArgChange: true,
     }
   );
 
@@ -44,7 +46,7 @@ const StudentCourses = () => {
           Đến cửa hàng
         </Button>
       </Flex>
-      <Grid templateColumns={`repeat(${isMobile ? 1 : 5}, 1fr)`} gap="1rem">
+      <Grid templateColumns={`repeat(${isMobile ? 1 : 4}, 1fr)`} gap="1rem">
         {studentCourses?.map((course) => (
           <StudentCourseCard key={course.courseId} course={course} />
         ))}

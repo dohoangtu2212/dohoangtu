@@ -94,6 +94,8 @@ const CourseSection: FC<CourseSectionProps> = ({
                   dL.sectionOrder === section.order
               );
 
+              const isViewed = !!lessionVideoViewsCount;
+
               const dayjsLessonDuration = dayjs.duration(
                 (lesson.duration ?? 0) * 1000
               );
@@ -118,7 +120,7 @@ const CourseSection: FC<CourseSectionProps> = ({
                   bgColor={isActive ? COLORS.whiteSatin : "initial"}
                 >
                   <Box py="0.125rem">
-                    <Checkbox isChecked={false} isDisabled />
+                    <Checkbox isChecked={isViewed} isDisabled />
                   </Box>
                   <Box w="100%">
                     <Text fontSize="0.875rem" fontWeight="500">

@@ -1,4 +1,4 @@
-import { Flex, Text, IconButton } from "@chakra-ui/react";
+import { Flex, Text, IconButton, Spinner } from "@chakra-ui/react";
 import { MdClose } from "react-icons/md";
 import CourseSection from "@/views/CourseView/CourseSections/CourseSection";
 import { ICourseDetails, ICourseLesson } from "@/types/course";
@@ -11,6 +11,7 @@ import {
   useCurrentUserSelector,
 } from "@/store/slices/user";
 import { UserRole } from "@/types/permission";
+import { COLORS } from "@/constants/theme";
 
 type CourseSectionsProps = {
   course: ICourseDetails;
@@ -44,6 +45,9 @@ const CourseSections: FC<CourseSectionsProps> = ({
     }
   );
 
+  const isLoading =
+    isGetStudentViewsCountFetching || isGetStudentViewsCountLoading;
+
   return (
     <Flex
       flexDir="column"
@@ -60,7 +64,10 @@ const CourseSections: FC<CourseSectionsProps> = ({
           justifyContent="space-between"
           alignItems="center"
         >
-          <Text fontWeight="600">MỤC LỤC</Text>
+          <Flex alignItems="center" gap="1rem">
+            <Text fontWeight="600">MỤC LỤC</Text>
+            {isLoading && <Spinner size="sm" color={COLORS.twilightBlue} />}
+          </Flex>
           <IconButton
             aria-label="close"
             icon={<MdClose size="1.25rem" />}

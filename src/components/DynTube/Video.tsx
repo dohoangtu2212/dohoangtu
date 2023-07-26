@@ -63,6 +63,7 @@ const Video: FC<VideoProps> = ({
     <>
       {dynTubeKey && (
         <>
+          <Script type="text/javascript" src="/static/dyntube-script.js" />
           <Box
             w="40rem"
             minH="20rem"

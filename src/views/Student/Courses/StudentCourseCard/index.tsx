@@ -12,7 +12,14 @@ type StudentCourseCardProps = {
   course: IStudentCourse;
 };
 const StudentCourseCard: FC<StudentCourseCardProps> = ({ course }) => {
-  const { thumbnailUrl, name, teacherName, progress, courseDetailsId, courseId } = course;
+  const {
+    thumbnailUrl,
+    name,
+    teacherName,
+    progress,
+    courseDetailsId,
+    courseId,
+  } = course;
   const router = useRouter();
   const [showMenu, setShowMenu] = useState(false);
 
@@ -24,6 +31,7 @@ const StudentCourseCard: FC<StudentCourseCardProps> = ({ course }) => {
         onMouseOver={() => setShowMenu(true)}
         onMouseLeave={() => setShowMenu(false)}
       >
+        <Progress value={progress} h="0.4rem" borderRadius="lg" />
         <Box position="relative" borderRadius="md" overflow="hidden">
           <Flex
             position="absolute"
@@ -53,9 +61,7 @@ const StudentCourseCard: FC<StudentCourseCardProps> = ({ course }) => {
             />
           </Flex>
           <DisplayImage
-            imageUrl={
-              !!thumbnailUrl ? thumbnailUrl : DEFAULT_COURSE_THUMBNAIL
-            }
+            imageUrl={!!thumbnailUrl ? thumbnailUrl : DEFAULT_COURSE_THUMBNAIL}
             w="100%"
             h="10rem"
             alt={name}
@@ -73,7 +79,6 @@ const StudentCourseCard: FC<StudentCourseCardProps> = ({ course }) => {
             {teacherName}
           </Text>
         </Flex>
-        <Progress value={progress} h="0.4rem" borderRadius="lg" />
       </Flex>
     </Card>
   );

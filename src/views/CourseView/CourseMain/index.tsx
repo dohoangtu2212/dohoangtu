@@ -12,7 +12,7 @@ const Video = dynamic(() => import("@/components/DynTube/Video"), {
 });
 import { MdSearch } from "react-icons/md";
 import { ICourseDetails, ICourseLesson, IDisabledLesson } from "@/types/course";
-import { FC, useCallback, useEffect, useState } from "react";
+import { FC, useCallback, useEffect, useState, useMemo } from "react";
 import { COLORS } from "@/constants/theme";
 import {
   useGetStudentViewsCountQuery,
@@ -26,13 +26,13 @@ import { UserRole } from "@/types/permission";
 import useCustomToast from "@/hooks/useCustomToast";
 
 type CourseMainProps = {
-  course: ICourseDetails;
+  courseDetails: ICourseDetails;
   disabledLessons: IDisabledLesson[];
   selectedLesson: ICourseLesson | null;
   onVideoEnded: () => void;
 };
 const CourseMain: FC<CourseMainProps> = ({
-  course,
+  courseDetails,
   selectedLesson,
   disabledLessons = [],
   onVideoEnded,
@@ -124,7 +124,7 @@ const CourseMain: FC<CourseMainProps> = ({
     setHasStarted(false);
   }, [selectedLesson]);
 
-  if (!course || !videoKey) return null;
+  if (!courseDetails || !videoKey) return null;
 
   return (
     <Flex flexDir="column" w="100%">

@@ -14,13 +14,14 @@ export default function App({ Component, ...rest }: AppProps) {
   const { pageProps } = props;
 
   return (
-    <ChakraProvider theme={theme}>
-      <ReduxProvider store={store}>
-        <Script type="text/javascript" src="/static/dyntube-script.js" />
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
-      </ReduxProvider>
-    </ChakraProvider>
+    <>
+      <ChakraProvider theme={theme}>
+        <ReduxProvider store={store}>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </ReduxProvider>
+      </ChakraProvider>
+    </>
   );
 }
