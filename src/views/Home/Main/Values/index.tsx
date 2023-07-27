@@ -6,30 +6,30 @@ const DEMO_VIDEO_URL =
 
 const VALUES = [
   {
-    title: "Bài giảng từ cơ bản đến nâng cao 9+",
+    title: "Trọn bộ bài giảng ôn thi đại học từ cơ bản đến nâng cao",
     description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis.",
+      "Khóa học cung cấp đầy đủ nội dung lí thuyết và bài tập cần thiết cho kì thi TN THPT môn Toán. Bao gồm 7 chương lớp 12 và 5 bài lớp 11. Kết hợp tư duy bản chất với phương pháp giải nhanh.",
     videoUrl:
       "https://firebasestorage.googleapis.com/v0/b/online-classroom-de70d.appspot.com/o/assets%2FSo1.mp4?alt=media&token=fc5a610e-2dde-40bd-adf1-ebf27e38103f",
   },
   {
-    title: "Lí thuyết được minh hoạ bằng hình động",
+    title: "Lí thuyết được minh họa bằng hình động",
     description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis.",
+      "Các bài học lí thuyết được minh họa bằng hình vẽ trực quan, sinh động và cực kì cuốn hút. Đảm bảo tiếp thu kiến thức một cách hiệu quả nhất.",
     videoUrl:
       "https://firebasestorage.googleapis.com/v0/b/online-classroom-de70d.appspot.com/o/assets%2FSo2.mp4?alt=media&token=a1119ee0-ad24-46db-9945-ee89bf10cd07",
   },
   {
-    title: "Bài tập được giải cụ thể, chi tiết",
+    title: "Mô phỏng các khái niệm và hình vẽ không gian trừu tượng",
     description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis.",
+      "Hình học không gian trở nên dễ dàng hơn với các hình vẽ được xây dựng một cách công phu và bắt mắt.",
     videoUrl:
       "https://firebasestorage.googleapis.com/v0/b/online-classroom-de70d.appspot.com/o/assets%2FSo3.mp4?alt=media&token=9bd433d5-6a41-432c-a368-473159a9c4c1",
   },
   {
-    title: "Hỗ trợ, hướng dẫn 24/7 mọi thắc mắc",
+    title: "Giải bài tập chi tiết",
     description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis.",
+      "Hướng dẫn cụ thể các bước biến đổi trong bài tập, các kiến thức liên quan. Hỗ trợ giải đáp thắc mắc đầy đủ cho học sinh.",
     videoUrl:
       "https://firebasestorage.googleapis.com/v0/b/online-classroom-de70d.appspot.com/o/assets%2FSo4.mp4?alt=media&token=452f4efb-f421-4d5e-a415-3545c408b37d",
   },
