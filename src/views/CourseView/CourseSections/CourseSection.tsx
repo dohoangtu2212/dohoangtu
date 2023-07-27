@@ -1,7 +1,6 @@
 import {
   ICourseSection,
   ICourseLesson,
-  ICourseLessonType,
   IDisabledLesson,
   IStudentCourse,
 } from "@/types/course";
@@ -14,16 +13,14 @@ import {
   AccordionPanel,
   Text,
   Flex,
-  Checkbox,
 } from "@chakra-ui/react";
 import { reduce } from "lodash";
 import { FC } from "react";
-import { MdOndemandVideo, MdAssignment } from "react-icons/md";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import { useUserRoleSelector } from "@/store/slices/user";
 import { UserRole } from "@/types/permission";
-import { COLORS } from "@/constants/theme";
+import CourseLesson from "@/components/Course/CourseLesson";
 dayjs.extend(duration);
 
 type CourseSectionProps = {
@@ -94,61 +91,25 @@ const CourseSection: FC<CourseSectionProps> = ({
                   dL.sectionOrder === section.order
               );
 
-              const isViewed = !!lessionVideoViewsCount;
-
-              const dayjsLessonDuration = dayjs.duration(
-                (lesson.duration ?? 0) * 1000
-              );
-              const lessonDurationInMinutes =
-                Math.round(dayjsLessonDuration.asMinutes() * 100) / 100;
+              const handleClick = () => {
+                if (isDisabled) return onDisabledLessonSelected?.();
+                onLessonSelected?.({
+                  ...lesson,
+                  order: `${section.order}.${lesson.order}`,
+                });
+              };
 
               return (
-                <Flex
-                  alignItems="flex-start"
-                  p="0.5rem"
-                  borderRadius="lg"
-                  gap="1rem"
+                <CourseLesson
+                  lesson={lesson}
+                  onClick={handleClick}
+                  isActive={isActive}
+                  isDisabled={isDisabled}
+                  lessonOrder={`${section.order}.${lesson.order}`}
+                  showViewCount={isStudent}
+                  viewsCount={lessionVideoViewsCount}
                   key={lesson.order}
-                  cursor={isDisabled ? "not-allowed" : "pointer"}
-                  onClick={() => {
-                    if (isDisabled) return onDisabledLessonSelected?.();
-                    onLessonSelected?.({
-                      ...lesson,
-                      order: `${section.order}.${lesson.order}`,
-                    });
-                  }}
-                  bgColor={isActive ? COLORS.whiteSatin : "initial"}
-                >
-                  <Box py="0.125rem">
-                    <Checkbox isChecked={isViewed} isDisabled />
-                  </Box>
-                  <Box w="100%">
-                    <Text fontSize="0.875rem" fontWeight="500">
-                      Bài {section.order}.{lesson.order}: {lesson.name}
-                    </Text>
-                    <Flex
-                      alignItems="center"
-                      color="gray.500"
-                      justifyContent="space-between"
-                    >
-                      <Flex alignItems="center" gap="0.5rem">
-                        {lesson.type === ICourseLessonType.video ? (
-                          <MdOndemandVideo />
-                        ) : (
-                          <MdAssignment />
-                        )}
-                        <Text fontSize="0.675rem">
-                          {lessonDurationInMinutes} phút
-                        </Text>
-                      </Flex>
-                      {isStudent && (
-                        <Text fontSize="0.675rem">
-                          Lượt xem: {lessionVideoViewsCount}/20
-                        </Text>
-                      )}
-                    </Flex>
-                  </Box>
-                </Flex>
+                />
               );
             })}
           </Flex>

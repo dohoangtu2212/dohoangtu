@@ -16,9 +16,10 @@ import {
   Box,
   Button,
   IconButton,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { COLORS } from "@/constants/theme";
-import { ICourse, ICourseDetails, ICourseSection } from "@/types/course";
+import { ICourse, ICourseDetails } from "@/types/course";
 import { FC } from "react";
 import PageBreadcrumb from "@/components/UI/PageBreadcrumb";
 import { IBreadcrumbLink } from "@/components/UI/PageBreadcrumb/types";
@@ -38,6 +39,7 @@ import { MdCheck, MdCheckCircle } from "react-icons/md";
 import { useDispatch } from "react-redux";
 import { cartActions } from "@/store/slices/cart";
 import { useCartCoursesSelector } from "@/store/slices/cart";
+import CoursePreviewModal from "@/components/Course/CoursePreviewModal";
 
 const CourseDetails = () => {
   const router = useRouter();
@@ -117,6 +119,12 @@ type MainProps = {
 };
 const Main: FC<MainProps> = ({ courseDetails, course, isPurchased }) => {
   const {
+    isOpen: isPreviewModalOpen,
+    onClose: onClosePreviewModal,
+    onOpen: onOpenPreviewModal,
+  } = useDisclosure();
+
+  const {
     name,
     description,
     teacherName,
@@ -129,43 +137,53 @@ const Main: FC<MainProps> = ({ courseDetails, course, isPurchased }) => {
   const { price, previousPrice } = course;
 
   return (
-    <Flex flexDir="column" w="100%">
-      <Breadcrumb />
-      <Flex gap="3rem" alignItems="flex-start" w="100%">
-        {/* Overview */}
-        <Flex flex="6.5" flexDir="column" gap="1.5rem">
-          <Flex flexDir="column" gap="1rem">
-            <Flex flexDir="column" gap="0.5rem">
-              <Text fontSize="1.5rem" fontFamily="Roboto Slab">
-                {name}
-              </Text>
-              <Text>{description}</Text>
+    <>
+      <CoursePreviewModal
+        isOpen={isPreviewModalOpen}
+        onClose={onClosePreviewModal}
+        courseDetails={courseDetails}
+      />
+      <Flex flexDir="column" w="100%">
+        <Breadcrumb />
+        <Flex gap="3rem" alignItems="flex-start" w="100%">
+          {/* Overview */}
+          <Flex flex="6.5" flexDir="column" gap="1.5rem">
+            <Flex flexDir="column" gap="1rem">
+              <Flex flexDir="column" gap="0.5rem">
+                <Text fontSize="1.5rem" fontFamily="Roboto Slab">
+                  {name}
+                </Text>
+                <Text>{description}</Text>
+              </Flex>
+              <Flex flexDir="column" gap="0.5rem">
+                <CourseTeacher teacherName={teacherName} />
+                <CourseRating rating={rating} ratingCount={ratingCount} />
+              </Flex>
             </Flex>
-            <Flex flexDir="column" gap="0.5rem">
-              <CourseTeacher teacherName={teacherName} />
-              <CourseRating rating={rating} ratingCount={ratingCount} />
-            </Flex>
+            <Divider />
+            <CourseOverview overview={overview} />
+            <CourseContent courseDetails={courseDetails} />
           </Flex>
-          <Divider />
-          <CourseOverview overview={overview} />
-          <CourseContent courseDetails={courseDetails} />
-        </Flex>
-        {/* Preview */}
-        <Flex flex="3.5" boxShadow="md" minH="10rem" flexDir="column">
-          <Box p="0.5rem">
-            <PlayableThumbnail thumbnailUrl={thumbnailUrl} onPlay={() => {}} />
-          </Box>
-          <Flex flexDir="column" p="1rem 1.5rem" gap="1rem">
-            <CoursePrice previousPrice={previousPrice} price={price} />
-            {isPurchased ? (
-              <PrivateActions />
-            ) : (
-              <PublicActions course={course} />
-            )}
+          {/* Preview */}
+          <Flex flex="3.5" boxShadow="md" minH="10rem" flexDir="column">
+            <Box p="0.5rem">
+              <PlayableThumbnail
+                thumbnailUrl={thumbnailUrl}
+                onPlay={onOpenPreviewModal}
+              />
+            </Box>
+            <Flex flexDir="column" p="1rem 1.5rem" gap="1rem">
+              <CoursePrice previousPrice={previousPrice} price={price} />
+              {isPurchased ? (
+                <PrivateActions />
+              ) : (
+                <PublicActions course={course} />
+              )}
+            </Flex>
           </Flex>
         </Flex>
       </Flex>
-    </Flex>
+    </>
   );
 };
 

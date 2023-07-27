@@ -133,7 +133,7 @@ const CourseMain: FC<CourseMainProps> = ({
           Bài {selectedLesson.order}: {selectedLesson?.name}
         </Text>
       )}
-      <Box bgColor="red" position="relative">
+      <Box position="relative">
         {isLimitViewsReached && (
           <Box
             w="100%"
