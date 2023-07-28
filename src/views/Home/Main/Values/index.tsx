@@ -54,7 +54,7 @@ const Values = () => {
             alignItems="center"
           >
             <Box borderRadius="lg" overflow="hidden" flex="1">
-              <video autoPlay muted loop controls={isMobile}>
+              <video autoPlay muted loop>
                 <source src={value.videoUrl} type="video/mp4" />
               </video>
             </Box>
