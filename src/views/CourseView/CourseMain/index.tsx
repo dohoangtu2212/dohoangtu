@@ -167,7 +167,8 @@ const CourseMain: FC<CourseMainProps> = ({
           aria-label="search"
           icon={<MdSearch size="1.25rem" />}
         />
-        <ActionButton>Tổng quan</ActionButton>
+        {/* TODO: change to tabs */}
+        <ActionButton>Khái quát khoá học</ActionButton>
         <ActionButton variant="ghost">Hỏi đáp</ActionButton>
         <ActionButton variant="ghost">Lưu ý</ActionButton>
         <ActionButton variant="ghost">Thông báo</ActionButton>

@@ -31,6 +31,7 @@ const INITIAL_VALUES: ICourseFormValues = {
   name: "",
   description: "",
   thumbnailUrl: "",
+  overview: "",
   thumbnailFile: null,
   teacherName: "",
   hours: 0,
@@ -104,6 +105,7 @@ const TeacherCoursesNew = () => {
         description: courseDetails.description,
         thumbnailUrl: courseDetails.thumbnailUrl,
         teacherName: courseDetails.teacherName,
+        overview: courseDetails.overview,
         hours: courseDetails.hours,
         lessons: course?.lessons,
         price: course.price,
@@ -128,6 +130,7 @@ const TeacherCoursesNew = () => {
       thumbnailUrl,
       teacherName,
       hours,
+      overview,
       lessons,
       price,
       sections,
@@ -140,6 +143,7 @@ const TeacherCoursesNew = () => {
       teacherName,
       hours,
       sections,
+      overview,
     };
     const courseData: INewCourse = {
       name,

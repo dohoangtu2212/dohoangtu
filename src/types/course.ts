@@ -81,6 +81,7 @@ export interface IStudentCourse {
 export interface ICourseFormValues {
   name: string;
   description: string;
+  overview?: string;
   thumbnailUrl: string;
   thumbnailFile: File | null;
   teacherName: string;
