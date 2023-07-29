@@ -52,14 +52,17 @@ const Tiptap: FC<TiptapProps> = ({
   onHtmlChange,
   defaultValue = "Cập nhật...",
 }) => {
-  const editor = useEditor({
-    extensions: [StarterKit],
-    content: defaultValue,
-    onUpdate: ({ editor }) => {
-      const html = editor.getHTML();
-      onHtmlChange?.(html);
+  const editor = useEditor(
+    {
+      extensions: [StarterKit],
+      content: defaultValue,
+      onUpdate: ({ editor }) => {
+        const html = editor.getHTML();
+        onHtmlChange?.(html);
+      },
     },
-  });
+    [defaultValue]
+  );
 
   return (
     <Flex
