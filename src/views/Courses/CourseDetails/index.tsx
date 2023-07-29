@@ -40,6 +40,7 @@ import { useDispatch } from "react-redux";
 import { cartActions } from "@/store/slices/cart";
 import { useCartCoursesSelector } from "@/store/slices/cart";
 import CoursePreviewModal from "@/components/Course/CoursePreviewModal";
+import CourseOverview from "@/components/Course/CourseOverview";
 
 const CourseDetails = () => {
   const router = useRouter();
@@ -215,20 +216,6 @@ const CourseRating: FC<CourseRatingProps> = ({ rating, ratingCount }) => {
           <Text as="span">({ratingCount?.toLocaleString()})</Text>
         )}
       </Text>
-    </Flex>
-  );
-};
-
-type CourseOverviewProps = {
-  overview?: string;
-};
-const CourseOverview: FC<CourseOverviewProps> = ({ overview }) => {
-  return (
-    <Flex flexDir="column" gap="0.5rem">
-      <Text fontSize="1.25rem" fontWeight="700">
-        Khái quát khoá học
-      </Text>
-      <Text>{overview ?? "Cập nhật..."}</Text>
     </Flex>
   );
 };
