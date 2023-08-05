@@ -6,8 +6,8 @@ const HomePage = () => {
     <>
       <Head>
         <title>Trang chủ</title>
-        <meta name="description" content="Đỗ Hoàng Tú" key="desc" />
-        <meta property="og:title" content="Đỗ Hoàng Tú" />
+        <meta name="description" content="Chinh phục môn TOÁN kì thi THPT QG cùng Đỗ Hoàng Tú" key="desc" />
+        <meta property="og:title" content="Chinh phục môn TOÁN kì thi THPT QG cùng Đỗ Hoàng Tú" />
         <meta
           property="og:description"
           content="Chinh phục môn TOÁN kì thi THPT QG"
