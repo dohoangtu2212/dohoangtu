@@ -1,4 +1,3 @@
-import useMobile from "@/hooks/useMobile";
 import { Flex, Box, Text } from "@chakra-ui/react";
 
 const DEMO_VIDEO_URL =
@@ -36,7 +35,6 @@ const VALUES = [
 ];
 
 const Values = () => {
-  const { isMobile } = useMobile();
   return (
     <Flex flexDir="column" alignItems="center" gap="2rem">
       {VALUES.map((value, idx) => {
@@ -50,7 +48,8 @@ const Values = () => {
               md: isEven ? "row" : "row-reverse",
             }}
             w={{ base: "100%", md: "80%" }}
-            gap={{ base: "1rem", md: "4rem" }}
+            px={{ base: "0.25rem", md: "0" }}
+            gap={{ base: "1rem", md: "2rem", lg: "4rem" }}
             alignItems="center"
           >
             <Box borderRadius="lg" overflow="hidden" flex="1">
@@ -60,12 +59,12 @@ const Values = () => {
             </Box>
             <Flex flex="1" flexDir="column" px={{ base: "1rem", md: "0" }}>
               <Text
-                fontSize={{ base: "1.25rem", md: "1.5rem" }}
+                fontSize={{ base: "1.25rem", lg: "1.5rem" }}
                 fontWeight="700"
               >
                 {value.title}
               </Text>
-              <Text fontSize={{ base: "0.875rem", md: "1rem" }}>
+              <Text fontSize={{ base: "0.875rem", lg: "1rem" }}>
                 {value.description}
               </Text>
             </Flex>
