@@ -7,8 +7,10 @@ import { COLORS } from "@/constants/theme";
 import { useCurrentUserSelector } from "@/store/slices/user";
 import { useUserRoleSelector } from "@/store/slices/user";
 import { UserRole } from "@/types/permission";
+import { FC } from "react";
 
-const Courses = () => {
+type CoursesProps = {};
+const Courses: FC<CoursesProps> = () => {
   const { isMobile } = useMobile();
   const currentUser = useCurrentUserSelector();
   const userRole = useUserRoleSelector();
@@ -50,9 +52,12 @@ const Courses = () => {
       {isLoading && <Spinner color={COLORS.twilightBlue} />}
       <Grid templateColumns={`repeat(${isMobile ? 1 : 4}, 1fr)`} gap="1rem">
         {courses?.map((course) => {
+          const { showInStore } = course;
           const isPurchased = !!studentCourses.find(
             (c) => c.courseId === course.id
           );
+          if (!showInStore) return null;
+
           return (
             <CourseCard
               course={course}

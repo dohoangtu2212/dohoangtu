@@ -1,4 +1,4 @@
-import type { ICourseFormValues } from "@/types/course";
+import { ICourseFormFields, type ICourseFormValues } from "@/types/course";
 import type { FormikHelpers } from "formik";
 import type { FC } from "react";
 import {
@@ -8,6 +8,7 @@ import {
   Input,
   Textarea,
   Text,
+  Switch,
 } from "@chakra-ui/react";
 import { displayPrice } from "@/utils/display";
 import FileInput from "@/components/Input/FileInput";
@@ -32,22 +33,25 @@ const Listing: FC<ListingProps> = ({
   const [previewThumbnailUrl, setpreviewThumbnailUrl] = useState("");
 
   const handleChangeName = (name: string) => {
-    handleSetFieldValue("name", name);
+    handleSetFieldValue(ICourseFormFields.name, name);
   };
 
   const handleChangeTeacherName = (name: string) => {
-    handleSetFieldValue("teacherName", name);
+    handleSetFieldValue(ICourseFormFields.teacherName, name);
   };
 
   const handleChangeDescription = (des: string) => {
-    handleSetFieldValue("description", des);
+    handleSetFieldValue(ICourseFormFields.description, des);
   };
 
   const handleChangePrice = (price: number) => {
-    handleSetFieldValue("price", price);
+    handleSetFieldValue(ICourseFormFields.price, price);
   };
   const handleChangePreviousPrice = (price: number) => {
-    handleSetFieldValue("previousPrice", price);
+    handleSetFieldValue(ICourseFormFields.previousPrice, price);
+  };
+  const handleChangeShowInStore = (show: boolean) => {
+    handleSetFieldValue(ICourseFormFields.showInStore, show);
   };
 
   const handleChangeThumbnail = useCallback(
@@ -64,6 +68,17 @@ const Listing: FC<ListingProps> = ({
 
   return (
     <Flex flexDir="column" alignItems="flex-start" gap="1rem" py="1rem">
+      <FormControl display="flex" alignItems="center">
+        <FormLabel htmlFor="email-alerts" mb="0">
+          Hiển thị trong cửa hàng
+        </FormLabel>
+        <Switch
+          id="email-alerts"
+          isChecked={values.showInStore}
+          onChange={(ev) => handleChangeShowInStore(ev.target.checked)}
+        />
+      </FormControl>
+
       {/* TÊN */}
       <FormControl>
         <FormLabel>TÊN KHOÁ HỌC</FormLabel>

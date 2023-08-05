@@ -38,6 +38,7 @@ const INITIAL_VALUES: ICourseFormValues = {
   lessons: 0,
   price: 0,
   previousPrice: 0,
+  showInStore: false,
   sections: [
     {
       order: 0,
@@ -105,13 +106,14 @@ const TeacherCoursesNew = () => {
         description: courseDetails.description,
         thumbnailUrl: courseDetails.thumbnailUrl,
         teacherName: courseDetails.teacherName,
-        overview: courseDetails.overview,
+        overview: courseDetails.overview ?? "",
         hours: courseDetails.hours,
         lessons: course?.lessons,
         price: course.price,
         previousPrice: course.previousPrice ?? null,
         sections: courseDetails.sections ?? [],
         thumbnailFile: null,
+        showInStore: course.showInStore,
       };
     }
 
@@ -135,6 +137,7 @@ const TeacherCoursesNew = () => {
       price,
       sections,
       previousPrice,
+      showInStore = false,
     } = values;
     const courseDetailsData: INewCourseDetails = {
       name,
@@ -156,6 +159,7 @@ const TeacherCoursesNew = () => {
       previousPrice,
       courseDetailsId: "",
       updatedAt: dayjs().toString(),
+      showInStore,
     };
 
     try {
@@ -199,8 +203,9 @@ const TeacherCoursesNew = () => {
             thumbnailUrl,
             courseDetailsId: newCourseDetailsId,
           },
-        });
+        }).unwrap();
       }
+
       toast(
         `Khoá học "${name} đã được ${isEditMode ? "cập nhật" : "lưu"}."`,
         "success"

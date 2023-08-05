@@ -11,11 +11,12 @@ import {
   IconButton,
   Text,
   Tooltip,
+  Box,
 } from "@chakra-ui/react";
 import { useGetCoursesQuery } from "@/store/apis/db";
 import { displayPrice } from "@/utils/display";
 import DisplayImage from "@/components/UI/DisplayImage";
-import { MdPlayArrow, MdOutlineEdit } from "react-icons/md";
+import { MdPlayArrow, MdOutlineEdit, MdStore } from "react-icons/md";
 import { ICourse } from "@/types/course";
 import { useDispatch } from "react-redux";
 import { courseActions } from "@/store/slices/course";
@@ -84,17 +85,31 @@ type TdThumbnailProps = {
   course: ICourse;
 };
 const TdThumbnail: FC<TdThumbnailProps> = ({ course }) => {
+  const { name, thumbnailUrl, showInStore } = course;
+
   return (
     <Td w="10%" minW="fit-content">
-      <DisplayImage
-        alt={course.name}
-        imageUrl={
-          !!course.thumbnailUrl ? course.thumbnailUrl : DEFAULT_COURSE_THUMBNAIL
-        }
-        w="10rem"
-        h="6rem"
-        borderRadius="lg"
-      />
+      <Box position="relative">
+        {showInStore && (
+          <Box
+            position="absolute"
+            zIndex="10"
+            bgColor="white"
+            top="0.25rem"
+            left="0.25rem"
+            borderRadius="md"
+          >
+            <MdStore size="1.5rem" />
+          </Box>
+        )}
+        <DisplayImage
+          alt={name}
+          imageUrl={!!thumbnailUrl ? thumbnailUrl : DEFAULT_COURSE_THUMBNAIL}
+          w="10rem"
+          h="6rem"
+          borderRadius="lg"
+        />
+      </Box>
     </Td>
   );
 };

@@ -15,6 +15,7 @@ export interface ICourse {
   courseDetailsId: string;
   slug?: string;
   studentIds?: string[];
+  showInStore?: boolean;
 }
 
 export type INewCourse = Omit<ICourse, "id" | "rating" | "ratingCount"> & {
@@ -78,18 +79,33 @@ export interface IStudentCourse {
   } | null;
 }
 
+export enum ICourseFormFields {
+  name = "name",
+  description = "description",
+  overview = "overview",
+  thumbnailUrl = "thumbnailUrl",
+  thumbnailFile = "thumbnailFile",
+  teacherName = "teacherName",
+  hours = "hours",
+  lessons = "lessons",
+  price = "price",
+  previousPrice = "previousPrice",
+  sections = "sections",
+  showInStore = "showInStore",
+}
 export interface ICourseFormValues {
-  name: string;
-  description: string;
-  overview?: string;
-  thumbnailUrl: string;
-  thumbnailFile: File | null;
-  teacherName: string;
-  hours: number;
-  lessons: number;
-  price: number;
-  previousPrice: number | null;
-  sections: ICourseSection[];
+  [ICourseFormFields.name]: string;
+  [ICourseFormFields.description]: string;
+  [ICourseFormFields.overview]?: string;
+  [ICourseFormFields.thumbnailUrl]: string;
+  [ICourseFormFields.thumbnailFile]: File | null;
+  [ICourseFormFields.teacherName]: string;
+  [ICourseFormFields.hours]: number;
+  [ICourseFormFields.lessons]: number;
+  [ICourseFormFields.price]: number;
+  [ICourseFormFields.previousPrice]: number | null;
+  [ICourseFormFields.sections]: ICourseSection[];
+  [ICourseFormFields.showInStore]?: boolean;
 }
 
 export type IDisabledLesson = {
