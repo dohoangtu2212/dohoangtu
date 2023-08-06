@@ -1,4 +1,3 @@
-import Main from "./Main";
 import { Flex } from "@chakra-ui/react";
 import Hero from "@/views/Home/Hero";
 import Values from "@/views/Home/Values";
