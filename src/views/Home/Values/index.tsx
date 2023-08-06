@@ -57,7 +57,7 @@ const Values = () => {
       alignItems="center"
       gap="2rem"
       backgroundColor="gray.200"
-      py={{ base: "1rem", md: "1.5rem", lg: "2rem" }}
+      py='2rem'
     >
       {VALUES.map((value, idx) => {
         return <Value value={value} idx={idx} key={value.title} />;

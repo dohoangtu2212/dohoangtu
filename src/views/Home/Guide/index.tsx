@@ -8,7 +8,7 @@ import { ImageProps } from "next/image";
 const Guide = () => {
   return (
     <Flex flexDir="column" position="relative" alignItems="center" py="2rem">
-      <Text fontSize={{ base: "1.75rem", md: "2.5rem" }} fontWeight="700">
+      <Text fontSize={{ base: "1.75rem", lg: "2.25rem" }} fontWeight="700">
         Quy trình đăng kí học
       </Text>
       <Flex

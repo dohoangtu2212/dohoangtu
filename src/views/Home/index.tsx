@@ -2,6 +2,7 @@ import { Flex } from "@chakra-ui/react";
 import Hero from "@/views/Home/Hero";
 import Values from "@/views/Home/Values";
 import Guide from "@/views/Home/Guide";
+import Feedbacks from "@/views/Home/Feedbacks";
 
 const Home = () => {
   return (
@@ -15,6 +16,7 @@ const Home = () => {
         <Hero />
         <Values />
         <Guide />
+        <Feedbacks />
       </Flex>
     </>
   );
