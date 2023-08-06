@@ -45,7 +45,7 @@ const Feedbacks: FC<FeedbacksProps> = () => {
             <Flex alignItems="center" justifyContent="center">
               <Box
                 position="relative"
-                w="20rem"
+                w={{ base: "20rem", lg: "30rem" }}
                 aspectRatio="5/1"
                 borderRadius="md"
                 overflow="hidden"

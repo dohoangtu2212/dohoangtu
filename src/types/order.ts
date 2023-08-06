@@ -17,4 +17,4 @@ export type INewOrder = Omit<IOrder, "id"> & {
   screenshot?: File;
 };
 
-export type IPaymentMethod = "VCB" | "Momo";
+export type IPaymentMethod = "Bank" | "Momo";
