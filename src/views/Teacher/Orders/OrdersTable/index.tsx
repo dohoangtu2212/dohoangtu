@@ -122,7 +122,7 @@ const TdPaymentConfirmation: FC<TdPaymentConfirmationProps> = ({ order }) => {
       {!!paymentMethod && !!screenshotUrl && (
         <>
           <Flex justifyContent="center" alignItems="center" gap="0.5rem">
-            <Text>{paymentMethod}</Text>
+            <Text>{paymentMethod === "Momo" ? "Momo" : "Chuyển khoản"}</Text>
             <Tooltip label="Xem hình ảnh xác nhận">
               <IconButton
                 aria-label="view"
@@ -136,7 +136,7 @@ const TdPaymentConfirmation: FC<TdPaymentConfirmationProps> = ({ order }) => {
             <ModalOverlay />
             <ModalContent>
               <ModalCloseButton fontSize="1rem" />
-              <ModalBody>
+              <ModalBody pt='2.5rem'>
                 <Box position="relative" w="100%" h="40rem">
                   <Image
                     src={screenshotUrl}

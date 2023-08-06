@@ -55,7 +55,7 @@ const Cart = () => {
     onOpen: onOpenAuthModal,
     onClose: onCloseAuthModal,
   } = useDisclosure();
-  const [paymentMethod, setPaymentMethod] = useState<IPaymentMethod>("VCB");
+  const [paymentMethod, setPaymentMethod] = useState<IPaymentMethod>("Bank");
   const [screenshot, setScreenshot] = useState<File | null>(null);
 
   const handleSubmitOrder = useCallback(async () => {

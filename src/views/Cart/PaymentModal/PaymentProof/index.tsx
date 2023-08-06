@@ -40,7 +40,7 @@ const PaymentProof: FC<PaymentProofProps> = ({ onChange, image }) => {
         >
           <Image
             src={previewUrl}
-            alt="vcb"
+            alt="bank"
             fill
             style={{
               objectFit: "contain",

@@ -17,10 +17,10 @@ type PaymentMethodProps = {
   onChange: (method: IPaymentMethod) => void;
 };
 const PaymentMethod: FC<PaymentMethodProps> = ({ paymentMethod, onChange }) => {
-  const tabIndex = paymentMethod === "VCB" ? 0 : 1;
+  const tabIndex = paymentMethod === "Bank" ? 0 : 1;
 
   const handleTabIndexChange = (idx: number) => {
-    onChange(idx === 0 ? "VCB" : "Momo");
+    onChange(idx === 0 ? "Bank" : "Momo");
   };
 
   return (
@@ -39,23 +39,22 @@ const PaymentMethod: FC<PaymentMethodProps> = ({ paymentMethod, onChange }) => {
       >
         <TabList>
           <Tab>
-            <Text fontSize="0.75rem" minW="7rem" textAlign="center">
-              VCB <br />
-              (Chuyển khoản)
+            <Text minW="7rem" textAlign="center">
+              Chuyển khoản
             </Text>
           </Tab>
-          <Tab>Momo</Tab>
+          <Tab isDisabled>Momo</Tab>
         </TabList>
 
         <TabPanels>
           <TabPanel>
-            <Box position="relative" w="100%" h="20rem">
+            <Box position="relative" w="100%" h="30rem">
               <Image
-                src="/images/vcb-qr.jpg"
-                alt="vcb"
+                src="/images/payments/bank-qr.png"
+                alt="bank"
                 fill
                 style={{
-                  objectFit: "contain",
+                  objectFit: "cover",
                 }}
               />
             </Box>
@@ -63,8 +62,8 @@ const PaymentMethod: FC<PaymentMethodProps> = ({ paymentMethod, onChange }) => {
           <TabPanel>
             <Box position="relative" w="100%" h="20rem">
               <Image
-                src="/images/momo-qr.jpg"
-                alt="vcb"
+                src="/images/payments/momo-qr.jpg"
+                alt="momo"
                 fill
                 style={{
                   objectFit: "contain",

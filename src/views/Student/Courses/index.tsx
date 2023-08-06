@@ -1,7 +1,5 @@
 import { Flex, Text, Spinner, Grid, Button } from "@chakra-ui/react";
-import {
-  useGetStudentCoursesQuery,
-} from "@/store/apis/db";
+import { useGetStudentCoursesQuery } from "@/store/apis/db";
 import { useCurrentUserSelector } from "@/store/slices/user";
 import useMobile from "@/hooks/useMobile";
 import { AiOutlineShop } from "react-icons/ai";
@@ -29,6 +27,9 @@ const StudentCourses = () => {
   );
 
   const isLoading = isGetStudentCoursesFetching || isGetStudentCoursesLoading;
+  const isEmpty =
+    !isLoading &&
+    (!studentCourses || (studentCourses && !studentCourses.length));
 
   return (
     <Flex flexDir="column" gap="1rem">
@@ -46,6 +47,11 @@ const StudentCourses = () => {
           Đến cửa hàng
         </Button>
       </Flex>
+      {isEmpty && (
+        <Text>
+          Bạn chưa có khoá học nào. Hãy đến cửa hàng để tìm hiểu thêm.
+        </Text>
+      )}
       <Grid templateColumns={`repeat(${isMobile ? 1 : 4}, 1fr)`} gap="1rem">
         {studentCourses?.map((course) => (
           <StudentCourseCard key={course.courseId} course={course} />
