@@ -6,7 +6,12 @@ import Guide from "@/views/Home/Guide";
 const Home = () => {
   return (
     <>
-      <Flex flexDir="column" w="100%" gap="2rem">
+      <Flex
+        flexDir="column"
+        w="100%"
+        gap="2rem"
+        py={{ base: "1rem", lg: "3rem" }}
+      >
         <Hero />
         <Values />
         <Guide />
