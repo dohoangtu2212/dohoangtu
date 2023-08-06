@@ -44,7 +44,7 @@ const VALUES = [
 ];
 
 const Values = () => {
-  const { isMobile } = useMobile();
+  const { isMobile, breakpoint } = useMobile();
 
   return (
     <Flex flexDir="column" alignItems="center" gap="2rem">
@@ -66,7 +66,11 @@ const Values = () => {
             <Box borderRadius="lg" overflow="hidden" flex="1">
               <video autoPlay muted loop playsInline>
                 <source
-                  src={isMobile ? value.videoUrlMobileUrl : value.videoUrl}
+                  src={
+                    isMobile || breakpoint === "md"
+                      ? value.videoUrlMobileUrl
+                      : value.videoUrl
+                  }
                   type="video/mp4"
                 />
               </video>
