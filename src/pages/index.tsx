@@ -6,8 +6,17 @@ const HomePage = () => {
     <>
       <Head>
         <title>Trang chủ</title>
-        <meta name="description" content="Chinh phục môn TOÁN kì thi THPT QG cùng Đỗ Hoàng Tú" key="desc" />
-        <meta property="og:title" content="Chinh phục môn TOÁN kì thi THPT QG cùng Đỗ Hoàng Tú" />
+        <meta
+          name="description"
+          content="Chinh phục môn TOÁN kì thi THPT QG cùng Đỗ Hoàng Tú"
+          key="desc"
+        />
+        <meta
+          property="og:title"
+          content="Chinh phục môn TOÁN kì thi THPT QG cùng Đỗ Hoàng Tú"
+        />
+        <meta property="og:type" content="Website" />
+        <meta property="og:url" content="https://www.dohoangtu.edu.vn" />
         <meta
           property="og:description"
           content="Chinh phục môn TOÁN kì thi THPT QG"
