@@ -57,7 +57,7 @@ const Values = () => {
       alignItems="center"
       gap="2rem"
       backgroundColor="gray.200"
-      py='2rem'
+      py="2rem"
     >
       {VALUES.map((value, idx) => {
         return <Value value={value} idx={idx} key={value.title} />;
@@ -80,14 +80,25 @@ const Value: FC<ValueProps> = ({ value, idx }) => {
 
   useEffect(() => {
     const isMobileOrTablet = isMobile || breakpoint === "md";
+    if (!videoRef.current) return;
 
     if (isMobileOrTablet) {
       setVideoSrc(videoMobileUrl);
-      videoRef.current?.load();
+      videoRef.current.src = videoMobileUrl;
+      videoRef.current.load();
+      videoRef.current.autoplay = true;
+      videoRef.current.playsInline = true;
+      videoRef.current.loop = true;
+      videoRef.current.muted = true;
       return;
     }
     setVideoSrc(videoUrl);
-    videoRef.current?.load();
+    videoRef.current.src = videoUrl;
+    videoRef.current.load();
+    videoRef.current.autoplay = true;
+    videoRef.current.playsInline = true;
+    videoRef.current.loop = true;
+    videoRef.current.muted = true;
   }, [isMobile, breakpoint, videoMobileUrl, videoUrl]);
 
   return (
