@@ -9,9 +9,9 @@ const SectionTitle: FC<SectionTitleProps> = ({
   ...inputProps
 }) => {
   return (
-    <Flex alignItems="center" gap="0.5rem" fontWeight="600" w="100%">
+    <Flex alignItems="center" gap="0.5rem" fontWeight="500" w="100%">
       <Box>
-        <Text w="max-content">CHƯƠNG {sectionOrder}:</Text>
+        <Text w="max-content">Bài {sectionOrder}:</Text>
       </Box>
       <Input type="text" {...inputProps} variant="flushed" />
     </Flex>

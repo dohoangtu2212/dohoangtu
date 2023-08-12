@@ -3,6 +3,7 @@ import {
   ICourseLesson,
   IDisabledLesson,
   IStudentCourse,
+  IStudentViewCount,
 } from "@/types/course";
 import {
   Accordion,
@@ -29,7 +30,7 @@ type CourseSectionProps = {
   selectedLesson?: ICourseLesson | null;
   onLessonSelected?: (lesson: ICourseLesson) => void;
   onDisabledLessonSelected?: () => void;
-  viewsCount?: IStudentCourse["viewsCount"];
+  viewsCount?: IStudentViewCount;
 };
 const CourseSection: FC<CourseSectionProps> = ({
   section,

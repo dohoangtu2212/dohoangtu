@@ -12,42 +12,53 @@ import {
   Tooltip,
 } from "@chakra-ui/react";
 import { FC } from "react";
-import { ICourseFormValues, ICourseSection } from "@/types/course";
-import { FormikHelpers } from "formik";
+import { ICourseLesson, ICourseSection } from "@/types/course";
 import SectionTitle from "@/views/Teacher/CoursesNew/Form/Structure/Sections/SectionTitle";
 import Lessons from "@/views/Teacher/CoursesNew/Form/Structure/Sections/Lessons";
 import { MdOutlineDelete } from "react-icons/md";
 import { COLORS } from "@/constants/theme";
 
 type SectionsProps = {
-  values: ICourseFormValues;
-  handleSetFieldValue: FormikHelpers<
-    Partial<ICourseFormValues>
-  >["setFieldValue"];
-  handleSetFieldTouched: FormikHelpers<
-    Partial<ICourseFormValues>
-  >["setFieldTouched"];
+  sections: ICourseSection[];
+  onSectionsChange: (sections: ICourseSection[]) => void;
 };
-const Sections: FC<SectionsProps> = ({
-  values,
-  handleSetFieldValue,
-  handleSetFieldTouched,
-}) => {
-  const sections = values.sections ?? [];
+const Sections: FC<SectionsProps> = ({ sections = [], onSectionsChange }) => {
   return (
     <>
       {sections.map((section, idx) => {
         const handleSectionTitleChange: InputProps["onChange"] = (ev) => {
-          handleSetFieldValue(`sections[${idx}].name`, ev.target.value);
+          const name = ev.target.value;
+          const updatedSection = {
+            ...section,
+            name,
+          };
+          const updatedSections = [...sections];
+          updatedSections.splice(idx, 1, updatedSection);
+
+          onSectionsChange(updatedSections);
         };
 
-        const handleDeleteSection = (section: ICourseSection) => () => {
-          handleSetFieldValue(
-            `sections`,
-            values.sections
-              .filter((s) => s.order !== section.order)
-              .map((section, idx) => ({ ...section, order: idx }))
+        const handleDeleteSection = () => {
+          const sectionsAfterDelete = sections?.filter(
+            (sec) => sec.order !== section.order
           );
+          const sectionsWithOrderUpdated = sectionsAfterDelete.map(
+            (sec, idx) => ({
+              ...sec,
+              order: idx + 1,
+            })
+          );
+          onSectionsChange(sectionsWithOrderUpdated);
+        };
+
+        const handleLessonsChange = (lessons: ICourseLesson[]) => {
+          const updatedSection = {
+            ...section,
+            lessons,
+          };
+          const updatedSections = [...sections];
+          updatedSections.splice(idx, 1, updatedSection);
+          onSectionsChange(updatedSections);
         };
 
         return (
@@ -66,7 +77,7 @@ const Sections: FC<SectionsProps> = ({
                 justifyContent="space-between"
                 w="100%"
                 alignItems="center"
-                p="0.5rem 1rem"
+                pl="1rem"
                 gap="1rem"
               >
                 <Box flex="1">
@@ -79,9 +90,10 @@ const Sections: FC<SectionsProps> = ({
                 <Tooltip label={`Xoá CHƯƠNG ${section.order.toString()}`}>
                   <IconButton
                     aria-label="delete"
+                    p="0"
                     icon={<MdOutlineDelete size="1.5rem" />}
                     variant="ghost"
-                    onClick={handleDeleteSection(section)}
+                    onClick={handleDeleteSection}
                   />
                 </Tooltip>
                 <AccordionButton pl="2rem" w="fit-content" p="1rem">
@@ -91,11 +103,8 @@ const Sections: FC<SectionsProps> = ({
               <Divider />
               <AccordionPanel>
                 <Lessons
-                  values={values}
                   section={section}
-                  sectionIdx={idx}
-                  handleSetFieldValue={handleSetFieldValue}
-                  handleSetFieldTouched={handleSetFieldTouched}
+                  onLessonsChange={handleLessonsChange}
                 />
               </AccordionPanel>
             </AccordionItem>

@@ -45,11 +45,9 @@ const CoursesTable = () => {
               <Th>Thumbnail</Th>
               <Th>Tên</Th>
               <Th>Giáo viên</Th>
-              <Th>Số bài giảng</Th>
-              <Th>Thời lượng</Th>
+              <Th>Chương</Th>
+              <Th>Bài giảng</Th>
               <Th>Giá tiền</Th>
-              <Th>Giá tham chiếu</Th>
-
               {/* Actions */}
               <Th />
             </Tr>
@@ -67,10 +65,9 @@ const CoursesTable = () => {
                   {course.name}
                 </Td>
                 <TdTeacherName course={course} />
+                <Td>{course.chapters}</Td>
                 <Td>{course.lessons}</Td>
-                <Td>{course.hours} giờ</Td>
                 <Td>{displayPrice(course.price)}</Td>
-                <TdPreviousPrice course={course} />
                 <TdActions course={course} />
               </Tr>
             ))}

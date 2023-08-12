@@ -37,8 +37,6 @@ const Display = forwardRef<HTMLDivElement, DisplayProps>(
 
     return (
       <Card
-        as={motion.div}
-        whileHover={{ scale: 1.1 }}
         variant="unstyled"
         cursor="pointer"
         position="relative"

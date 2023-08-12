@@ -23,7 +23,7 @@ const CourseCard: FC<CourseCardProps> = ({ course, isPurchased }) => {
   const [showMenu, setShowMenu] = useState(false);
 
   return (
-    <Box onMouseLeave={() => setShowMenu(false)}>
+    <Box onMouseLeave={() => setShowMenu(false)} px="0.5rem">
       <Popover
         isOpen={showMenu}
         placement={isMobile ? "bottom" : "right-start"}

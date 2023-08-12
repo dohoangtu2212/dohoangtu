@@ -4,6 +4,7 @@ import {
   INewCourse,
   INewCourseDetails,
   IStudentCourse,
+  IStudentViewCount,
 } from "@/types/course";
 import { INewOrder, IOrder } from "@/types/order";
 import { createApi } from "@reduxjs/toolkit/query/react";
@@ -357,7 +358,7 @@ const dbApis = createApi({
       providesTags: [TAG.studentCourses],
     }),
     getStudentViewsCount: build.query<
-      IStudentCourse["viewsCount"] | null,
+      IStudentViewCount | null,
       { studentId: string }
     >({
       async queryFn({ studentId }) {

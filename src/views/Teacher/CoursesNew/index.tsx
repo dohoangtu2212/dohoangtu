@@ -39,17 +39,23 @@ const INITIAL_VALUES: ICourseFormValues = {
   price: 0,
   previousPrice: 0,
   showInStore: false,
-  sections: [
+  chapters: [
     {
       order: 0,
       name: "Giới thiệu",
-      lessons: [
+      sections: [
         {
-          order: 1,
-          name: "",
-          type: ICourseLessonType.video,
-          duration: 0,
-          dyntubeKey: "",
+          order: 0,
+          name: "Giới thiệu",
+          lessons: [
+            {
+              order: 1,
+              name: "",
+              type: ICourseLessonType.video,
+              duration: 0,
+              dyntubeKey: "",
+            },
+          ],
         },
       ],
     },
@@ -61,7 +67,7 @@ const TeacherCoursesNew = () => {
   const toast = useCustomToast();
   const router = useRouter();
 
-  // QUERY
+  // query
   const {
     data: courseDetails,
     isLoading: isGetCourseDetailsLoading,
@@ -79,7 +85,7 @@ const TeacherCoursesNew = () => {
     { skip: !editingCourse?.courseId }
   );
 
-  // MUTATION
+  // mutation
   const [
     createCourse,
     { data: createCourseData, isLoading: createCourseIsLoading },
@@ -102,18 +108,18 @@ const TeacherCoursesNew = () => {
   const initialValues = useMemo(() => {
     if (editingCourse && !!courseDetails && !!course) {
       return {
-        name: courseDetails.name,
-        description: courseDetails.description,
-        thumbnailUrl: courseDetails.thumbnailUrl,
-        teacherName: courseDetails.teacherName,
+        name: courseDetails.name ?? "",
+        description: courseDetails.description ?? "",
+        thumbnailUrl: courseDetails.thumbnailUrl ?? "",
+        teacherName: courseDetails.teacherName ?? "",
         overview: courseDetails.overview ?? "",
-        hours: courseDetails.hours,
-        lessons: course?.lessons,
-        price: course.price,
-        previousPrice: course.previousPrice ?? null,
-        sections: courseDetails.sections ?? [],
+        hours: courseDetails.hours ?? 0,
+        lessons: course?.lessons ?? 0,
+        price: course.price ?? 0,
+        previousPrice: course.previousPrice ?? 0,
+        chapters: courseDetails.chapters ?? [],
         thumbnailFile: null,
-        showInStore: course.showInStore,
+        showInStore: course.showInStore ?? false,
       };
     }
 
@@ -135,7 +141,7 @@ const TeacherCoursesNew = () => {
       overview,
       lessons,
       price,
-      sections,
+      chapters,
       previousPrice,
       showInStore = false,
     } = values;
@@ -145,7 +151,7 @@ const TeacherCoursesNew = () => {
       thumbnailUrl,
       teacherName,
       hours,
-      sections,
+      chapters,
       overview,
     };
     const courseData: INewCourse = {
@@ -160,6 +166,7 @@ const TeacherCoursesNew = () => {
       courseDetailsId: "",
       updatedAt: dayjs().toString(),
       showInStore,
+      chapters: chapters.length,
     };
 
     try {

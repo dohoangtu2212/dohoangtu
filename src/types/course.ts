@@ -8,14 +8,17 @@ export interface ICourse {
   ratingCount?: number;
   hours: number;
   lessons: number;
+  chapters: number;
   tag?: ICourseTag;
   price: number;
   previousPrice: number | null;
   updatedAt: string;
   courseDetailsId: string;
+  showInStore?: boolean;
+
+  // unsure
   slug?: string;
   studentIds?: string[];
-  showInStore?: boolean;
 }
 
 export type INewCourse = Omit<ICourse, "id" | "rating" | "ratingCount"> & {
@@ -46,6 +49,11 @@ export interface ICourseSection {
   name: string;
   lessons: ICourseLesson[];
 }
+export interface ICourseChapter {
+  order: number;
+  name: string;
+  sections: ICourseSection[];
+}
 export interface ICourseDetails {
   id: string;
   name: string;
@@ -56,7 +64,7 @@ export interface ICourseDetails {
   ratingCount?: number;
   hours: number;
   courseId?: string;
-  sections: ICourseSection[];
+  chapters: ICourseChapter[];
   overview?: string;
 }
 
@@ -74,10 +82,12 @@ export interface IStudentCourse {
   rating: number | null;
   price: ICourse["price"];
   thumbnailUrl: ICourse["thumbnailUrl"];
-  viewsCount?: {
-    [dynTubeKey: string]: number;
-  } | null;
+  coursePackName?: string;
 }
+
+export type IStudentViewCount = {
+  [dynTubeKey: string]: number;
+} | null;
 
 export enum ICourseFormFields {
   name = "name",
@@ -90,7 +100,7 @@ export enum ICourseFormFields {
   lessons = "lessons",
   price = "price",
   previousPrice = "previousPrice",
-  sections = "sections",
+  chapters = "chapters",
   showInStore = "showInStore",
 }
 export interface ICourseFormValues {
@@ -104,7 +114,7 @@ export interface ICourseFormValues {
   [ICourseFormFields.lessons]: number;
   [ICourseFormFields.price]: number;
   [ICourseFormFields.previousPrice]: number | null;
-  [ICourseFormFields.sections]: ICourseSection[];
+  [ICourseFormFields.chapters]: ICourseChapter[];
   [ICourseFormFields.showInStore]?: boolean;
 }
 

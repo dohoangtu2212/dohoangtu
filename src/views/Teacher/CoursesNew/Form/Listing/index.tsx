@@ -99,7 +99,6 @@ const Listing: FC<ListingProps> = ({
           onChange={(e) => handleChangeTeacherName(e.target.value)}
         />
       </FormControl>
-
       {/* MÔ TẢ */}
       <FormControl>
         <FormLabel>MÔ TẢ</FormLabel>
@@ -124,8 +123,12 @@ const Listing: FC<ListingProps> = ({
         <Input
           type="number"
           placeholder="Nhập giá khoá học"
-          value={values.price}
-          onChange={(e) => handleChangePrice(e.target.valueAsNumber)}
+          value={values.price ?? ""}
+          onChange={(e) => {
+            handleChangePrice(
+              !!e.target.valueAsNumber ? e.target.valueAsNumber : 0
+            );
+          }}
         />
       </FormControl>
       {/* GIÁ THAM CHIẾU */}
@@ -144,7 +147,11 @@ const Listing: FC<ListingProps> = ({
           type="number"
           placeholder="Nhập giá tham chiếu"
           value={values.previousPrice ?? 0}
-          onChange={(e) => handleChangePreviousPrice(e.target.valueAsNumber)}
+          onChange={(e) => {
+            handleChangePreviousPrice(
+              !!e.target.valueAsNumber ? e.target.valueAsNumber : 0
+            );
+          }}
         />
       </FormControl>
       {/* THUMBNAIL */}

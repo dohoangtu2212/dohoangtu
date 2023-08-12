@@ -9,57 +9,38 @@ import {
   Tooltip,
   Box,
   Input,
-  FormControl,
-  FormLabel,
 } from "@chakra-ui/react";
 import { FC, Fragment } from "react";
 import {
   MdOndemandVideo,
   MdAssignment,
   MdAdd,
-  MdCheck,
   MdOutlineDelete,
 } from "react-icons/md";
 import {
-  ICourseFormValues,
   ICourseLesson,
   ICourseLessonType,
   ICourseSection,
 } from "@/types/course";
-import { FormikHelpers } from "formik";
 import LessonTitle from "@/views/Teacher/CoursesNew/Form/Structure/Sections/Lessons/LessonTitle";
-import VideoUploadModal from "@/views/Teacher/CoursesNew/Form/Structure/Sections/Lessons/VideoUploadModal";
-import { IUploadVideoResponse } from "@/types/dyntube";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import VideoPreviewModal from "@/views/Teacher/CoursesNew/Form/Structure/Sections/Lessons/VideoPreviewModal";
 dayjs.extend(duration);
 
 type LessonsProps = {
-  values: ICourseFormValues;
   section: ICourseSection;
-  sectionIdx: number;
-  handleSetFieldValue: FormikHelpers<
-    Partial<ICourseFormValues>
-  >["setFieldValue"];
-  handleSetFieldTouched: FormikHelpers<
-    Partial<ICourseFormValues>
-  >["setFieldTouched"];
+  onLessonsChange: (lessons: ICourseLesson[]) => void;
 };
-const Lessons: FC<LessonsProps> = ({
-  values,
-  section,
-  sectionIdx,
-  handleSetFieldValue,
-  handleSetFieldTouched,
-}) => {
+const Lessons: FC<LessonsProps> = ({ section, onLessonsChange }) => {
   const { lessons } = section;
   const handleAddNewLesson = () => {
     const { lessons = [] } = section;
     const order = !lessons.length
       ? 1
       : (lessons[lessons.length - 1].order as number) + 1;
-    handleSetFieldValue(`sections[${sectionIdx}].lessons`, [
+
+    onLessonsChange([
       ...lessons,
       {
         order,
@@ -69,20 +50,41 @@ const Lessons: FC<LessonsProps> = ({
         dyntubeKey: "",
       },
     ]);
-    handleSetFieldValue("lessons", values.lessons + 1);
+  };
+
+  // delete then update idx and order
+  const handleLessonDelete = (lesson: ICourseLesson) => () => {
+    const idx = section.lessons?.findIndex((l) => l.order === lesson.order);
+    if (idx === -1) return;
+    const lessonsAfterDelete = section.lessons?.filter(
+      (l) => l.order !== lesson.order
+    );
+    const lessonsWithOrderUpdated = lessonsAfterDelete.map((l, idx) => ({
+      ...l,
+      order: idx + 1,
+    }));
+
+    onLessonsChange(lessonsWithOrderUpdated);
+  };
+
+  const handleLessonChange = (lesson: ICourseLesson) => {
+    const { lessons } = section;
+    const idx = lessons?.findIndex((l) => l.order === lesson.order);
+    if (idx === -1) return;
+    const updatedLessons = [...lessons];
+    updatedLessons.splice(idx, 1, lesson);
+    onLessonsChange(updatedLessons);
   };
 
   return (
     <Flex flexDir="column" gap="1rem" alignItems="flex-start">
-      {lessons?.map((lesson, lessonIdx) => (
+      {lessons?.map((lesson) => (
         <Lesson
           key={`lesson-${lesson.order}`}
-          section={section}
-          sectionIdx={sectionIdx}
+          sectionOrder={section.order}
           lesson={lesson}
-          lessonIdx={lessonIdx}
-          handleSetFieldValue={handleSetFieldValue}
-          handleSetFieldTouched={handleSetFieldTouched}
+          onLessonDelete={handleLessonDelete(lesson)}
+          onLessonChange={handleLessonChange}
         />
       ))}
       <Button leftIcon={<MdAdd />} onClick={handleAddNewLesson}>
@@ -93,68 +95,53 @@ const Lessons: FC<LessonsProps> = ({
 };
 
 type LessonProps = {
-  section: ICourseSection;
-  sectionIdx: number;
+  sectionOrder?: number;
   lesson: ICourseLesson;
-  lessonIdx: number;
-  handleSetFieldValue: FormikHelpers<
-    Partial<ICourseFormValues>
-  >["setFieldValue"];
-  handleSetFieldTouched: FormikHelpers<
-    Partial<ICourseFormValues>
-  >["setFieldTouched"];
+  onLessonChange?: (lesson: ICourseLesson) => void;
+  onLessonDelete?: () => void;
 };
 const Lesson: FC<LessonProps> = ({
-  section,
-  sectionIdx,
   lesson,
-  lessonIdx,
-  handleSetFieldValue,
-  handleSetFieldTouched,
+  sectionOrder,
+  onLessonChange,
+  onLessonDelete,
 }) => {
-  const {
-    isOpen: isUploadVideoModalOpen,
-    onOpen: onOpenUploadVideoModal,
-    onClose: onCloseUploadVideoModal,
-  } = useDisclosure();
-
-  const lessonOrder = `${section.order}.${lesson.order}`;
+  const lessonOrder = `${sectionOrder}.${lesson.order}`;
   const isVideoLesson = lesson.type === ICourseLessonType.video;
 
   const handleLessonTitleChange: InputProps["onChange"] = (ev) => {
-    handleSetFieldValue(
-      `sections[${sectionIdx}].lessons[${lessonIdx}].name`,
-      ev.target.value
-    );
+    const name = ev.target.value;
+    onLessonChange?.({
+      ...lesson,
+      name,
+    });
   };
 
   const handleLessonTypeChange = (val: ICourseLessonType) => {
-    handleSetFieldValue(
-      `sections[${sectionIdx}].lessons[${lessonIdx}].type`,
-      val
-    );
+    const type = val;
+    onLessonChange?.({
+      ...lesson,
+      type,
+    });
   };
 
-  const handleLessonDurationChange: (dur: number) => void = (dur) => {
-    const dayjsDuration = dayjs.duration(dur * 1000);
-    const hours = Math.round(dayjsDuration.asHours() * 100) / 100;
-
-    handleSetFieldValue(
-      `sections[${sectionIdx}].lessons[${lessonIdx}].duration`,
-      dur
-    );
-    handleSetFieldValue("hours", hours);
+  // TODO: handle lesson duration
+  const handleLessonDurationChange: (dur: number) => void = (duration) => {
+    onLessonChange?.({
+      ...lesson,
+      duration,
+    });
   };
 
-  const handleDeleteLesson = (lesson: ICourseLesson) => async () => {
-    const idx = section.lessons?.findIndex((l) => l.order === lesson.order);
-    if (idx === -1) return;
-    await handleSetFieldValue(
-      `sections[${sectionIdx}].lessons`,
-      section.lessons
-        ?.filter((l) => l.order !== lesson.order)
-        .map((l, idx) => ({ ...l, order: idx + 1 }))
-    );
+  const handleDeleteLesson = () => async () => {
+    onLessonDelete?.();
+  };
+
+  const handleChangeVideoKey = (videoKey: string) => {
+    onLessonChange?.({
+      ...lesson,
+      dyntubeKey: videoKey,
+    });
   };
 
   return (
@@ -169,10 +156,11 @@ const Lesson: FC<LessonProps> = ({
         </Box>
         <Tooltip label={`Xoá Bài ${lessonOrder}`}>
           <IconButton
+            p="0"
             aria-label="delete"
             icon={<MdOutlineDelete size="1.5rem" />}
             variant="ghost"
-            onClick={handleDeleteLesson(lesson)}
+            onClick={handleDeleteLesson}
           />
         </Tooltip>
       </Flex>
@@ -201,22 +189,10 @@ const Lesson: FC<LessonProps> = ({
             />
           </Flex>
           <VideoLesson
-            section={section}
-            sectionIdx={sectionIdx}
-            lesson={lesson}
-            lessonIdx={lessonIdx}
-            handleSetFieldValue={handleSetFieldValue}
-            handleSetFieldTouched={handleSetFieldTouched}
+            videoKey={lesson.dyntubeKey}
+            onVideoKeyChange={handleChangeVideoKey}
           />
         </Flex>
-
-        {/* <Button
-          variant="outline"
-          leftIcon={isVideoUploaded ? <MdCheck color="green" /> : <MdAdd />}
-          onClick={onOpenUploadVideoModal}
-        >
-          Video
-        </Button> */}
       </Flex>
       <Divider />
     </Fragment>
@@ -224,45 +200,21 @@ const Lesson: FC<LessonProps> = ({
 };
 
 type VideoLessonProps = {
-  section: ICourseSection;
-  sectionIdx: number;
-  lesson: ICourseLesson;
-  lessonIdx: number;
-  handleSetFieldValue: FormikHelpers<
-    Partial<ICourseFormValues>
-  >["setFieldValue"];
-  handleSetFieldTouched: FormikHelpers<
-    Partial<ICourseFormValues>
-  >["setFieldTouched"];
+  videoKey?: string;
+  onVideoKeyChange?: (key: string) => void;
 };
-const VideoLesson: FC<VideoLessonProps> = ({
-  section,
-  sectionIdx,
-  lesson,
-  lessonIdx,
-  handleSetFieldValue,
-  handleSetFieldTouched,
-}) => {
+const VideoLesson: FC<VideoLessonProps> = ({ videoKey, onVideoKeyChange }) => {
   const {
     isOpen: isPreviewModalOpen,
     onOpen: openPreviewModal,
     onClose: closePreviewModal,
   } = useDisclosure();
 
-  const handleLessonVideoKeyChange: (videoKey: string) => void = (videoKey) => {
-    handleSetFieldValue(
-      `sections[${sectionIdx}].lessons[${lessonIdx}].dyntubeKey`,
-      videoKey
-    );
-  };
-
-  const previewVideoKey = lesson.dyntubeKey;
-
   return (
     <Flex flexDir="column" w="100%" gap="0.5rem">
-      {!!previewVideoKey && (
+      {!!videoKey && (
         <VideoPreviewModal
-          dynTubeKey={previewVideoKey}
+          dynTubeKey={videoKey}
           isOpen={isPreviewModalOpen}
           onClose={closePreviewModal}
         />
@@ -272,7 +224,7 @@ const VideoLesson: FC<VideoLessonProps> = ({
         <Button
           p="0.25rem 1rem"
           h="fit-content"
-          isDisabled={!previewVideoKey}
+          isDisabled={!videoKey}
           onClick={openPreviewModal}
         >
           Xem thử
@@ -281,8 +233,8 @@ const VideoLesson: FC<VideoLessonProps> = ({
       <Input
         type="text"
         placeholder="Nhập Video Key"
-        value={lesson.dyntubeKey}
-        onChange={(e) => handleLessonVideoKeyChange(e.target.value)}
+        value={videoKey}
+        onChange={(e) => onVideoKeyChange?.(e.target.value)}
       />
     </Flex>
   );
