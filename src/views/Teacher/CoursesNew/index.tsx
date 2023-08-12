@@ -4,6 +4,7 @@ import Form from "@/views/Teacher/CoursesNew/Form";
 import { useFormik } from "formik";
 import { formikGetErrorMessages, formikGetIsDisabled } from "@/utils/formik";
 import {
+  ICourseChapter,
   ICourseFormValues,
   INewCourse,
   INewCourseDetails,
@@ -26,6 +27,7 @@ import { useUploadCourseThumbnailMutation } from "@/store/apis/storage";
 import { ICourseLessonType } from "@/types/course";
 import { COLORS } from "@/constants/theme";
 import useCustomToast from "@/hooks/useCustomToast";
+import { reduce } from "lodash";
 
 const INITIAL_VALUES: ICourseFormValues = {
   name: "",
@@ -60,6 +62,26 @@ const INITIAL_VALUES: ICourseFormValues = {
       ],
     },
   ],
+};
+
+const getLessonsCount = (chapters: ICourseChapter[]) => {
+  return reduce(
+    chapters,
+    (count, chapter) => {
+      const { sections } = chapter;
+      const lessonsCountInSections = reduce(
+        sections,
+        (lessonsCount, section) => {
+          const { lessons } = section;
+          return lessonsCount + lessons.length;
+        },
+        0
+      );
+
+      return lessonsCountInSections + count;
+    },
+    0
+  );
 };
 
 const TeacherCoursesNew = () => {
@@ -139,7 +161,6 @@ const TeacherCoursesNew = () => {
       teacherName,
       hours,
       overview,
-      lessons,
       price,
       chapters,
       previousPrice,
@@ -154,13 +175,15 @@ const TeacherCoursesNew = () => {
       chapters,
       overview,
     };
+
+    const lessonsCount = getLessonsCount(chapters);
     const courseData: INewCourse = {
       name,
       description,
       thumbnailUrl,
       teacherName,
       hours,
-      lessons,
+      lessons: lessonsCount,
       price,
       previousPrice,
       courseDetailsId: "",
@@ -189,6 +212,7 @@ const TeacherCoursesNew = () => {
           },
           courseDetailsId,
         }).unwrap();
+
         const resUpdateCourse = await updateCourse({
           data: {
             ...courseData,
@@ -264,6 +288,7 @@ const TeacherCoursesNew = () => {
     updateCourseIsLoading ||
     updateCourseDetailsIsLoading ||
     uploadCourseThumbnailIsLoading;
+    
   const isLoading =
     isGetCourseDetailsFetching ||
     isGetCourseDetailsLoading ||

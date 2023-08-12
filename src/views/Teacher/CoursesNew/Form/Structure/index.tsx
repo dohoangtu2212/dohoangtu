@@ -61,7 +61,6 @@ const Structure: FC<StructureProps> = ({
         ],
       },
     ]);
-    handleSetFieldValue("lessons", values.lessons + 1);
   }, [values, handleSetFieldValue]);
 
   const handleChaptersChange = (chapters: ICourseChapter[]) => {
