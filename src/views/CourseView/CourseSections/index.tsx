@@ -53,7 +53,6 @@ const CourseSections: FC<CourseSectionsProps> = ({
       top="0"
       maxH="100vh"
       overflowY="auto"
-      minH="10rem"
     >
       {!isMobile && (
         <Flex

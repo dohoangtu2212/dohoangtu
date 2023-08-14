@@ -12,7 +12,6 @@ import { FC, useState } from "react";
 import Menu from "@/components/Course/CourseCard/Menu";
 import Display from "@/components/Course/CourseCard/Display";
 import useMobile from "@/hooks/useMobile";
-import { useRouter } from "next/router";
 
 type CourseCardProps = {
   course: ICourse;

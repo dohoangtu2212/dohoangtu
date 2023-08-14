@@ -146,17 +146,31 @@ const Main: FC<MainProps> = ({ courseDetails, course, isPurchased }) => {
         onClose={onClosePreviewModal}
         courseDetails={courseDetails}
       />
-      <Flex flexDir="column" w="100%">
+      <Flex flexDir="column" w="100%" h="100%">
         <Breadcrumb />
-        <Flex gap="3rem" alignItems="flex-start" w="100%">
+        <Flex
+          gap={{ base: "1rem", lg: "3rem" }}
+          py={{ base: "0.5rem", md: "0" }}
+          alignItems="flex-start"
+          w="100%"
+          flexDir={{ base: "column-reverse", md: "row" }}
+        >
           {/* Overview */}
-          <Flex flex="6.5" flexDir="column" gap="1.5rem">
-            <Flex flexDir="column" gap="1rem">
+          <Flex
+            flex="6.5"
+            flexDir="column"
+            gap={{ base: "0.5rem", md: "1.5rem" }}
+            w="100%"
+          >
+            <Flex flexDir="column" gap={{ base: "0.5rem", md: "1rem" }}>
               <Flex flexDir="column" gap="0.5rem">
-                <Text fontSize="1.5rem" fontFamily="Roboto Slab">
+                <Text
+                  fontSize={{ base: "1.375rem", md: "1.5rem" }}
+                  fontFamily="Roboto Slab"
+                >
                   {name}
                 </Text>
-                <Text>{description}</Text>
+                {!!description && <Text>{description}</Text>}
               </Flex>
               <Flex flexDir="column" gap="0.5rem">
                 <CourseTeacher teacherName={teacherName} />
@@ -165,17 +179,28 @@ const Main: FC<MainProps> = ({ courseDetails, course, isPurchased }) => {
             </Flex>
             <Divider />
             <CourseOverview overview={overview} />
-            <CourseContent sections={sections} />
+            <CourseContent courseDetails={courseDetails} />
           </Flex>
           {/* Preview */}
-          <Flex flex="3.5" boxShadow="md" minH="10rem" flexDir="column">
+          <Flex
+            flex="3.5"
+            boxShadow="md"
+            minH="10rem"
+            flexDir="column"
+            w="100%"
+            h="100%"
+          >
             <Box p="0.5rem">
               <PlayableThumbnail
                 thumbnailUrl={thumbnailUrl}
                 onPlay={onOpenPreviewModal}
               />
             </Box>
-            <Flex flexDir="column" p="1rem 1.5rem" gap="1rem">
+            <Flex
+              flexDir="column"
+              p={{ base: "0.75rem", md: "1rem 1.5rem" }}
+              gap={{ base: "0.5rem", md: "1rem" }}
+            >
               <CoursePrice previousPrice={previousPrice} price={price} />
               {isPurchased ? (
                 <PrivateActions />
@@ -223,16 +248,32 @@ const CourseRating: FC<CourseRatingProps> = ({ rating, ratingCount }) => {
 };
 
 type CourseContentProps = {
-  sections?: ICourseSection[];
+  courseDetails?: ICourseDetails;
 };
-const CourseContent: FC<CourseContentProps> = ({ sections }) => {
+const CourseContent: FC<CourseContentProps> = ({ courseDetails }) => {
+  if (!courseDetails) return null;
+  const { chapters } = courseDetails;
+
   return (
     <Flex flexDir="column" gap="0.5rem">
-      <Text fontSize="1.25rem" fontWeight="700">
+      <Text fontSize={{ base: "1rem", md: "1.25rem" }} fontWeight="700">
         Nội dung khoá học
       </Text>
-      {!!sections ? (
-        <CourseSections sections={sections} />
+      {!!chapters ? (
+        <Flex flexDir="column" gap="0.75rem">
+          {chapters.map((chapter) => {
+            const { name, order, sections } = chapter;
+
+            return (
+              <Flex flexDir="column" key={chapter.order} gap="0.25rem">
+                <Text fontWeight="600">
+                  Chương {order} : {name}
+                </Text>
+                <CourseSections sections={sections} />
+              </Flex>
+            );
+          })}
+        </Flex>
       ) : (
         <Text>Cập nhật...</Text>
       )}
@@ -247,7 +288,7 @@ type CoursePriceProps = {
 const CoursePrice: FC<CoursePriceProps> = ({ price, previousPrice }) => {
   return (
     <Flex alignItems="center" gap="1rem">
-      <Text fontWeight="600" fontSize="2rem">
+      <Text fontWeight="600" fontSize={{ base: "1.5rem", md: "2rem" }}>
         {displayPrice(price)}
       </Text>
       {!!previousPrice && (

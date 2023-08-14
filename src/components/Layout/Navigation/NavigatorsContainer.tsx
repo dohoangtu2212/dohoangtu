@@ -39,6 +39,7 @@ const NavigatorsContainer: FC<NavigatorsContainerProps> = ({ children }) => {
         isOpen={showMenu}
         onClose={() => setShowMenu(false)}
         placement="left"
+        variant="mobileMenu"
       >
         <DrawerOverlay />
         <DrawerContent>

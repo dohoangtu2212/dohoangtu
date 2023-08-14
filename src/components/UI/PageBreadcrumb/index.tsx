@@ -15,7 +15,7 @@ type PageBreadcrumbProps = {
 const PageBreadcrumb: FC<PageBreadcrumbProps> = ({ links = [] }) => {
   const router = useRouter();
   return (
-    <Box p={{ base: "1rem", md: "1.25rem 0" }}>
+    <Box p={{ base: "0.25rem", md: "1.25rem 0" }}>
       <Breadcrumb
         fontSize="0.875rem"
         lineHeight="1.25rem"

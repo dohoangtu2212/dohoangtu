@@ -35,7 +35,8 @@ const CoursePreviewModal: FC<CoursePreviewModalProps> = ({
 
   const previewlessons = useMemo(() => {
     if (!courseDetails) return [];
-    const { sections } = courseDetails;
+    const { chapters } = courseDetails;
+    const { sections = [] } = chapters?.[0];
     const parsedLessons = filter(
       flattenDeep(map(sections, (sec) => sec.lessons)),
       (le) => !!le

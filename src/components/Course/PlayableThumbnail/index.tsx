@@ -9,16 +9,8 @@ const PlayableThumbnail: FC<PlayableThumbnailProps> = ({
   thumbnailUrl,
   onPlay,
 }) => {
-  const [showMenu, setShowMenu] = useState(false);
-
   return (
-    <Box
-      position="relative"
-      borderRadius="md"
-      overflow="hidden"
-      onMouseOver={() => setShowMenu(true)}
-      onMouseLeave={() => setShowMenu(false)}
-    >
+    <Box position="relative" borderRadius="md" overflow="hidden">
       <Flex
         position="absolute"
         w="100%"
@@ -27,7 +19,6 @@ const PlayableThumbnail: FC<PlayableThumbnailProps> = ({
         zIndex="10"
         alignItems="center"
         justifyContent="center"
-        hidden={!showMenu}
       >
         <IconButton
           aria-label="play"

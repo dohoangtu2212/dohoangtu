@@ -52,11 +52,6 @@ const Courses: FC<CoursesProps> = () => {
   return (
     <Flex flexDir="column" gap="1rem" minH="100vh" py="1rem">
       <Flex flexDir="column" gap="1rem">
-        <Title>Gói khoá học</Title>
-        <Text>Cập nhật...</Text>
-      </Flex>
-      <Divider />
-      <Flex flexDir="column" gap="1rem">
         <Title>Khoá học</Title>
         {isLoading && <Spinner color={COLORS.twilightBlue} />}
         <Grid templateColumns={`repeat(${isMobile ? 1 : 4}, 1fr)`} gap="1rem">

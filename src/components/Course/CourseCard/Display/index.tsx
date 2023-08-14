@@ -41,13 +41,11 @@ const Display = forwardRef<HTMLDivElement, DisplayProps>(
         cursor="pointer"
         position="relative"
         h="100%"
-        onMouseOver={() => onToggleMenu(true)}
+        onMouseOver={() => {
+          if (isMobile) return;
+          onToggleMenu(true);
+        }}
         onClick={() => {
-          // TODO: handle different navigation for mobile
-          if (isMobile) {
-            return onToggleMenu(true);
-          }
-
           router.push({
             pathname: ROUTE.storeCourseDetails,
             query: {
