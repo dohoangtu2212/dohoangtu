@@ -1,7 +1,6 @@
-import { Flex, Text, IconButton, Spinner } from "@chakra-ui/react";
-import { MdClose } from "react-icons/md";
+import { Flex, Text, Spinner } from "@chakra-ui/react";
 import CourseSection from "@/views/CourseView/CourseSections/CourseSection";
-import { ICourseDetails, ICourseLesson } from "@/types/course";
+import { ICourseLesson } from "@/types/course";
 import { FC } from "react";
 import useMobile from "@/hooks/useMobile";
 import type { ICourseSection, IDisabledLesson } from "@/types/course";
@@ -54,6 +53,7 @@ const CourseSections: FC<CourseSectionsProps> = ({
       top="0"
       maxH="100vh"
       overflowY="auto"
+      minH="10rem"
     >
       {!isMobile && (
         <Flex
@@ -67,11 +67,6 @@ const CourseSections: FC<CourseSectionsProps> = ({
             <Text fontWeight="600">Bài giảng</Text>
             {isLoading && <Spinner size="sm" color={COLORS.twilightBlue} />}
           </Flex>
-          {/* <IconButton
-            aria-label="close"
-            icon={<MdClose size="1.25rem" />}
-            variant="ghost"
-          /> */}
         </Flex>
       )}
       {sections?.map((sec) => (

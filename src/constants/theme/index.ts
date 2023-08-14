@@ -135,9 +135,7 @@ const TabsStyles = {
           color: COLORS.blueLapis,
         },
       },
-      tablist: {
-        border: "none",
-      },
+      tablist: {},
       tabpanels: {},
       tabpanel: {},
     },

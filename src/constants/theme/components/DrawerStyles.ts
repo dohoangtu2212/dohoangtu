@@ -18,7 +18,9 @@ const DrawerStyles = {
     },
     footer: {},
   },
-  defaultProps: {},
+  defaultProps: {
+    size: "sm",
+  },
 };
 
 export default DrawerStyles;

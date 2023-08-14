@@ -12,7 +12,6 @@ import {
   useDisclosure,
   Drawer,
   DrawerBody,
-  DrawerFooter,
   DrawerHeader,
   DrawerOverlay,
   DrawerContent,
@@ -50,28 +49,34 @@ import { cartActions } from "@/store/slices/cart";
 import { ROUTE } from "@/constants/route";
 import { COLORS } from "@/constants/theme/colors";
 import { skipToken } from "@reduxjs/toolkit/dist/query";
+import useMobile from "@/hooks/useMobile";
+import CourseInfo from "@/views/CourseView/CourseInfo";
 
 const CourseView = () => {
+  const { isMobile } = useMobile();
   const [currentChapter, setCurrentChapter] = useState<ICourseChapter | null>(
     null
   );
   const [selectedLesson, setSelectedLesson] = useState<ICourseLesson | null>(
     null
   );
+
   const dispatch = useDispatch();
   const currentUser = useCurrentUserSelector();
   const userRole = useUserRoleSelector();
   const router = useRouter();
   const { query } = router;
-  const courseId = query?.courseId as string;
 
-  const [updateStudentCourseProgress] =
-    useUpdateStudentCourseProgressMutation();
   const {
     isOpen: isAddToCartModalOpen,
     onOpen: openAddToCartModal,
     onClose: closeAddToCartModal,
   } = useDisclosure();
+
+  const courseId = query?.courseId as string;
+
+  const [updateStudentCourseProgress] =
+    useUpdateStudentCourseProgressMutation();
 
   const {
     data: course,
@@ -301,13 +306,20 @@ const CourseView = () => {
         onClose={closeAddToCartModal}
         onAddToCart={handleAddToCart}
       />
-      <Flex minH="100vh" flexDir="column" pt="1rem" gap="0.5rem">
-        <Flex px="2rem" alignItems="center" gap="0.5rem">
-          <IconButton
-            variant="unstyled"
+      <Flex
+        minH="100vh"
+        flexDir="column"
+        pt={{ base: "0.5rem", lg: "1rem" }}
+        gap="0.5rem"
+      >
+        <Flex
+          px={{ base: "0.5rem", lg: "2rem" }}
+          alignItems="center"
+          gap={{ base: "0.5rem", lg: "1rem" }}
+        >
+          <IconNavigateButton
             aria-label="back"
-            icon={<MdArrowBackIos size="1.25rem" />}
-            p="0"
+            icon={<MdArrowBack size="1.5rem" />}
             onClick={() => router.back()}
           />
           <Text
@@ -316,7 +328,7 @@ const CourseView = () => {
             textTransform="uppercase"
             letterSpacing="0.05rem"
           >
-            KHÓA HỌC: {courseDetails.name}
+            {courseDetails.name}
           </Text>
         </Flex>
         <Divider />
@@ -329,7 +341,7 @@ const CourseView = () => {
           />
         )}
 
-        <Flex flexDir={{ base: "column", md: "row" }}>
+        <Flex flexDir={{ base: "column", lg: "row" }}>
           <Box flex="3">
             <CourseMain
               onVideoEnded={handleCurrentVideoEnded}
@@ -337,6 +349,7 @@ const CourseView = () => {
               selectedLesson={selectedLesson}
               disabledLessons={disabledLessons}
             />
+            {!isMobile && <CourseInfo courseDetails={courseDetails} />}
           </Box>
           <Box flex="1">
             <CourseSections
@@ -348,6 +361,7 @@ const CourseView = () => {
             />
           </Box>
         </Flex>
+        {isMobile && <CourseInfo courseDetails={courseDetails} />}
       </Flex>
     </>
   );
@@ -363,6 +377,8 @@ const ChapterManagement: FC<ChapterManagementProps> = ({
   chapters,
   onCurrentChapterChange,
 }) => {
+  const { isMobile } = useMobile();
+
   const { isOpen, onClose, onOpen } = useDisclosure();
 
   const currentChapterIdx = chapters.findIndex(
@@ -383,33 +399,55 @@ const ChapterManagement: FC<ChapterManagementProps> = ({
   return (
     <>
       <ChaptersDrawer isOpen={isOpen} onClose={onClose} />
-      <Flex p="0.5rem 1rem" alignItems="center" gap="1rem" pr="2rem">
-        <Button variant="link" px="0" onClick={onOpen}>
-          Danh sách chương
-        </Button>
-        <Text textAlign="center" fontSize="1.25rem" fontWeight="600" flex="1">
-          Chương {currentChapter.order} : ${currentChapter.name}
-        </Text>
-        <Flex alignItems="center" gap="1rem">
-          <Tooltip label="Chương trước">
-            <ChapterNavigateButton
-              isDisabled={currentChapterIdx === 0}
-              aria-label="next"
-              icon={<MdArrowBack size="1.5rem" />}
-              onClick={handlePrev}
-            />
-          </Tooltip>
-          <Tooltip label="Chương sau">
-            <ChapterNavigateButton
-              isDisabled={currentChapterIdx === chapters.length - 1}
-              aria-label="next"
-              icon={<MdArrowForward size="1.5rem" />}
-              onClick={handleNext}
-            />
-          </Tooltip>
+      <Flex flexDir="column" gap="0.5rem">
+        <Flex
+          p={{ base: "0 0.5rem", lg: "0.5rem 1rem" }}
+          alignItems="center"
+          gap="1rem"
+          pr={{ base: "auto", lg: "2rem" }}
+          w="100%"
+          justifyContent="space-between"
+        >
+          <Button variant="link" px="0" onClick={onOpen} fontSize="0.875rem">
+            Danh sách chương
+          </Button>
+          {!isMobile && <ChapterTitle chapter={currentChapter} />}
+          <Flex alignItems="center" gap="1rem">
+            <Tooltip label="Chương trước" isDisabled={isMobile}>
+              <IconNavigateButton
+                isDisabled={currentChapterIdx === 0}
+                aria-label="next"
+                icon={<MdArrowBack size="1.5rem" />}
+                onClick={handlePrev}
+              />
+            </Tooltip>
+            <Tooltip label="Chương sau" isDisabled={isMobile}>
+              <IconNavigateButton
+                isDisabled={currentChapterIdx === chapters.length - 1}
+                aria-label="next"
+                icon={<MdArrowForward size="1.5rem" />}
+                onClick={handleNext}
+              />
+            </Tooltip>
+          </Flex>
         </Flex>
+        {isMobile && <ChapterTitle chapter={currentChapter} />}
       </Flex>
     </>
+  );
+};
+
+type ChapterTitleProps = { chapter: ICourseChapter };
+const ChapterTitle: FC<ChapterTitleProps> = ({ chapter }) => {
+  return (
+    <Text
+      textAlign="center"
+      fontSize={{ base: "1rem", lg: "1.25rem" }}
+      fontWeight="600"
+      flex="1"
+    >
+      Chương {chapter.order} : ${chapter.name}
+    </Text>
   );
 };
 
@@ -427,21 +465,23 @@ const ChaptersDrawer: FC<ChaptersDrawerProps> = ({ ...drawersProps }) => {
   );
 };
 
-type ChapterNavigateButtonProps = IconButtonProps & {};
-const ChapterNavigateButton: FC<ChapterNavigateButtonProps> = forwardRef(
+type IconNavigateButtonProps = IconButtonProps & {};
+const IconNavigateButton: FC<IconNavigateButtonProps> = forwardRef(
   ({ ...buttonProps }, ref) => {
     return (
       <IconButton
         ref={ref}
         w="fit-content"
+        h="fit-content"
         p="0"
         minW="none"
+        minH="none"
         variant="unstyle"
         {...buttonProps}
       />
     );
   }
 );
-ChapterNavigateButton.displayName = "ChapterNavigateButton";
+IconNavigateButton.displayName = "IconNavigateButton";
 
 export default CourseView;

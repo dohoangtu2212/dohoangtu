@@ -19,7 +19,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { COLORS } from "@/constants/theme/colors";
-import { ICourse, ICourseDetails } from "@/types/course";
+import { ICourse, ICourseDetails, ICourseSection } from "@/types/course";
 import { FC } from "react";
 import PageBreadcrumb from "@/components/UI/PageBreadcrumb";
 import { IBreadcrumbLink } from "@/components/UI/PageBreadcrumb/types";
@@ -132,9 +132,11 @@ const Main: FC<MainProps> = ({ courseDetails, course, isPurchased }) => {
     rating,
     ratingCount,
     overview,
-    sections,
+    chapters,
     thumbnailUrl,
   } = courseDetails;
+
+  const { sections = [] } = chapters[0];
   const { price, previousPrice } = course;
 
   return (
@@ -163,7 +165,7 @@ const Main: FC<MainProps> = ({ courseDetails, course, isPurchased }) => {
             </Flex>
             <Divider />
             <CourseOverview overview={overview} />
-            <CourseContent courseDetails={courseDetails} />
+            <CourseContent sections={sections} />
           </Flex>
           {/* Preview */}
           <Flex flex="3.5" boxShadow="md" minH="10rem" flexDir="column">
@@ -221,16 +223,16 @@ const CourseRating: FC<CourseRatingProps> = ({ rating, ratingCount }) => {
 };
 
 type CourseContentProps = {
-  courseDetails?: ICourseDetails;
+  sections?: ICourseSection[];
 };
-const CourseContent: FC<CourseContentProps> = ({ courseDetails }) => {
+const CourseContent: FC<CourseContentProps> = ({ sections }) => {
   return (
     <Flex flexDir="column" gap="0.5rem">
       <Text fontSize="1.25rem" fontWeight="700">
         Nội dung khoá học
       </Text>
-      {!!courseDetails ? (
-        <CourseSections course={courseDetails} />
+      {!!sections ? (
+        <CourseSections sections={sections} />
       ) : (
         <Text>Cập nhật...</Text>
       )}

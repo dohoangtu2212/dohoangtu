@@ -44,7 +44,7 @@ type CourseOverviewProps = {
 const CourseOverview: FC<CourseOverviewProps> = ({ overview }) => {
   return (
     <Flex flexDir="column" gap="0.5rem">
-      <Text fontSize="1.25rem" fontWeight="700">
+      <Text fontSize={{ base: "1rem", lg: "1.25rem" }} fontWeight="700">
         Khái quát khoá học
       </Text>
       {!!overview ? (
