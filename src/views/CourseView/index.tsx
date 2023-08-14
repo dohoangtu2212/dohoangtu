@@ -16,6 +16,8 @@ import {
   DrawerOverlay,
   DrawerContent,
   DrawerCloseButton,
+  UnorderedList,
+  ListItem,
 } from "@chakra-ui/react";
 
 import CourseSections from "@/views/CourseView/CourseSections";
@@ -35,7 +37,7 @@ import {
   useGetStudentViewsCountQuery,
   useUpdateStudentCourseProgressMutation,
 } from "@/store/apis/db";
-import { MdArrowBack, MdArrowBackIos, MdArrowForward } from "react-icons/md";
+import { MdArrowBack, MdArrowForward, MdPlayArrow } from "react-icons/md";
 import { useCurrentUserSelector } from "@/store/slices/user";
 import { useGetStudentCoursesQuery } from "@/store/apis/db";
 import { useUserRoleSelector } from "@/store/slices/user";
@@ -374,7 +376,7 @@ type ChapterManagementProps = {
 };
 const ChapterManagement: FC<ChapterManagementProps> = ({
   currentChapter,
-  chapters,
+  chapters = [],
   onCurrentChapterChange,
 }) => {
   const { isMobile } = useMobile();
@@ -398,7 +400,12 @@ const ChapterManagement: FC<ChapterManagementProps> = ({
 
   return (
     <>
-      <ChaptersDrawer isOpen={isOpen} onClose={onClose} />
+      <ChaptersDrawer
+        isOpen={isOpen}
+        onClose={onClose}
+        chapters={chapters}
+        onSelectChapter={onCurrentChapterChange}
+      />
       <Flex flexDir="column" gap="0.5rem">
         <Flex
           p={{ base: "0 0.5rem", lg: "0.5rem 1rem" }}
@@ -451,15 +458,87 @@ const ChapterTitle: FC<ChapterTitleProps> = ({ chapter }) => {
   );
 };
 
-type ChaptersDrawerProps = Omit<DrawerProps, "children"> & {};
-const ChaptersDrawer: FC<ChaptersDrawerProps> = ({ ...drawersProps }) => {
+type ChaptersDrawerProps = Omit<DrawerProps, "children"> & {
+  chapters: ICourseChapter[];
+  onSelectChapter: (chapter: ICourseChapter) => void;
+};
+const ChaptersDrawer: FC<ChaptersDrawerProps> = ({
+  chapters,
+  onSelectChapter,
+  ...drawersProps
+}) => {
+  const { onClose } = drawersProps;
+
+  const handleSelect = (chapter: ICourseChapter) => () => {
+    onSelectChapter(chapter);
+    onClose();
+  };
+
   return (
     <Drawer placement="left" {...drawersProps}>
       <DrawerOverlay />
       <DrawerContent>
         <DrawerCloseButton />
-        <DrawerHeader>Danh sách chương</DrawerHeader>
-        <DrawerBody></DrawerBody>
+        <DrawerHeader>
+          <Text>Danh sách chương</Text>
+        </DrawerHeader>
+        <DrawerBody>
+          <Flex flexDir="column" gap="1rem">
+            {chapters.map((chapter) => {
+              const { name, order, sections } = chapter;
+
+              return (
+                <Flex key={chapter.order} flexDir="column" gap="0.25rem">
+                  <Flex alignItems="center" justifyContent="space-between">
+                    <Text fontWeight="600">
+                      Chương {order} : {name}
+                    </Text>
+                    <Tooltip label="Chọn">
+                      <IconNavigateButton
+                        icon={<MdPlayArrow size="2rem" />}
+                        aria-label="play"
+                        onClick={handleSelect(chapter)}
+                      />
+                    </Tooltip>
+                  </Flex>
+                  <UnorderedList>
+                    {sections.map((section) => {
+                      const {
+                        order: secOrder,
+                        name: secName,
+                        lessons,
+                      } = section;
+                      return (
+                        <ListItem key={secOrder}>
+                          <Flex flexDir="column">
+                            <Text>
+                              Bài {secOrder} : {secName}
+                            </Text>
+                            <UnorderedList flexDir="column">
+                              {lessons.map((lesson) => {
+                                const { name: lesName, order: lesOrder } =
+                                  lesson;
+
+                                return (
+                                  <ListItem key={lesOrder}>
+                                    <Text>
+                                      {secOrder}.{lesOrder} : {lesName}
+                                    </Text>
+                                  </ListItem>
+                                );
+                              })}
+                            </UnorderedList>
+                          </Flex>
+                        </ListItem>
+                      );
+                    })}
+                  </UnorderedList>
+                  <Divider my="0.5rem" />
+                </Flex>
+              );
+            })}
+          </Flex>
+        </DrawerBody>
       </DrawerContent>
     </Drawer>
   );
