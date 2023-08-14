@@ -74,7 +74,6 @@ const Cart = () => {
         progress: 0,
         rating: null,
         thumbnailUrl: c.thumbnailUrl,
-        coursePackName: c.coursePackName,
       })),
       totalPrice: totalPrice,
       createdAt: dayjs().toString(),

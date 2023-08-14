@@ -404,7 +404,7 @@ const ChapterManagement: FC<ChapterManagementProps> = ({
         isOpen={isOpen}
         onClose={onClose}
         chapters={chapters}
-        onSelectChapter={onCurrentChapterChange}
+        onSelectChapter={(chapter) => onCurrentChapterChange?.(chapter)}
       />
       <Flex flexDir="column" gap="0.5rem">
         <Flex
