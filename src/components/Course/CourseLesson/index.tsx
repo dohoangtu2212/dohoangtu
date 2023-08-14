@@ -4,7 +4,7 @@ import { FC } from "react";
 import { MdOndemandVideo, MdAssignment } from "react-icons/md";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
-import { COLORS } from "@/constants/theme";
+import { COLORS } from "@/constants/theme/colors";
 dayjs.extend(duration);
 
 type CourseLessonProps = {
@@ -25,10 +25,6 @@ const CourseLesson: FC<CourseLessonProps> = ({
   showViewCount,
   viewsCount,
 }) => {
-  const dayjsLessonDuration = dayjs.duration((lesson.duration ?? 0) * 1000);
-  const lessonDurationInMinutes =
-    Math.round(dayjsLessonDuration.asMinutes() * 100) / 100;
-
   return (
     <Flex
       alignItems="flex-start"
@@ -43,9 +39,9 @@ const CourseLesson: FC<CourseLessonProps> = ({
         <Checkbox isChecked={!!viewsCount} isDisabled />
       </Box>
       <Box w="100%">
-        <Text fontSize="0.875rem" fontWeight="500">
+        <Text fontSize="0.875rem" fontWeight="600">
           {!!lessonOrder
-            ? `Bài ${lessonOrder}: ${lesson.name}
+            ? `${lessonOrder} : ${lesson.name}
 `
             : `${lesson.name}`}
         </Text>
@@ -56,11 +52,13 @@ const CourseLesson: FC<CourseLessonProps> = ({
         >
           <Flex alignItems="center" gap="0.5rem">
             {lesson.type === ICourseLessonType.video ? (
-              <MdOndemandVideo />
+              <Flex alignItems="center" gap="0.25rem">
+                <MdOndemandVideo />
+                <Text fontSize="0.75rem">Video</Text>
+              </Flex>
             ) : (
               <MdAssignment />
             )}
-            <Text fontSize="0.675rem">{lessonDurationInMinutes} phút</Text>
           </Flex>
           {showViewCount && (
             <Text fontSize="0.675rem">Lượt xem: {viewsCount}/20</Text>

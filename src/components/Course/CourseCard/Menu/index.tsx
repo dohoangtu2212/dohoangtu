@@ -11,7 +11,7 @@ import { ROUTE } from "@/constants/route";
 import { MdCheck, MdCheckCircle } from "react-icons/md";
 import { useUserRoleSelector } from "@/store/slices/user";
 import { UserRole } from "@/types/permission";
-import { COLORS } from "@/constants/theme";
+import { COLORS } from "@/constants/theme/colors";
 
 type MenuProps = {
   course: ICourse;

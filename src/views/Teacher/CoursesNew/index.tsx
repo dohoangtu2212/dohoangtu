@@ -25,7 +25,7 @@ import { useEditingCourseSelector } from "@/store/slices/course";
 import type { FormikConfig } from "formik";
 import { useUploadCourseThumbnailMutation } from "@/store/apis/storage";
 import { ICourseLessonType } from "@/types/course";
-import { COLORS } from "@/constants/theme";
+import { COLORS } from "@/constants/theme/colors";
 import useCustomToast from "@/hooks/useCustomToast";
 import { reduce } from "lodash";
 
@@ -288,7 +288,7 @@ const TeacherCoursesNew = () => {
     updateCourseIsLoading ||
     updateCourseDetailsIsLoading ||
     uploadCourseThumbnailIsLoading;
-    
+
   const isLoading =
     isGetCourseDetailsFetching ||
     isGetCourseDetailsLoading ||
@@ -299,11 +299,7 @@ const TeacherCoursesNew = () => {
     <Flex h={{ base: "100%", md: "90vh" }} flexDir="column" gap="2rem">
       <Flex justifyContent="space-between">
         <Flex alignItems="center" gap="1rem">
-          <Button
-            isLoading={isSubmissionLoading}
-            leftIcon={<MdArrowBackIos />}
-            onClick={handleGoBack}
-          >
+          <Button leftIcon={<MdArrowBackIos />} onClick={handleGoBack}>
             Trở về
           </Button>
           {isLoading && <Spinner color={COLORS.twilightBlue} />}

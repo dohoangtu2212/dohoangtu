@@ -3,7 +3,7 @@ import type { FlexProps } from "@chakra-ui/react";
 import type { FC } from "react";
 import { LAYER } from "@/constants/layer";
 import { useRouter } from "next/router";
-import { COLORS } from "@/constants/theme";
+import { COLORS } from "@/constants/theme/colors";
 
 type TopbarContainerProps = FlexProps & {};
 

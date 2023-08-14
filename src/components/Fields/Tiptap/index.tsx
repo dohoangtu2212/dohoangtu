@@ -2,7 +2,7 @@ import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { Box, Flex, theme } from "@chakra-ui/react";
 import Toolbar from "@/components/Fields/Tiptap/Toolbar";
-import { COLORS } from "@/constants/theme";
+import { COLORS } from "@/constants/theme/colors";
 import styled from "@emotion/styled";
 import { FC } from "react";
 

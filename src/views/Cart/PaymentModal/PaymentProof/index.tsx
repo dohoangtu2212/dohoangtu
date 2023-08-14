@@ -2,7 +2,7 @@ import FileInput from "@/components/Input/FileInput";
 import { Flex, Box } from "@chakra-ui/react";
 import { FC, useCallback, useEffect, useState } from "react";
 import Image from "next/image";
-import { COLORS } from "@/constants/theme";
+import { COLORS } from "@/constants/theme/colors";
 
 type PaymentProofProps = {
   image: File | null;

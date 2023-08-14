@@ -33,7 +33,7 @@ import {
   useConfirmOrderMutation,
 } from "@/store/apis/db";
 import Image from "next/image";
-import { COLORS } from "@/constants/theme";
+import { COLORS } from "@/constants/theme/colors";
 
 const OrdersTable = () => {
   const {

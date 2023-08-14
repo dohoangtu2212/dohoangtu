@@ -5,7 +5,7 @@ import type { FlexProps } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { ROUTE } from "@/constants/route";
 import { useCartCoursesSelector } from "@/store/slices/cart";
-import { COLORS } from "@/constants/theme";
+import { COLORS } from "@/constants/theme/colors";
 
 const Cart = () => {
   const router = useRouter();

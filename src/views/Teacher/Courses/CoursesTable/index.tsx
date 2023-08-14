@@ -24,7 +24,7 @@ import { useRouter } from "next/router";
 import { ROUTE } from "@/constants/route";
 import { DEFAULT_COURSE_THUMBNAIL } from "@/constants/course";
 import { FC } from "react";
-import { COLORS } from "@/constants/theme";
+import { COLORS } from "@/constants/theme/colors";
 
 const CoursesTable = () => {
   const {

@@ -1,4 +1,4 @@
-import { COLORS } from "@/constants/theme";
+import { COLORS } from "@/constants/theme/colors";
 import { Flex, FlexProps } from "@chakra-ui/react";
 import { FC } from "react";
 

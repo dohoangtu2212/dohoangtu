@@ -20,7 +20,7 @@ import { DisplayMode } from "@/views/Auth/AuthForm/types";
 import { getUserRole } from "@/utils/firebase";
 import { UserRole } from "@/types/permission";
 import { ROUTE } from "@/constants/route";
-import { COLORS } from "@/constants/theme";
+import { COLORS } from "@/constants/theme/colors";
 
 type AuthFormProps = {
   mode: DisplayMode;

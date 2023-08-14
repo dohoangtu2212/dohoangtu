@@ -33,7 +33,8 @@ import { useRouter } from "next/router";
 import { ROUTE } from "@/constants/route";
 import PaymentModal from "@/views/Cart/PaymentModal";
 import type { IPaymentMethod } from "@/types/order";
-import { COLORS } from "@/constants/theme";
+import { COLORS } from "@/constants/theme/colors";
+
 import useCustomToast from "@/hooks/useCustomToast";
 
 const Cart = () => {

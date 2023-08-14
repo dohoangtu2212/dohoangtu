@@ -16,7 +16,7 @@ import { ICourseLesson, ICourseSection } from "@/types/course";
 import SectionTitle from "@/views/Teacher/CoursesNew/Form/Structure/Sections/SectionTitle";
 import Lessons from "@/views/Teacher/CoursesNew/Form/Structure/Sections/Lessons";
 import { MdOutlineDelete } from "react-icons/md";
-import { COLORS } from "@/constants/theme";
+import { COLORS } from "@/constants/theme/colors";
 
 type SectionsProps = {
   sections: ICourseSection[];

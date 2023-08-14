@@ -13,7 +13,7 @@ import { Flex, Text } from "@chakra-ui/react";
 import { useMemo } from "react";
 import { useUserRoleSelector } from "@/store/slices/user";
 import { UserRole } from "@/types/permission";
-import { COLORS } from "@/constants/theme";
+import { COLORS } from "@/constants/theme/colors";
 
 type NavigatorsProps = {};
 const Navigators: FC<NavigatorsProps> = () => {

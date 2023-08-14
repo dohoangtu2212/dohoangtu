@@ -7,7 +7,7 @@ import UserMenu from "@/components/Layout/Topbar/Actions/UserMenu";
 import useMobile from "@/hooks/useMobile";
 import { useCurrentUserSelector } from "@/store/slices/user";
 import { MdHome } from "react-icons/md";
-import { COLORS } from "@/constants/theme";
+import { COLORS } from "@/constants/theme/colors";
 
 type ActionsProps = {};
 const Actions: FC<ActionsProps> = () => {

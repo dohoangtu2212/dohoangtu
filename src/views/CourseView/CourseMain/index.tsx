@@ -13,7 +13,7 @@ const Video = dynamic(() => import("@/components/DynTube/Video"), {
 import { MdSearch } from "react-icons/md";
 import { ICourseDetails, ICourseLesson, IDisabledLesson } from "@/types/course";
 import { FC, useCallback, useEffect, useState, useMemo } from "react";
-import { COLORS } from "@/constants/theme";
+import { COLORS } from "@/constants/theme/colors";
 import {
   useGetStudentViewsCountQuery,
   useUpdateStudentViewsCountMutation,

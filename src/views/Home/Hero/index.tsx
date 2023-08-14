@@ -1,7 +1,7 @@
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import "@fontsource/roboto-slab";
 import "@fontsource/sedgwick-ave";
-import { COLORS } from "@/constants/theme";
+import { COLORS } from "@/constants/theme/colors";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { ROUTE } from "@/constants/route";

@@ -1,15 +1,34 @@
 import {
   Box,
+  Button,
+  Divider,
+  DrawerProps,
   Flex,
   IconButton,
+  IconButtonProps,
   Spinner,
   Text,
+  Tooltip,
   useDisclosure,
+  Drawer,
+  DrawerBody,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerCloseButton,
 } from "@chakra-ui/react";
 
 import CourseSections from "@/views/CourseView/CourseSections";
 import CourseMain from "@/views/CourseView/CourseMain";
-import { useEffect, useState, useMemo, useCallback } from "react";
+import {
+  useEffect,
+  useState,
+  useMemo,
+  useCallback,
+  FC,
+  forwardRef,
+} from "react";
 import { ICourseLesson } from "@/types/course";
 import { useRouter } from "next/router";
 import {
@@ -17,22 +36,25 @@ import {
   useGetStudentViewsCountQuery,
   useUpdateStudentCourseProgressMutation,
 } from "@/store/apis/db";
-import { MdArrowBackIos } from "react-icons/md";
+import { MdArrowBack, MdArrowBackIos, MdArrowForward } from "react-icons/md";
 import { useCurrentUserSelector } from "@/store/slices/user";
 import { useGetStudentCoursesQuery } from "@/store/apis/db";
 import { useUserRoleSelector } from "@/store/slices/user";
 import { UserRole } from "@/types/permission";
 import { filter, flatten, flattenDeep, map, slice } from "lodash";
-import type { ICourseDetails, IDisabledLesson } from "@/types/course";
+import type { ICourseChapter, IDisabledLesson } from "@/types/course";
 import { useGetCourseQuery } from "@/store/apis/db";
 import AddToCartModal from "@/views/CourseView/AddToCartModal";
 import { useDispatch } from "react-redux";
 import { cartActions } from "@/store/slices/cart";
 import { ROUTE } from "@/constants/route";
-import { COLORS } from "@/constants/theme";
+import { COLORS } from "@/constants/theme/colors";
 import { skipToken } from "@reduxjs/toolkit/dist/query";
 
 const CourseView = () => {
+  const [currentChapter, setCurrentChapter] = useState<ICourseChapter | null>(
+    null
+  );
   const [selectedLesson, setSelectedLesson] = useState<ICourseLesson | null>(
     null
   );
@@ -40,7 +62,7 @@ const CourseView = () => {
   const currentUser = useCurrentUserSelector();
   const userRole = useUserRoleSelector();
   const router = useRouter();
-  const { query, pathname } = router;
+  const { query } = router;
   const courseId = query?.courseId as string;
 
   const [updateStudentCourseProgress] =
@@ -110,14 +132,14 @@ const CourseView = () => {
   );
 
   const courseVideoKeys = useMemo(() => {
-    if (!courseDetails) return [];
-    const { sections } = courseDetails;
+    if (!currentChapter) return [];
+    const { sections } = currentChapter;
     const parsedLessons = filter(
       flattenDeep(map(sections, (sec) => sec.lessons)),
       (le) => !!le
     );
     return map(parsedLessons, (le) => le.dyntubeKey);
-  }, [courseDetails]);
+  }, [currentChapter]);
 
   const handleSelectDisabledLesson = useCallback(() => {
     if (!course) return;
@@ -133,12 +155,12 @@ const CourseView = () => {
 
   const moveToNextLesson = (
     selectedLesson: ICourseLesson,
-    courseDetails: ICourseDetails
+    currentChapter: ICourseChapter
   ) => {
     const { order } = selectedLesson;
     const [sectionOrder, lessonOrder] = order.toString().split(".");
 
-    const { sections } = courseDetails;
+    const { sections } = currentChapter;
     const sectionIdx = sections.findIndex(
       (s) => s.order.toString() === sectionOrder.toString()
     );
@@ -189,15 +211,30 @@ const CourseView = () => {
   ]);
 
   const handleCurrentVideoEnded = useCallback(() => {
-    if (!selectedLesson || !courseDetails) return;
-    moveToNextLesson(selectedLesson, courseDetails);
+    if (!selectedLesson || !currentChapter) return;
+    moveToNextLesson(selectedLesson, currentChapter);
     updateCourseProgress();
     // Move to next lesson
-  }, [selectedLesson, courseDetails, updateCourseProgress]);
+  }, [selectedLesson, currentChapter, updateCourseProgress]);
 
+  const handleChapterChange = (chapter: ICourseChapter) => {
+    const { sections } = chapter;
+    setCurrentChapter(chapter);
+    if (!sections[0]) return;
+    const { lessons } = sections[0];
+    setSelectedLesson(lessons[0]);
+  };
+
+  // set default lesson
   useEffect(() => {
-    if (!!courseDetails && !!courseDetails.sections[0].lessons?.[0]) {
-      const section = courseDetails.sections[0];
+    if (!courseDetails) return;
+
+    if (!!courseDetails.chapters[0]) {
+      setCurrentChapter(courseDetails.chapters[0]);
+    }
+
+    if (!!courseDetails.chapters[0].sections[0].lessons?.[0]) {
+      const section = courseDetails.chapters[0].sections[0];
       const lesson = section.lessons[0];
       setSelectedLesson({
         ...lesson,
@@ -208,11 +245,11 @@ const CourseView = () => {
 
   const isPreviewMode = isPublicUsers || isUnauthorizedStudent;
 
-  // For public view
+  // For public view, only able to access the first 3 video
   const disabledLessons: IDisabledLesson[] = useMemo(() => {
-    if (!courseDetails) return [];
+    if (!currentChapter) return [];
     if (!isPreviewMode) return [];
-    const { sections } = courseDetails;
+    const { sections } = currentChapter;
     const sectionOrderAndLessons = sections.map((s) =>
       flatten(s.lessons).map((l) => ({
         lessonOrder: l.order,
@@ -220,7 +257,13 @@ const CourseView = () => {
       }))
     );
     return slice(flatten(sectionOrderAndLessons), 3);
-  }, [isPreviewMode, courseDetails]);
+  }, [isPreviewMode, currentChapter]);
+
+  const courseChapters = useMemo(() => {
+    if (!courseDetails || !courseDetails.chapters) return [];
+
+    return courseDetails.chapters;
+  }, [courseDetails]);
 
   const isLoading =
     isGetCourseDetailsFetching ||
@@ -231,6 +274,11 @@ const CourseView = () => {
     isGetCourseFetching ||
     isGetStudentViewsCountLoading ||
     isGetCourseDetailsFetching;
+
+  const showChapterManager = !!courseChapters && !!currentChapter;
+
+  // return statements
+  if (!courseDetails) return null;
 
   if (isLoading)
     return (
@@ -246,8 +294,6 @@ const CourseView = () => {
       </Box>
     );
 
-  if (!courseDetails) return null;
-
   return (
     <>
       <AddToCartModal
@@ -255,17 +301,34 @@ const CourseView = () => {
         onClose={closeAddToCartModal}
         onAddToCart={handleAddToCart}
       />
-      <Flex minH="100vh" flexDir="column" pt="1rem">
+      <Flex minH="100vh" flexDir="column" pt="1rem" gap="0.5rem">
         <Flex px="2rem" alignItems="center" gap="0.5rem">
           <IconButton
+            variant="unstyled"
             aria-label="back"
-            icon={<MdArrowBackIos size="1.5rem" />}
-            variant="ghost"
+            icon={<MdArrowBackIos size="1.25rem" />}
             p="0"
             onClick={() => router.back()}
           />
-          <Text fontWeight="600">KHÓA: {courseDetails.name}</Text>
+          <Text
+            fontWeight="600"
+            fontSize="0.875rem"
+            textTransform="uppercase"
+            letterSpacing="0.05rem"
+          >
+            KHÓA HỌC: {courseDetails.name}
+          </Text>
         </Flex>
+        <Divider />
+
+        {showChapterManager && (
+          <ChapterManagement
+            currentChapter={currentChapter}
+            chapters={courseChapters}
+            onCurrentChapterChange={handleChapterChange}
+          />
+        )}
+
         <Flex flexDir={{ base: "column", md: "row" }}>
           <Box flex="3">
             <CourseMain
@@ -279,7 +342,7 @@ const CourseView = () => {
             <CourseSections
               disabledLessons={disabledLessons}
               selectedLesson={selectedLesson}
-              course={courseDetails}
+              sections={currentChapter?.sections ?? []}
               onLessonSelected={setSelectedLesson}
               onDisabledLessonSelected={handleSelectDisabledLesson}
             />
@@ -289,5 +352,96 @@ const CourseView = () => {
     </>
   );
 };
+
+type ChapterManagementProps = {
+  currentChapter: ICourseChapter;
+  chapters: ICourseChapter[];
+  onCurrentChapterChange?: (chapter: ICourseChapter) => void;
+};
+const ChapterManagement: FC<ChapterManagementProps> = ({
+  currentChapter,
+  chapters,
+  onCurrentChapterChange,
+}) => {
+  const { isOpen, onClose, onOpen } = useDisclosure();
+
+  const currentChapterIdx = chapters.findIndex(
+    (ch) => ch.order === currentChapter.order
+  );
+
+  const handlePrev = () => {
+    if (currentChapterIdx > 0) {
+      onCurrentChapterChange?.(chapters[currentChapterIdx - 1]);
+    }
+  };
+  const handleNext = () => {
+    if (currentChapterIdx < chapters.length - 1) {
+      onCurrentChapterChange?.(chapters[currentChapterIdx + 1]);
+    }
+  };
+
+  return (
+    <>
+      <ChaptersDrawer isOpen={isOpen} onClose={onClose} />
+      <Flex p="0.5rem 1rem" alignItems="center" gap="1rem" pr="2rem">
+        <Button variant="link" px="0" onClick={onOpen}>
+          Danh sách chương
+        </Button>
+        <Text textAlign="center" fontSize="1.25rem" fontWeight="600" flex="1">
+          Chương {currentChapter.order} : ${currentChapter.name}
+        </Text>
+        <Flex alignItems="center" gap="1rem">
+          <Tooltip label="Chương trước">
+            <ChapterNavigateButton
+              isDisabled={currentChapterIdx === 0}
+              aria-label="next"
+              icon={<MdArrowBack size="1.5rem" />}
+              onClick={handlePrev}
+            />
+          </Tooltip>
+          <Tooltip label="Chương sau">
+            <ChapterNavigateButton
+              isDisabled={currentChapterIdx === chapters.length - 1}
+              aria-label="next"
+              icon={<MdArrowForward size="1.5rem" />}
+              onClick={handleNext}
+            />
+          </Tooltip>
+        </Flex>
+      </Flex>
+    </>
+  );
+};
+
+type ChaptersDrawerProps = Omit<DrawerProps, "children"> & {};
+const ChaptersDrawer: FC<ChaptersDrawerProps> = ({ ...drawersProps }) => {
+  return (
+    <Drawer placement="left" {...drawersProps}>
+      <DrawerOverlay />
+      <DrawerContent>
+        <DrawerCloseButton />
+        <DrawerHeader>Danh sách chương</DrawerHeader>
+        <DrawerBody></DrawerBody>
+      </DrawerContent>
+    </Drawer>
+  );
+};
+
+type ChapterNavigateButtonProps = IconButtonProps & {};
+const ChapterNavigateButton: FC<ChapterNavigateButtonProps> = forwardRef(
+  ({ ...buttonProps }, ref) => {
+    return (
+      <IconButton
+        ref={ref}
+        w="fit-content"
+        p="0"
+        minW="none"
+        variant="unstyle"
+        {...buttonProps}
+      />
+    );
+  }
+);
+ChapterNavigateButton.displayName = "ChapterNavigateButton";
 
 export default CourseView;

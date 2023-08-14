@@ -10,7 +10,7 @@ import {
 import CourseCard from "@/components/Course/CourseCard";
 import useMobile from "@/hooks/useMobile";
 import { useGetCoursesQuery, useGetStudentCoursesQuery } from "@/store/apis/db";
-import { COLORS } from "@/constants/theme";
+import { COLORS } from "@/constants/theme/colors";
 import { useCurrentUserSelector } from "@/store/slices/user";
 import { useUserRoleSelector } from "@/store/slices/user";
 import { UserRole } from "@/types/permission";

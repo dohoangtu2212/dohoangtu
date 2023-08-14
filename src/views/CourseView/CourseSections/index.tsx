@@ -4,30 +4,29 @@ import CourseSection from "@/views/CourseView/CourseSections/CourseSection";
 import { ICourseDetails, ICourseLesson } from "@/types/course";
 import { FC } from "react";
 import useMobile from "@/hooks/useMobile";
-import type { IDisabledLesson } from "@/types/course";
+import type { ICourseSection, IDisabledLesson } from "@/types/course";
 import { useGetStudentViewsCountQuery } from "@/store/apis/db";
 import {
   useUserRoleSelector,
   useCurrentUserSelector,
 } from "@/store/slices/user";
 import { UserRole } from "@/types/permission";
-import { COLORS } from "@/constants/theme";
+import { COLORS } from "@/constants/theme/colors";
 
 type CourseSectionsProps = {
-  course: ICourseDetails;
+  sections: ICourseSection[];
   disabledLessons?: IDisabledLesson[];
   selectedLesson?: ICourseLesson | null;
   onLessonSelected?: (lesson: ICourseLesson) => void;
   onDisabledLessonSelected?: () => void;
 };
 const CourseSections: FC<CourseSectionsProps> = ({
-  course,
+  sections,
   selectedLesson,
   disabledLessons = [],
   onLessonSelected = () => {},
   onDisabledLessonSelected,
 }) => {
-  const { sections } = course;
   const { isMobile } = useMobile();
 
   const userRole = useUserRoleSelector();
@@ -58,14 +57,14 @@ const CourseSections: FC<CourseSectionsProps> = ({
     >
       {!isMobile && (
         <Flex
-          p="1rem"
+          p="0.25rem 1rem"
           border="1px"
           borderColor="gray.300"
           justifyContent="space-between"
           alignItems="center"
         >
           <Flex alignItems="center" gap="1rem">
-            <Text fontWeight="600">MỤC LỤC</Text>
+            <Text fontWeight="600">Bài giảng</Text>
             {isLoading && <Spinner size="sm" color={COLORS.twilightBlue} />}
           </Flex>
           {/* <IconButton

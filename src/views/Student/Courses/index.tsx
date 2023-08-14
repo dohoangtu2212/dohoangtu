@@ -6,7 +6,7 @@ import { AiOutlineShop } from "react-icons/ai";
 import { useRouter } from "next/router";
 import { ROUTE } from "@/constants/route";
 import StudentCourseCard from "@/views/Student/Courses/StudentCourseCard";
-import { COLORS } from "@/constants/theme";
+import { COLORS } from "@/constants/theme/colors";
 
 const StudentCourses = () => {
   const { isMobile } = useMobile();

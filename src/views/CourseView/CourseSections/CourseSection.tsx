@@ -43,16 +43,16 @@ const CourseSection: FC<CourseSectionProps> = ({
   const userRole = useUserRoleSelector();
   const isStudent = userRole === UserRole.student;
 
-  const sectionLessons = section.lessons ?? [];
-  const sectionDuration =
-    reduce(
-      sectionLessons,
-      (totalDuration, lesson) => totalDuration + lesson.duration,
-      0
-    ) ?? 0;
-  const dayjsDuration = dayjs.duration(sectionDuration * 1000);
-  const sectionDurationInMinutes =
-    Math.round(dayjsDuration.asMinutes() * 100) / 100;
+  // const sectionLessons = section.lessons ?? [];
+  // const sectionDuration =
+  //   reduce(
+  //     sectionLessons,
+  //     (totalDuration, lesson) => totalDuration + lesson.duration,
+  //     0
+  //   ) ?? 0;
+  // const dayjsDuration = dayjs.duration(sectionDuration * 1000);
+  // const sectionDurationInMinutes =
+  //   Math.round(dayjsDuration.asMinutes() * 100) / 100;
 
   return (
     <Accordion
@@ -67,11 +67,11 @@ const CourseSection: FC<CourseSectionProps> = ({
             <Flex justifyContent="space-between" w="100%">
               <Box>
                 <Text fontWeight="600" textAlign="left">
-                  CHƯƠNG {section.order}: {section.name}
+                  Bài {section.order}: {section.name}
                 </Text>
                 {/* TODO: Add completion status */}
                 <Text textAlign="left" fontSize="0.675rem" color="gray.500">
-                  {0}/4 | {sectionDurationInMinutes ?? 0} phút
+                  Số mục đã xem: {0}/4
                 </Text>
               </Box>
               <AccordionIcon />

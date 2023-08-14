@@ -1,5 +1,5 @@
 import ArrowDiv from "@/components/UI/ArrowDiv";
-import { COLORS } from "@/constants/theme";
+import { COLORS } from "@/constants/theme/colors";
 import { Flex, Text, Box, Divider, FlexProps } from "@chakra-ui/react";
 import { FC } from "react";
 import Image from "next/image";

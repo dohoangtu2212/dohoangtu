@@ -12,7 +12,7 @@ import { getAuth } from "firebase/auth";
 import RoleTag from "@/components/Role/RoleTag";
 import { MdPerson, MdLogout } from "react-icons/md";
 import { useUserRoleSelector } from "@/store/slices/user";
-import { COLORS } from "@/constants/theme";
+import { COLORS } from "@/constants/theme/colors";
 
 const UserMenu = () => {
   const auth = getAuth();

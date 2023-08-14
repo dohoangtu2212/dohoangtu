@@ -2,7 +2,7 @@ import { Flex, Text, Spinner, Grid } from "@chakra-ui/react";
 import useMobile from "@/hooks/useMobile";
 import { useGetCoursesQuery } from "@/store/apis/db";
 import CourseCard from "@/components/Course/CourseCard";
-import { COLORS } from "@/constants/theme";
+import { COLORS } from "@/constants/theme/colors";
 
 const NewestCourses = () => {
   const { isMobile } = useMobile();

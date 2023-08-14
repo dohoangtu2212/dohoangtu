@@ -18,7 +18,7 @@ import {
   IconButton,
   useDisclosure,
 } from "@chakra-ui/react";
-import { COLORS } from "@/constants/theme";
+import { COLORS } from "@/constants/theme/colors";
 import { ICourse, ICourseDetails } from "@/types/course";
 import { FC } from "react";
 import PageBreadcrumb from "@/components/UI/PageBreadcrumb";

@@ -8,7 +8,7 @@ import { useCartCoursesSelector } from "@/store/slices/cart";
 import { IoMdCart } from "react-icons/io";
 import { DEFAULT_COURSE_THUMBNAIL } from "@/constants/course";
 import useMobile from "@/hooks/useMobile";
-import { COLORS } from "@/constants/theme";
+import { COLORS } from "@/constants/theme/colors";
 import { motion } from "framer-motion";
 import { useRouter } from "next/router";
 import { ROUTE } from "@/constants/route";

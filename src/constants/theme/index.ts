@@ -1,22 +1,12 @@
 import { extendTheme } from "@chakra-ui/react";
+import DrawerStyles from "@/constants/theme/components/DrawerStyles";
+import { COLORS } from "@/constants/theme/colors";
 
 export const breakpoints = {
   sm: "360px",
   md: "768px",
   lg: "992px",
   xl: "1200px",
-};
-
-export const COLORS = {
-  // white: "#F4F6F1",
-  white: 'white',
-  whiteSatin: "#D6E5F2",
-  windmillWings: "#BBD2ED",
-  summerBlue: "#92B3E0",
-  blueLapis: "#6289C6",
-  twilightBlue: "#355496",
-  midnightNavy: "#333356",
-  starryNightBlue: "#334076",
 };
 
 const InputStyles = {
@@ -307,27 +297,6 @@ const PopoverStyles = {
     },
   },
   variants: {},
-  defaultProps: {},
-};
-
-const DrawerStyles = {
-  baseStyle: {
-    dialog: {
-      bgColor: COLORS.starryNightBlue,
-    },
-    closeButton: {
-      color: COLORS.whiteSatin,
-      fontSize: "0.875rem",
-      _hover: {},
-    },
-    header: {
-      bgColor: COLORS.starryNightBlue,
-    },
-    body: {
-      bgColor: COLORS.starryNightBlue,
-    },
-    footer: {},
-  },
   defaultProps: {},
 };
 
