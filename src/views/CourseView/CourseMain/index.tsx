@@ -1,4 +1,4 @@
-import { Flex, Text, Box } from "@chakra-ui/react";
+import { Flex, Box } from "@chakra-ui/react";
 import dynamic from "next/dynamic";
 const Video = dynamic(() => import("@/components/DynTube/Video"), {
   ssr: false,
@@ -119,14 +119,6 @@ const CourseMain: FC<CourseMainProps> = ({
 
   return (
     <Flex flexDir="column" w="100%">
-      {!!selectedLesson && (
-        <Text
-          px={{ base: "0.5rem", lg: "1rem" }}
-          py={{ base: "0", lg: "0.5rem" }}
-        >
-          Bài {selectedLesson.order}: {selectedLesson?.name}
-        </Text>
-      )}
       <Box position="relative">
         {isLimitViewsReached && (
           <Box

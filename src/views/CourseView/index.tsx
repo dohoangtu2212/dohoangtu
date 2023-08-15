@@ -152,6 +152,8 @@ const CourseView = () => {
     router.push(ROUTE.cart);
   }, [course, closeAddToCartModal, dispatch, router]);
 
+  // TODO: add a list of all lessons
+
   const moveToNextLesson = (
     selectedLesson: ICourseLesson,
     currentChapter: ICourseChapter
@@ -340,6 +342,21 @@ const CourseView = () => {
 
         <Flex flexDir={{ base: "column", lg: "row" }}>
           <Box flex="3">
+            {!!selectedLesson && (
+              <Flex
+                alignItems="center"
+                gap="0.5rem"
+                px={{ base: "0.5rem", lg: "1rem" }}
+                py={{ base: "0.25rem", lg: "0.5rem" }}
+              >
+                <NavigateButton>Mục trước</NavigateButton>
+                <Text flex="1" textAlign="center">
+                  Bài {selectedLesson.order.toString().split(".")[0]} | Mục{" "}
+                  {selectedLesson.order}: {selectedLesson?.name}
+                </Text>{" "}
+                <NavigateButton>Mục sau</NavigateButton>
+              </Flex>
+            )}
             <CourseMain
               onVideoEnded={handleCurrentVideoEnded}
               courseDetails={courseDetails}
