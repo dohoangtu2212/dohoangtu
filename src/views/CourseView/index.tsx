@@ -1,11 +1,8 @@
 import {
   Box,
-  Button,
   Divider,
   DrawerProps,
   Flex,
-  IconButton,
-  IconButtonProps,
   Spinner,
   Text,
   Tooltip,
@@ -22,14 +19,7 @@ import {
 
 import CourseSections from "@/views/CourseView/CourseSections";
 import CourseMain from "@/views/CourseView/CourseMain";
-import {
-  useEffect,
-  useState,
-  useMemo,
-  useCallback,
-  FC,
-  forwardRef,
-} from "react";
+import { useEffect, useState, useMemo, useCallback, FC } from "react";
 import { ICourseLesson } from "@/types/course";
 import { useRouter } from "next/router";
 import {
@@ -37,7 +27,7 @@ import {
   useGetStudentViewsCountQuery,
   useUpdateStudentCourseProgressMutation,
 } from "@/store/apis/db";
-import { MdArrowBack, MdArrowForward, MdPlayArrow } from "react-icons/md";
+import { MdArrowBack, MdPlayArrow } from "react-icons/md";
 import { useCurrentUserSelector } from "@/store/slices/user";
 import { useGetStudentCoursesQuery } from "@/store/apis/db";
 import { useUserRoleSelector } from "@/store/slices/user";
@@ -53,6 +43,8 @@ import { COLORS } from "@/constants/theme/colors";
 import { skipToken } from "@reduxjs/toolkit/dist/query";
 import useMobile from "@/hooks/useMobile";
 import CourseInfo from "@/views/CourseView/CourseInfo";
+import NavigateButton from "@/components/UI/NavigateButton";
+import IconNavigateButton from "@/components/UI/IconNavigateButton";
 
 const CourseView = () => {
   const { isMobile } = useMobile();
@@ -228,8 +220,11 @@ const CourseView = () => {
     const { sections } = chapter;
     setCurrentChapter(chapter);
     if (!sections[0]) return;
-    const { lessons } = sections[0];
-    setSelectedLesson(lessons[0]);
+    const { lessons, order } = sections[0];
+    setSelectedLesson({
+      ...lessons[0],
+      order: `${order}.${lessons[0].order}`,
+    });
   };
 
   // set default lesson
@@ -411,31 +406,34 @@ const ChapterManagement: FC<ChapterManagementProps> = ({
           p={{ base: "0 0.5rem", lg: "0.5rem 1rem" }}
           alignItems="center"
           gap="1rem"
-          pr={{ base: "auto", lg: "2rem" }}
           w="100%"
           justifyContent="space-between"
         >
-          <Button variant="link" px="0" onClick={onOpen} fontSize="0.875rem">
+          <NavigateButton
+            variant="outline"
+            p="0.5rem"
+            w="fit-content"
+            h="fit-content"
+            onClick={onOpen}
+          >
             Danh sách chương
-          </Button>
+          </NavigateButton>
           {!isMobile && <ChapterTitle chapter={currentChapter} />}
-          <Flex alignItems="center" gap="1rem">
-            <Tooltip label="Chương trước" isDisabled={isMobile}>
-              <IconNavigateButton
-                isDisabled={currentChapterIdx === 0}
-                aria-label="next"
-                icon={<MdArrowBack size="1.5rem" />}
-                onClick={handlePrev}
-              />
-            </Tooltip>
-            <Tooltip label="Chương sau" isDisabled={isMobile}>
-              <IconNavigateButton
-                isDisabled={currentChapterIdx === chapters.length - 1}
-                aria-label="next"
-                icon={<MdArrowForward size="1.5rem" />}
-                onClick={handleNext}
-              />
-            </Tooltip>
+          <Flex alignItems="center" gap="0.5rem">
+            <NavigateButton
+              isDisabled={currentChapterIdx === 0}
+              aria-label="prev"
+              onClick={handlePrev}
+            >
+              Chương trước
+            </NavigateButton>
+            <NavigateButton
+              isDisabled={currentChapterIdx === chapters.length - 1}
+              aria-label="next"
+              onClick={handleNext}
+            >
+              Chương sau
+            </NavigateButton>
           </Flex>
         </Flex>
         {isMobile && <ChapterTitle chapter={currentChapter} />}
@@ -543,24 +541,5 @@ const ChaptersDrawer: FC<ChaptersDrawerProps> = ({
     </Drawer>
   );
 };
-
-type IconNavigateButtonProps = IconButtonProps & {};
-const IconNavigateButton: FC<IconNavigateButtonProps> = forwardRef(
-  ({ ...buttonProps }, ref) => {
-    return (
-      <IconButton
-        ref={ref}
-        w="fit-content"
-        h="fit-content"
-        p="0"
-        minW="none"
-        minH="none"
-        variant="unstyle"
-        {...buttonProps}
-      />
-    );
-  }
-);
-IconNavigateButton.displayName = "IconNavigateButton";
 
 export default CourseView;
