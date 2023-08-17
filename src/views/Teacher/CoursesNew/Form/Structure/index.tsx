@@ -125,11 +125,7 @@ const Structure: FC<StructureProps> = ({
         );
       })}
 
-      <Button
-        leftIcon={<MdAdd />}
-        onClick={handleAddNewChapter}
-        variant="outline"
-      >
+      <Button onClick={handleAddNewChapter} variant="outline">
         Thêm CHƯƠNG
       </Button>
     </Flex>

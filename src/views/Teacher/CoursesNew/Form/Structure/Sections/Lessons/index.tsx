@@ -87,9 +87,7 @@ const Lessons: FC<LessonsProps> = ({ section, onLessonsChange }) => {
           onLessonChange={handleLessonChange}
         />
       ))}
-      <Button leftIcon={<MdAdd />} onClick={handleAddNewLesson}>
-        Thêm Bài
-      </Button>
+      <Button onClick={handleAddNewLesson}>Thêm mục</Button>
     </Flex>
   );
 };
