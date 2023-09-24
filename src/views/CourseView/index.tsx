@@ -221,7 +221,7 @@ const CourseView = () => {
   const handleChapterChange = (chapter: ICourseChapter) => {
     const { sections } = chapter;
     setCurrentChapter(chapter);
-    if (!sections[0]) return;
+    if (!sections?.[0]) return;
     const { lessons, order } = sections[0];
     setSelectedLesson({
       ...lessons[0],
@@ -237,7 +237,7 @@ const CourseView = () => {
       setCurrentChapter(courseDetails.chapters[0]);
     }
 
-    if (!!courseDetails.chapters[0].sections[0].lessons?.[0]) {
+    if (!!courseDetails.chapters?.[0].sections?.[0].lessons?.[0]) {
       const section = courseDetails.chapters[0].sections[0];
       const lesson = section.lessons[0];
       setSelectedLesson({
@@ -500,7 +500,7 @@ const ChaptersDrawer: FC<ChaptersDrawerProps> = ({
         <DrawerBody>
           <Flex flexDir="column" gap="1rem">
             {chapters.map((chapter) => {
-              const { name, order, sections } = chapter;
+              const { name, order, sections = [] } = chapter;
 
               return (
                 <Flex key={chapter.order} flexDir="column" gap="0.25rem">

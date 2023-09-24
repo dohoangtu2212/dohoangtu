@@ -17,7 +17,6 @@ import {
 import { useCallback } from "react";
 import { ICourseFormFields, ICourseLessonType } from "@/types/course";
 import Sections from "@/views/Teacher/CoursesNew/Form/Structure/Sections";
-import { MdAdd } from "react-icons/md";
 
 type StructureProps = {
   values: ICourseFormValues;
