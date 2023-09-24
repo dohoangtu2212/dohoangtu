@@ -1,25 +1,15 @@
 import {
   Box,
   Divider,
-  DrawerProps,
   Flex,
   Spinner,
   Text,
-  Tooltip,
   useDisclosure,
-  Drawer,
-  DrawerBody,
-  DrawerHeader,
-  DrawerOverlay,
-  DrawerContent,
-  DrawerCloseButton,
-  UnorderedList,
-  ListItem,
 } from "@chakra-ui/react";
 
 import CourseSections from "@/views/CourseView/CourseSections";
 import CourseMain from "@/views/CourseView/CourseMain";
-import { useEffect, useState, useMemo, useCallback, FC } from "react";
+import { useEffect, useState, useMemo, useCallback } from "react";
 import { ICourseLesson } from "@/types/course";
 import { useRouter } from "next/router";
 import {
@@ -27,7 +17,7 @@ import {
   useGetStudentViewsCountQuery,
   useUpdateStudentCourseProgressMutation,
 } from "@/store/apis/db";
-import { MdArrowBack, MdPlayArrow } from "react-icons/md";
+import { MdArrowBack } from "react-icons/md";
 import { useCurrentUserSelector } from "@/store/slices/user";
 import { useGetStudentCoursesQuery } from "@/store/apis/db";
 import { useUserRoleSelector } from "@/store/slices/user";
@@ -45,6 +35,7 @@ import useMobile from "@/hooks/useMobile";
 import CourseInfo from "@/views/CourseView/CourseInfo";
 import NavigateButton from "@/components/UI/NavigateButton";
 import IconNavigateButton from "@/components/UI/IconNavigateButton";
+import ChaptersManagement from "./ChaptersManagement";
 
 const CourseView = () => {
   const { isMobile } = useMobile();
@@ -333,7 +324,7 @@ const CourseView = () => {
         <Divider />
 
         {showChapterManager && (
-          <ChapterManagement
+          <ChaptersManagement
             currentChapter={currentChapter}
             chapters={courseChapters}
             onCurrentChapterChange={handleChapterChange}
@@ -378,184 +369,6 @@ const CourseView = () => {
         {isMobile && <CourseInfo courseDetails={courseDetails} />}
       </Flex>
     </>
-  );
-};
-
-type ChapterManagementProps = {
-  currentChapter: ICourseChapter;
-  chapters: ICourseChapter[];
-  onCurrentChapterChange?: (chapter: ICourseChapter) => void;
-};
-const ChapterManagement: FC<ChapterManagementProps> = ({
-  currentChapter,
-  chapters = [],
-  onCurrentChapterChange,
-}) => {
-  const { isMobile } = useMobile();
-
-  const { isOpen, onClose, onOpen } = useDisclosure();
-
-  const currentChapterIdx = chapters.findIndex(
-    (ch) => ch.order === currentChapter.order
-  );
-
-  const handlePrev = () => {
-    if (currentChapterIdx > 0) {
-      onCurrentChapterChange?.(chapters[currentChapterIdx - 1]);
-    }
-  };
-  const handleNext = () => {
-    if (currentChapterIdx < chapters.length - 1) {
-      onCurrentChapterChange?.(chapters[currentChapterIdx + 1]);
-    }
-  };
-
-  return (
-    <>
-      <ChaptersDrawer
-        isOpen={isOpen}
-        onClose={onClose}
-        chapters={chapters}
-        onSelectChapter={(chapter) => onCurrentChapterChange?.(chapter)}
-      />
-      <Flex flexDir="column" gap="0.5rem">
-        <Flex
-          p={{ base: "0 0.5rem", lg: "0.5rem 1rem" }}
-          alignItems="center"
-          gap="1rem"
-          w="100%"
-          justifyContent="space-between"
-        >
-          <NavigateButton
-            variant="outline"
-            p="0.5rem"
-            w="fit-content"
-            h="fit-content"
-            onClick={onOpen}
-          >
-            Danh sách chương
-          </NavigateButton>
-          {!isMobile && <ChapterTitle chapter={currentChapter} />}
-          <Flex alignItems="center" gap="0.5rem">
-            <NavigateButton
-              isDisabled={currentChapterIdx === 0}
-              aria-label="prev"
-              onClick={handlePrev}
-            >
-              Chương trước
-            </NavigateButton>
-            <NavigateButton
-              isDisabled={currentChapterIdx === chapters.length - 1}
-              aria-label="next"
-              onClick={handleNext}
-            >
-              Chương sau
-            </NavigateButton>
-          </Flex>
-        </Flex>
-        {isMobile && <ChapterTitle chapter={currentChapter} />}
-      </Flex>
-    </>
-  );
-};
-
-type ChapterTitleProps = { chapter: ICourseChapter };
-const ChapterTitle: FC<ChapterTitleProps> = ({ chapter }) => {
-  return (
-    <Text
-      textAlign="center"
-      fontSize={{ base: "1rem", lg: "1.25rem" }}
-      fontWeight="600"
-      flex="1"
-    >
-      Chương {chapter.order} : ${chapter.name}
-    </Text>
-  );
-};
-
-type ChaptersDrawerProps = Omit<DrawerProps, "children"> & {
-  chapters: ICourseChapter[];
-  onSelectChapter: (chapter: ICourseChapter) => void;
-};
-const ChaptersDrawer: FC<ChaptersDrawerProps> = ({
-  chapters,
-  onSelectChapter,
-  ...drawersProps
-}) => {
-  const { onClose } = drawersProps;
-
-  const handleSelect = (chapter: ICourseChapter) => () => {
-    onSelectChapter(chapter);
-    onClose();
-  };
-
-  return (
-    <Drawer placement="left" {...drawersProps}>
-      <DrawerOverlay />
-      <DrawerContent>
-        <DrawerCloseButton />
-        <DrawerHeader>
-          <Text>Danh sách chương</Text>
-        </DrawerHeader>
-        <DrawerBody>
-          <Flex flexDir="column" gap="1rem">
-            {chapters.map((chapter) => {
-              const { name, order, sections = [] } = chapter;
-
-              return (
-                <Flex key={chapter.order} flexDir="column" gap="0.25rem">
-                  <Flex alignItems="center" justifyContent="space-between">
-                    <Text fontWeight="600">
-                      Chương {order} : {name}
-                    </Text>
-                    <Tooltip label="Chọn">
-                      <IconNavigateButton
-                        icon={<MdPlayArrow size="2rem" />}
-                        aria-label="play"
-                        onClick={handleSelect(chapter)}
-                      />
-                    </Tooltip>
-                  </Flex>
-                  <UnorderedList>
-                    {sections.map((section) => {
-                      const {
-                        order: secOrder,
-                        name: secName,
-                        lessons,
-                      } = section;
-                      return (
-                        <ListItem key={secOrder}>
-                          <Flex flexDir="column">
-                            <Text>
-                              Bài {secOrder} : {secName}
-                            </Text>
-                            <UnorderedList flexDir="column">
-                              {lessons.map((lesson) => {
-                                const { name: lesName, order: lesOrder } =
-                                  lesson;
-
-                                return (
-                                  <ListItem key={lesOrder}>
-                                    <Text>
-                                      {secOrder}.{lesOrder} : {lesName}
-                                    </Text>
-                                  </ListItem>
-                                );
-                              })}
-                            </UnorderedList>
-                          </Flex>
-                        </ListItem>
-                      );
-                    })}
-                  </UnorderedList>
-                  <Divider my="0.5rem" />
-                </Flex>
-              );
-            })}
-          </Flex>
-        </DrawerBody>
-      </DrawerContent>
-    </Drawer>
   );
 };
 
