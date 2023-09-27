@@ -116,7 +116,7 @@ const Sections: FC<SectionsProps> = ({ sections = [], onSectionsChange }) => {
                       onChange={handleSectionTitleChange}
                     />
                   </Box>
-                  <Tooltip label={`Xoá CHƯƠNG ${section.order.toString()}`}>
+                  <Tooltip label={`Xoá Bài ${section.order.toString()}`}>
                     <IconButton
                       aria-label="delete"
                       p="0"
