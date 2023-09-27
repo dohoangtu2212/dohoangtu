@@ -13,10 +13,13 @@ import {
   Box,
   Input,
   InputProps,
+  Tooltip,
+  IconButton,
 } from "@chakra-ui/react";
 import { useCallback } from "react";
 import { ICourseFormFields, ICourseLessonType } from "@/types/course";
 import Sections from "@/views/Teacher/CoursesNew/Form/Structure/Sections";
+import { MdOutlineDelete } from "react-icons/md";
 
 type StructureProps = {
   values: ICourseFormValues;
@@ -83,6 +86,19 @@ const Structure: FC<StructureProps> = ({
           handleChaptersChange(updatedChapters);
         };
 
+        const handleDeleteChapter = () => {
+          const chaptersAfterDelete = chapters?.filter(
+            (chap) => chap.order !== chapter.order
+          );
+          const chaptersWithOrderUpdated = chaptersAfterDelete.map(
+            (chap, idx) => ({
+              ...chap,
+              order: idx + 1,
+            })
+          );
+          handleChaptersChange(chaptersWithOrderUpdated);
+        };
+
         const handleSectionsChange = (sections: ICourseSection[]) => {
           const updatedChapter = {
             ...chapter,
@@ -114,6 +130,15 @@ const Structure: FC<StructureProps> = ({
                 value={name}
                 onChange={handleChapterTitleChange}
               />
+              <Tooltip label={`Xoá CHƯƠNG ${chapter.order.toString()}`}>
+                <IconButton
+                  aria-label="delete"
+                  p="0"
+                  icon={<MdOutlineDelete size="1.5rem" />}
+                  variant="ghost"
+                  onClick={handleDeleteChapter}
+                />
+              </Tooltip>
             </Flex>
             <Sections
               sections={sections}
