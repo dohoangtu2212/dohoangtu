@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { displayPrice } from "@/utils/display";
 import FileInput from "@/components/Input/FileInput";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import DisplayImage from "@/components/UI/DisplayImage";
 
 type ListingProps = {
@@ -30,7 +30,7 @@ const Listing: FC<ListingProps> = ({
   handleSetFieldValue,
   handleSetFieldTouched,
 }) => {
-  const [previewThumbnailUrl, setpreviewThumbnailUrl] = useState("");
+  const [previewThumbnailUrl, setPreviewThumbnailUrl] = useState("");
 
   const handleChangeName = (name: string) => {
     handleSetFieldValue(ICourseFormFields.name, name);
@@ -60,7 +60,7 @@ const Listing: FC<ListingProps> = ({
 
       if (!thumbnail) return;
       const objectUrl = URL.createObjectURL(thumbnail);
-      setpreviewThumbnailUrl(objectUrl);
+      setPreviewThumbnailUrl(objectUrl);
       handleSetFieldValue("thumbnailFile", thumbnail);
     },
     [previewThumbnailUrl, handleSetFieldValue]
@@ -170,9 +170,13 @@ const Listing: FC<ListingProps> = ({
             accept="image/*"
             onFileSelected={handleChangeThumbnail}
           />
-          {!!previewThumbnailUrl && (
+          {!!(
+            values[ICourseFormFields.thumbnailUrl] ?? previewThumbnailUrl
+          ) && (
             <DisplayImage
-              imageUrl={previewThumbnailUrl}
+              imageUrl={
+                values[ICourseFormFields.thumbnailUrl] ?? previewThumbnailUrl
+              }
               alt="thumbnail"
               w="20rem"
               aspectRatio="16/9"
