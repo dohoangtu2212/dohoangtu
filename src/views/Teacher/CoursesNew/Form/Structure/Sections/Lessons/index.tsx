@@ -10,7 +10,7 @@ import {
   Box,
   Input,
 } from "@chakra-ui/react";
-import { FC, Fragment } from "react";
+import { FC, Fragment, useCallback } from "react";
 import {
   MdOndemandVideo,
   MdAssignment,
@@ -53,19 +53,22 @@ const Lessons: FC<LessonsProps> = ({ section, onLessonsChange }) => {
   };
 
   // delete then update idx and order
-  const handleLessonDelete = (lesson: ICourseLesson) => () => {
-    const idx = section.lessons?.findIndex((l) => l.order === lesson.order);
-    if (idx === -1) return;
-    const lessonsAfterDelete = section.lessons?.filter(
-      (l) => l.order !== lesson.order
-    );
-    const lessonsWithOrderUpdated = lessonsAfterDelete.map((l, idx) => ({
-      ...l,
-      order: idx + 1,
-    }));
+  const handleLessonDelete = useCallback(
+    (lesson: ICourseLesson) => () => {
+      const idx = section.lessons?.findIndex((l) => l.order === lesson.order);
+      if (idx === -1) return;
+      const lessonsAfterDelete = section.lessons?.filter(
+        (l) => l.order !== lesson.order
+      );
+      const lessonsWithOrderUpdated = lessonsAfterDelete.map((l, idx) => ({
+        ...l,
+        order: idx + 1,
+      }));
 
-    onLessonsChange(lessonsWithOrderUpdated);
-  };
+      onLessonsChange(lessonsWithOrderUpdated);
+    },
+    [section, onLessonsChange]
+  );
 
   const handleLessonChange = (lesson: ICourseLesson) => {
     const { lessons } = section;
@@ -131,7 +134,7 @@ const Lesson: FC<LessonProps> = ({
     });
   };
 
-  const handleDeleteLesson = () => async () => {
+  const handleDeleteLesson = () => {
     onLessonDelete?.();
   };
 

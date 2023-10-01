@@ -14,7 +14,7 @@ const ChapterTitle: FC<ChapterTitleProps> = ({ chapter }) => {
       fontWeight="600"
       flex="1"
     >
-      Chương {chapter.order} : ${chapter.name}
+      Chương {chapter.order} : {chapter.name}
     </Text>
   );
 };
