@@ -64,7 +64,7 @@ const CourseSection: FC<CourseSectionProps> = ({
                 </Text>
                 {/* TODO: Add completion status */}
                 <Text textAlign="left" fontSize="0.875rem" color="gray.500">
-                  Đã xem: {viewedLessons.length}/{section?.lessons?.length ?? 0}
+                  {viewedLessons.length}/{section?.lessons?.length ?? 0}
                 </Text>
               </Box>
               <AccordionIcon />

@@ -36,7 +36,7 @@ const Feedbacks: FC<FeedbacksProps> = () => {
         templateColumns={{
           base: `repeat(1, 1fr)`,
           md: `repeat(2, 1fr)`,
-          lg: `repeat(4, 1fr)`,
+          lg: `repeat(3, 1fr)`,
         }}
         gap="1rem"
       >
@@ -55,6 +55,7 @@ const Feedbacks: FC<FeedbacksProps> = () => {
                   src={fbUrl}
                   fill
                   alt={fbUrl}
+                  sizes="(min-width: 30em) 20rem, 30rem"
                   style={{
                     objectFit: "contain",
                   }}
