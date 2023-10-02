@@ -36,7 +36,7 @@ const Details: FC<DetailsProps> = ({
       w="100%"
     >
       <Flex flexDir="column" gap="0.5rem" w="100%">
-        <Text>KHÁI QUÁT KHOÁ HỌC</Text>
+        <Text>TỔNG QUAN KHOÁ HỌC</Text>
         <Tiptap defaultValue={defaultValue} onHtmlChange={handleChange} />
       </Flex>
     </Flex>

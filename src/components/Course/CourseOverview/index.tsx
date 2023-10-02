@@ -45,7 +45,7 @@ const CourseOverview: FC<CourseOverviewProps> = ({ overview }) => {
   return (
     <Flex flexDir="column" gap="0.5rem">
       <Text fontSize={{ base: "1rem", lg: "1.25rem" }} fontWeight="700">
-        Khái quát khoá học
+        Tổng quan khoá học
       </Text>
       {!!overview ? (
         <ContentWrapper dangerouslySetInnerHTML={{ __html: overview }} />

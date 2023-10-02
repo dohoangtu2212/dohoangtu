@@ -83,7 +83,7 @@ const BriefIntro: FC<BriefIntroProps> = () => {
         <Text
           color={COLORS.midnightNavy}
           mx="auto"
-          fontWeight="600"
+          fontWeight="700"
           fontSize={{ base: "1rem", lg: "1.25rem" }}
           my={{ base: "1rem", lg: "3rem" }}
           textAlign={{ base: "center", lg: "right" }}

@@ -17,7 +17,7 @@ const CourseInfo: FC<CourseInfoProps> = ({ courseDetails }) => {
   return (
     <Tabs w="100%" px={{ base: "0.5rem", lg: "1rem" }}>
       <TabList w="100%">
-        <Tab fontSize={{ base: "0.875rem", lg: "1rem" }}>Khái quát</Tab>
+        <Tab fontSize={{ base: "0.875rem", lg: "1rem" }}>Tổng quan</Tab>
         <Tab fontSize={{ base: "0.875rem", lg: "1rem" }}>Đánh giá</Tab>
       </TabList>
       <TabPanels>

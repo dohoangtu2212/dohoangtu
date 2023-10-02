@@ -332,7 +332,7 @@ const CourseView = () => {
         )}
 
         <Flex flexDir={{ base: "column", lg: "row" }}>
-          <Box flex="3">
+          <Box flex="3" position="relative">
             {!!selectedLesson && (
               <Flex
                 alignItems="center"
