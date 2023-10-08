@@ -326,6 +326,7 @@ const CourseView = () => {
         flexDir="column"
         pt={{ base: "0.5rem", lg: "1rem" }}
         gap="0.5rem"
+        pb="3rem"
       >
         <Flex
           px={{ base: "0.5rem", lg: "2rem" }}
@@ -377,7 +378,7 @@ const CourseView = () => {
                 <Text
                   flex="1"
                   textAlign="center"
-                  fontSize="1.25rem"
+                  fontSize={{ base: "1rem", lg: "1.25rem" }}
                   fontWeight="600"
                 >
                   Bài {selectedLesson.order.toString().split(".")[0]} | Phần{" "}
@@ -387,17 +388,32 @@ const CourseView = () => {
             )}
             {!isMobile && <CourseInfo courseDetails={courseDetails} />}
           </Box>
-          <Box flex="1">
-            <CourseSections
-              disabledLessons={disabledLessons}
-              selectedLesson={selectedLesson}
-              sections={currentChapter?.sections ?? []}
-              onLessonSelected={setSelectedLesson}
-              onDisabledLessonSelected={handleSelectDisabledLesson}
-            />
-          </Box>
+          {!isMobile && (
+            <Box flex="1">
+              <CourseSections
+                disabledLessons={disabledLessons}
+                selectedLesson={selectedLesson}
+                sections={currentChapter?.sections ?? []}
+                onLessonSelected={setSelectedLesson}
+                onDisabledLessonSelected={handleSelectDisabledLesson}
+              />
+            </Box>
+          )}
         </Flex>
-        {isMobile && <CourseInfo courseDetails={courseDetails} />}
+        {isMobile && (
+          <CourseInfo
+            courseDetails={courseDetails}
+            courseSectionsNode={
+              <CourseSections
+                disabledLessons={disabledLessons}
+                selectedLesson={selectedLesson}
+                sections={currentChapter?.sections ?? []}
+                onLessonSelected={setSelectedLesson}
+                onDisabledLessonSelected={handleSelectDisabledLesson}
+              />
+            }
+          />
+        )}
       </Flex>
     </>
   );
