@@ -1,6 +1,7 @@
 import { extendTheme } from "@chakra-ui/react";
 import DrawerStyles from "@/constants/theme/components/DrawerStyles";
 import { COLORS } from "@/constants/theme/colors";
+import { quicksand } from "@/fonts";
 
 export const breakpoints = {
   sm: "360px",
@@ -300,14 +301,12 @@ const PopoverStyles = {
 
 export const theme = extendTheme({
   // breakpoints,
-  fonts: {
-    body: "Quicksand",
-  },
   styles: {
     global: {
       "html, body": {
         bgColor: COLORS.white,
         color: COLORS.starryNightBlue,
+        ...quicksand.style,
       },
     },
   },

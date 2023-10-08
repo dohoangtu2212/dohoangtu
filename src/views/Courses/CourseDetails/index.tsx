@@ -6,7 +6,7 @@ import {
 } from "@/store/apis/db";
 import { skipToken } from "@reduxjs/toolkit/dist/query";
 import PageContainer from "@/components/Layout/PageContainer";
-import "@fontsource/roboto-slab";
+import { robotoSlab } from "@/fonts";
 
 import {
   Flex,
@@ -166,7 +166,7 @@ const Main: FC<MainProps> = ({ courseDetails, course, isPurchased }) => {
               <Flex flexDir="column" gap="0.5rem">
                 <Text
                   fontSize={{ base: "1.375rem", md: "1.5rem" }}
-                  fontFamily="Roboto Slab"
+                  className={robotoSlab.className}
                 >
                   {name}
                 </Text>

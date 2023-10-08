@@ -1,6 +1,4 @@
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
-import "@fontsource/roboto-slab";
-import "@fontsource/sedgwick-ave";
 import { COLORS } from "@/constants/theme/colors";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -9,6 +7,7 @@ import { AuthMode } from "@/constants/auth";
 import { DEMO_COURSE_ID } from "@/constants/course";
 import useMobile from "@/hooks/useMobile";
 import { FC } from "react";
+import { robotoSlab, sedgwickAve } from "@/fonts";
 
 const DEMO_VIDEO_URL =
   "https://firebasestorage.googleapis.com/v0/b/online-classroom-de70d.appspot.com/o/assets%2FDemo1.mp4?alt=media&token=83867c46-3507-4416-8391-1c1240fdaa1d";
@@ -54,7 +53,7 @@ const BriefIntro: FC<BriefIntroProps> = () => {
       pr={{ base: "0", lg: "2rem" }}
     >
       <Box w={{ base: "100%", lg: "35rem" }}>
-        <Box fontFamily="Roboto Slab">
+        <Box className={robotoSlab.className}>
           <Text
             fontSize={{ base: "2rem", lg: "3.25rem" }}
             textAlign="right"
@@ -99,7 +98,7 @@ const BriefIntro: FC<BriefIntroProps> = () => {
             <Text
               fontWeight="700"
               w={{ base: "12rem", lg: "18rem" }}
-              fontFamily="Sedgwick Ave"
+              className={sedgwickAve.className}
               textAlign="right"
               color={COLORS.midnightNavy}
               fontSize="1.25rem"

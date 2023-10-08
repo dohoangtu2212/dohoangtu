@@ -1607,21 +1607,6 @@
   resolved "https://registry.yarnpkg.com/@firebase/webchannel-wrapper/-/webchannel-wrapper-0.10.0.tgz#92ee8c88682bb1ff0938b751f88f108e7a73165a"
   integrity sha512-2I8y+vJVrPfPFJrnRGpao1Qc2Gu7wmYoo5ed2s5zK/DUGgcyY1Yr/xC0YdnKM4pi7rG3HqwW9ehAKUXoTMLdoA==
 
-"@fontsource/quicksand@^4.5.12":
-  version "4.5.12"
-  resolved "https://registry.yarnpkg.com/@fontsource/quicksand/-/quicksand-4.5.12.tgz#9d849f9c5fe5a237d1524d30653349ccfd77a0a8"
-  integrity sha512-aSgAR82dAzRsWGupPobU1ubfX6MhrQgKw2xe0AEKyQ5yMMpNhptTajbOIPJ8ZE5CPX3UHYlGY0da/7ztoEM3vQ==
-
-"@fontsource/roboto-slab@^4.5.11":
-  version "4.5.11"
-  resolved "https://registry.yarnpkg.com/@fontsource/roboto-slab/-/roboto-slab-4.5.11.tgz#fb5290d3d5c9ca6974e6b3a20441a30114d9e47b"
-  integrity sha512-0HXK8WNvZZg4vglhUY4ySBmlh+wnO1JsGcPfCaxDhY24gtRf2POmmeNpSxKFjjQTDV8BiYDXF2H9p15d/6c/YA==
-
-"@fontsource/sedgwick-ave@^4.5.10":
-  version "4.5.10"
-  resolved "https://registry.yarnpkg.com/@fontsource/sedgwick-ave/-/sedgwick-ave-4.5.10.tgz#6a2e618dea4bd4d44506cc31a4335afd506beaec"
-  integrity sha512-/GRCHrUTpfEJUCbVY/YIamVq3u1YG6gEKakWfmX2g9iUNPkDMsR4CzS3KTTvDdpN1Suc/3GBu+OHMa6r5OMetQ==
-
 "@google-cloud/firestore@^6.5.0":
   version "6.5.0"
   resolved "https://registry.yarnpkg.com/@google-cloud/firestore/-/firestore-6.5.0.tgz#5049740e40eca75956264377ca9ffaab2c0f345d"
