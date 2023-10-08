@@ -143,12 +143,9 @@ const CourseView = () => {
     router.push(ROUTE.cart);
   }, [course, closeAddToCartModal, dispatch, router]);
 
-  // TODO: add a list of all lessons
+  const moveToNextLesson = useCallback(() => {
+    if (!selectedLesson || !currentChapter) return;
 
-  const moveToNextLesson = (
-    selectedLesson: ICourseLesson,
-    currentChapter: ICourseChapter
-  ) => {
     const { order } = selectedLesson;
     const [sectionOrder, lessonOrder] = order.toString().split(".");
 
@@ -164,6 +161,7 @@ const CourseView = () => {
     let nextLesson = section.lessons[lessonIdx + 1];
     if (!nextLesson) {
       section = sections[sectionIdx + 1];
+      if (!section || !section.lessons[0]) return;
       nextLesson = section.lessons[0];
     }
 
@@ -171,7 +169,35 @@ const CourseView = () => {
       ...nextLesson,
       order: `${section.order}.${nextLesson.order}`,
     });
-  };
+  }, [selectedLesson, currentChapter]);
+
+  const moveToPrevLesson = useCallback(() => {
+    if (!selectedLesson || !currentChapter) return;
+
+    const { order } = selectedLesson;
+    const [sectionOrder, lessonOrder] = order.toString().split(".");
+
+    const { sections } = currentChapter;
+    const sectionIdx = sections.findIndex(
+      (s) => s.order.toString() === sectionOrder.toString()
+    );
+    let section = sections[sectionIdx];
+    if (!section) return;
+    const lessonIdx = section.lessons.findIndex(
+      (l) => l.order.toString() === lessonOrder.toString()
+    );
+    let prevLesson = section.lessons[lessonIdx - 1];
+    if (!prevLesson) {
+      section = sections[sectionIdx - 1];
+      if (!section || !section.lessons[0]) return;
+      prevLesson = section.lessons[0];
+    }
+
+    setSelectedLesson({
+      ...prevLesson,
+      order: `${section.order}.${prevLesson.order}`,
+    });
+  }, [selectedLesson, currentChapter]);
 
   const updateCourseProgress = useCallback(async () => {
     if (
@@ -203,11 +229,10 @@ const CourseView = () => {
   ]);
 
   const handleCurrentVideoEnded = useCallback(() => {
-    if (!selectedLesson || !currentChapter) return;
-    moveToNextLesson(selectedLesson, currentChapter);
+    moveToNextLesson();
     updateCourseProgress();
     // Move to next lesson
-  }, [selectedLesson, currentChapter, updateCourseProgress]);
+  }, [updateCourseProgress, moveToNextLesson]);
 
   const handleChapterChange = (chapter: ICourseChapter) => {
     const { sections } = chapter;
@@ -333,27 +358,33 @@ const CourseView = () => {
 
         <Flex flexDir={{ base: "column", lg: "row" }}>
           <Box flex="3" position="relative">
-            {!!selectedLesson && (
-              <Flex
-                alignItems="center"
-                gap="0.5rem"
-                px={{ base: "0.5rem", lg: "1rem" }}
-                py={{ base: "0.25rem", lg: "0.5rem" }}
-              >
-                <NavigateButton>Mục trước</NavigateButton>
-                <Text flex="1" textAlign="center">
-                  Bài {selectedLesson.order.toString().split(".")[0]} | Mục{" "}
-                  {selectedLesson.order}: {selectedLesson?.name}
-                </Text>{" "}
-                <NavigateButton>Mục sau</NavigateButton>
-              </Flex>
-            )}
             <CourseMain
               onVideoEnded={handleCurrentVideoEnded}
               courseDetails={courseDetails}
               selectedLesson={selectedLesson}
               disabledLessons={disabledLessons}
+              onNext={moveToNextLesson}
+              onPrev={moveToPrevLesson}
             />
+            {!!selectedLesson && (
+              <Flex
+                alignItems="center"
+                gap="0.5rem"
+                px={{ base: "0.5rem", lg: "1rem" }}
+                pb={{ base: "0.5rem", lg: "1rem" }}
+                pt="0.25rem"
+              >
+                <Text
+                  flex="1"
+                  textAlign="center"
+                  fontSize="1.25rem"
+                  fontWeight="600"
+                >
+                  Bài {selectedLesson.order.toString().split(".")[0]} | Phần{" "}
+                  {selectedLesson.order}: {selectedLesson?.name}
+                </Text>{" "}
+              </Flex>
+            )}
             {!isMobile && <CourseInfo courseDetails={courseDetails} />}
           </Box>
           <Box flex="1">

@@ -10,9 +10,10 @@ const ChapterTitle: FC<ChapterTitleProps> = ({ chapter }) => {
   return (
     <Text
       textAlign="center"
-      fontSize={{ base: "1rem", lg: "1.25rem" }}
+      fontSize={{ base: "1rem", lg: "1.5rem" }}
       fontWeight="600"
       flex="1"
+      textTransform="uppercase"
     >
       Chương {chapter.order} : {chapter.name}
     </Text>

@@ -90,7 +90,7 @@ const Lessons: FC<LessonsProps> = ({ section, onLessonsChange }) => {
           onLessonChange={handleLessonChange}
         />
       ))}
-      <Button onClick={handleAddNewLesson}>Thêm mục</Button>
+      <Button onClick={handleAddNewLesson}>Thêm phần</Button>
     </Flex>
   );
 };

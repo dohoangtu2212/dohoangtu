@@ -122,7 +122,9 @@ const Value: FC<ValueProps> = ({ value, idx }) => {
         <Text fontSize={{ base: "1.25rem", lg: "1.5rem" }} fontWeight="700">
           {title}
         </Text>
-        <Text fontSize={{ base: "0.875rem", lg: "1rem" }}>{description}</Text>
+        <Text fontSize={{ base: "0.875rem", lg: "1.125rem" }} fontWeight="500">
+          {description}
+        </Text>
       </Flex>
     </Flex>
   );

@@ -1,4 +1,4 @@
-import { Flex, Box } from "@chakra-ui/react";
+import { Flex, Box, useBoolean, FlexProps } from "@chakra-ui/react";
 import dynamic from "next/dynamic";
 const Video = dynamic(() => import("@/components/DynTube/Video"), {
   ssr: false,
@@ -15,18 +15,23 @@ import {
 } from "@/store/slices/user";
 import { UserRole } from "@/types/permission";
 import useCustomToast from "@/hooks/useCustomToast";
+import { IoMdSkipBackward, IoMdSkipForward } from "react-icons/io";
 
 type CourseMainProps = {
   courseDetails: ICourseDetails;
   disabledLessons: IDisabledLesson[];
   selectedLesson: ICourseLesson | null;
   onVideoEnded: () => void;
+  onNext?: () => void;
+  onPrev?: () => void;
 };
 const CourseMain: FC<CourseMainProps> = ({
   courseDetails,
   selectedLesson,
   disabledLessons = [],
   onVideoEnded,
+  onNext,
+  onPrev,
 }) => {
   const currentUser = useCurrentUserSelector();
   const userRole = useUserRoleSelector();
@@ -117,9 +122,29 @@ const CourseMain: FC<CourseMainProps> = ({
 
   if (!courseDetails || !videoKey) return null;
 
+  const commonNavigatingFlexProps: FlexProps = {
+    w: "2.5rem",
+    h: "2.5rem",
+    position: "absolute",
+    border: "1px solid white",
+    zIndex: "9999",
+    top: "calc(50% - 1.25rem)",
+    alignItems: "center",
+    justifyContent: "center",
+    cursor: "pointer",
+    color: "white",
+    bgColor: "blackAlpha.500",
+  };
+
   return (
-    <Flex flexDir="column" w="100%">
+    <Flex flexDir="column" w="100%" bgColor="red">
       <Box position="relative">
+        <Flex {...commonNavigatingFlexProps} left="0" onClick={onPrev}>
+          <IoMdSkipBackward size="1.5rem" />
+        </Flex>
+        <Flex {...commonNavigatingFlexProps} right="0" onClick={onNext}>
+          <IoMdSkipForward size="1.5rem" />
+        </Flex>
         {isLimitViewsReached && (
           <Box
             w="100%"
