@@ -15,7 +15,12 @@ import {
 } from "@/store/slices/user";
 import { UserRole } from "@/types/permission";
 import useCustomToast from "@/hooks/useCustomToast";
-import { IoMdSkipBackward, IoMdSkipForward } from "react-icons/io";
+import {
+  IoMdArrowBack,
+  IoMdSkipBackward,
+  IoMdSkipForward,
+} from "react-icons/io";
+import { MdArrowBackIos, MdArrowForwardIos } from "react-icons/md";
 
 type CourseMainProps = {
   courseDetails: ICourseDetails;
@@ -123,11 +128,11 @@ const CourseMain: FC<CourseMainProps> = ({
   if (!courseDetails || !videoKey) return null;
 
   const commonNavigatingFlexProps: FlexProps = {
-    w: "2.5rem",
+    w: "1.5rem",
     h: "2.5rem",
     position: "absolute",
     border: "1px solid white",
-    zIndex: "9999",
+    zIndex: "20",
     top: "calc(50% - 1.25rem)",
     alignItems: "center",
     justifyContent: "center",
@@ -139,11 +144,20 @@ const CourseMain: FC<CourseMainProps> = ({
   return (
     <Flex flexDir="column" w="100%" bgColor="red">
       <Box position="relative">
-        <Flex {...commonNavigatingFlexProps} left="0" onClick={onPrev}>
-          <IoMdSkipBackward size="1.5rem" />
+        <Flex
+          {...commonNavigatingFlexProps}
+          left="0"
+          onClick={onPrev}
+          pl="0.25rem"
+        >
+          <MdArrowBackIos size="1rem" />
         </Flex>
-        <Flex {...commonNavigatingFlexProps} right="0" onClick={onNext}>
-          <IoMdSkipForward size="1.5rem" />
+        <Flex
+          {...commonNavigatingFlexProps}
+          right="0"
+          onClick={onNext}
+        >
+          <MdArrowForwardIos size="1rem" />
         </Flex>
         {isLimitViewsReached && (
           <Box
