@@ -45,11 +45,12 @@ const AuthForm: FC<AuthFormProps> = ({ mode, onLoggedIn }) => {
     <Flex
       flexDir="column"
       w={{ base: "90vw", md: "30rem" }}
-      minH={{ base: "50vh", md: "28rem" }}
+      minH='25rem'
       as={mode === DisplayMode.page ? Card : Flex}
       bgColor={COLORS.white}
+      pb="2rem"
     >
-      <Tabs defaultIndex={isSignUp ? 1 : 0}>
+      <Tabs defaultIndex={isSignUp ? 1 : 0} w="100%">
         <TabList justifyContent="center" gap="3rem">
           <Tab>Đăng nhập</Tab>
           <Tab>Đăng kí</Tab>
@@ -63,21 +64,6 @@ const AuthForm: FC<AuthFormProps> = ({ mode, onLoggedIn }) => {
           </TabPanel>
         </TabPanels>
       </Tabs>
-      <Flex flexDir="column" gap="1rem" px="1rem" alignItems="center">
-        <Text textAlign="center" fontSize="0.75rem">
-          Phương thức khác
-        </Text>
-        <Button leftIcon={<FcGoogle size="1.25rem" />} isDisabled w="100%">
-          Đăng nhập bằng Google
-        </Button>
-        <Button
-          leftIcon={<BiMessageDetail size="1.25rem" />}
-          isDisabled
-          w="100%"
-        >
-          Đăng nhập bằng OTP
-        </Button>
-      </Flex>
     </Flex>
   );
 };

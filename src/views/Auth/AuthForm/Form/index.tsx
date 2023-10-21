@@ -45,7 +45,7 @@ const Form: FC<FormProps> = ({ onSubmit, action = "Đăng nhập" }) => {
   );
 
   return (
-    <Flex flexDir="column" gap="2rem" py="1rem">
+    <Flex flexDir="column" gap="2rem" py="1rem" w="100%">
       <form onSubmit={handleSubmit} noValidate>
         <Flex flexDir="column" gap="1rem">
           <Input

@@ -37,6 +37,10 @@ const ButtonStyles = {
         color: COLORS.midnightNavy,
       },
     },
+    text: {
+      fontSize: "0.875rem",
+      color: COLORS.twilightBlue,
+    },
   },
   defaultProps: {},
 };
