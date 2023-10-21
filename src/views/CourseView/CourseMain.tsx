@@ -15,11 +15,6 @@ import {
 } from "@/store/slices/user";
 import { UserRole } from "@/types/permission";
 import useCustomToast from "@/hooks/useCustomToast";
-import {
-  IoMdArrowBack,
-  IoMdSkipBackward,
-  IoMdSkipForward,
-} from "react-icons/io";
 import { MdArrowBackIos, MdArrowForwardIos } from "react-icons/md";
 
 type CourseMainProps = {
@@ -152,11 +147,7 @@ const CourseMain: FC<CourseMainProps> = ({
         >
           <MdArrowBackIos size="1rem" />
         </Flex>
-        <Flex
-          {...commonNavigatingFlexProps}
-          right="0"
-          onClick={onNext}
-        >
+        <Flex {...commonNavigatingFlexProps} right="0" onClick={onNext}>
           <MdArrowForwardIos size="1rem" />
         </Flex>
         {isLimitViewsReached && (

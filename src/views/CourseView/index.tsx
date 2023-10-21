@@ -33,9 +33,9 @@ import { COLORS } from "@/constants/theme/colors";
 import { skipToken } from "@reduxjs/toolkit/dist/query";
 import useMobile from "@/hooks/useMobile";
 import CourseInfo from "@/views/CourseView/CourseInfo";
-import NavigateButton from "@/components/UI/NavigateButton";
 import IconNavigateButton from "@/components/UI/IconNavigateButton";
 import ChaptersManagement from "./ChaptersManagement";
+import useCustomToast from "@/hooks/useCustomToast";
 
 const CourseView = () => {
   const { isMobile } = useMobile();
@@ -50,6 +50,7 @@ const CourseView = () => {
   const currentUser = useCurrentUserSelector();
   const userRole = useUserRoleSelector();
   const router = useRouter();
+  const toast = useCustomToast();
   const { query } = router;
 
   const {
@@ -143,25 +144,63 @@ const CourseView = () => {
     router.push(ROUTE.cart);
   }, [course, closeAddToCartModal, dispatch, router]);
 
+  const handleChapterChange = (chapter: ICourseChapter) => {
+    const { sections } = chapter;
+    setCurrentChapter(chapter);
+    if (!sections?.[0]) return;
+    const { lessons, order } = sections[0];
+    setSelectedLesson({
+      ...lessons[0],
+      order: `${order}.${lessons[0].order}`,
+    });
+  };
+
   const moveToNextLesson = useCallback(() => {
-    if (!selectedLesson || !currentChapter) return;
+    if (!selectedLesson || !currentChapter || !courseDetails) return;
+
+    const { chapters } = courseDetails;
 
     const { order } = selectedLesson;
     const [sectionOrder, lessonOrder] = order.toString().split(".");
 
     const { sections } = currentChapter;
+    if (!sections) {
+      const currChapterIdx = chapters.findIndex(
+        ({ order }) => order === currentChapter.order
+      );
+      const nextChapter = chapters[currChapterIdx + 1];
+
+      if (!nextChapter) {
+        return toast("Mục tiếp theo không khả dụng", "info");
+      }
+
+      return handleChapterChange(nextChapter);
+    }
     const sectionIdx = sections.findIndex(
       (s) => s.order.toString() === sectionOrder.toString()
     );
     let section = sections[sectionIdx];
-    if (!section) return;
+    if (!section) {
+      return toast("Mục tiếp theo không khả dụng", "info");
+    }
     const lessonIdx = section.lessons.findIndex(
       (l) => l.order.toString() === lessonOrder.toString()
     );
     let nextLesson = section.lessons[lessonIdx + 1];
     if (!nextLesson) {
       section = sections[sectionIdx + 1];
-      if (!section || !section.lessons[0]) return;
+      // no next section
+      if (!section || !section.lessons[0]) {
+        const currChapterIdx = chapters.findIndex(
+          ({ order }) => order === currentChapter.order
+        );
+        const nextChapter = chapters[currChapterIdx + 1];
+
+        if (!nextChapter) {
+          return toast("Mục tiếp theo không khả dụng", "info");
+        }
+        return handleChapterChange(nextChapter);
+      }
       nextLesson = section.lessons[0];
     }
 
@@ -169,27 +208,54 @@ const CourseView = () => {
       ...nextLesson,
       order: `${section.order}.${nextLesson.order}`,
     });
-  }, [selectedLesson, currentChapter]);
+  }, [selectedLesson, currentChapter, courseDetails, toast]);
 
   const moveToPrevLesson = useCallback(() => {
-    if (!selectedLesson || !currentChapter) return;
+    if (!selectedLesson || !currentChapter || !courseDetails) return;
+
+    const { chapters } = courseDetails;
 
     const { order } = selectedLesson;
     const [sectionOrder, lessonOrder] = order.toString().split(".");
 
     const { sections } = currentChapter;
+    if (!sections) {
+      const currChapterIdx = chapters.findIndex(
+        ({ order }) => order === currentChapter.order
+      );
+      const prevChapter = chapters[currChapterIdx - 1];
+
+      if (!prevChapter) {
+        return toast("Mục tiếp theo không khả dụng", "info");
+      }
+
+      return handleChapterChange(prevChapter);
+    }
     const sectionIdx = sections.findIndex(
       (s) => s.order.toString() === sectionOrder.toString()
     );
     let section = sections[sectionIdx];
-    if (!section) return;
+    if (!section) {
+      return toast("Mục tiếp theo không khả dụng", "info");
+    }
     const lessonIdx = section.lessons.findIndex(
       (l) => l.order.toString() === lessonOrder.toString()
     );
     let prevLesson = section.lessons[lessonIdx - 1];
     if (!prevLesson) {
       section = sections[sectionIdx - 1];
-      if (!section || !section.lessons[0]) return;
+      if (!section || !section.lessons[0]) {
+        const currChapterIdx = chapters.findIndex(
+          ({ order }) => order === currentChapter.order
+        );
+        const prevChapter = chapters[currChapterIdx - 1];
+
+        if (!prevChapter) {
+          return toast("Mục tiếp theo không khả dụng", "info");
+        }
+
+        return handleChapterChange(prevChapter);
+      }
       prevLesson = section.lessons[0];
     }
 
@@ -197,7 +263,7 @@ const CourseView = () => {
       ...prevLesson,
       order: `${section.order}.${prevLesson.order}`,
     });
-  }, [selectedLesson, currentChapter]);
+  }, [selectedLesson, currentChapter, courseDetails, toast]);
 
   const updateCourseProgress = useCallback(async () => {
     if (
@@ -233,17 +299,6 @@ const CourseView = () => {
     updateCourseProgress();
     // Move to next lesson
   }, [updateCourseProgress, moveToNextLesson]);
-
-  const handleChapterChange = (chapter: ICourseChapter) => {
-    const { sections } = chapter;
-    setCurrentChapter(chapter);
-    if (!sections?.[0]) return;
-    const { lessons, order } = sections[0];
-    setSelectedLesson({
-      ...lessons[0],
-      order: `${order}.${lessons[0].order}`,
-    });
-  };
 
   // set default lesson
   useEffect(() => {
