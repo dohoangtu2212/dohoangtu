@@ -1,4 +1,4 @@
-import { COLORS } from "@/constants/theme/colors";
+import { COLORS } from "../colors";
 
 const mobileMenuVariant = {
   dialog: {
