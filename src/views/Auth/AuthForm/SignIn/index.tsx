@@ -108,10 +108,15 @@ const ResetPassword: FC<ResetPasswordProps> = ({ onBack }) => {
       return;
     }
     setLoading.on();
-    const auth = getAuth();
-    await sendPasswordResetEmail(auth, email);
-    toast("Gửi email thành công. Vui lòng kiểm tra!", "success");
-    setLoading.off();
+    try {
+      const auth = getAuth();
+      await sendPasswordResetEmail(auth, email);
+      toast("Gửi email thành công. Vui lòng kiểm tra!", "success");
+    } catch (err) {
+      toast("Gửi email thất bại!", "error");
+    } finally {
+      setLoading.off();
+    }
   }, [email, setLoading, toast]);
 
   return (
