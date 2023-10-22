@@ -62,7 +62,7 @@ const Lessons: FC<LessonsProps> = ({ section, onLessonsChange }) => {
   };
 
   return (
-    <Flex flexDir="column" gap="1rem" alignItems="flex-start">
+    <Flex flexDir="column" gap="1rem" alignItems="flex-end">
       {lessons?.map((lesson) => (
         <Lesson
           key={`lesson-${lesson.order}`}

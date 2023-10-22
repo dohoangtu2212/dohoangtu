@@ -40,8 +40,12 @@ export interface ICourseLesson {
   name: string;
   type: ICourseLessonType;
   duration: number;
-  dyntubeKey: string;
+  // for ICourseLessonType.video
+  dyntubeKey?: string;
   dyntubeVideoId?: string;
+  // for ICourseLessonType.assignment
+
+  links?: string[];
 }
 
 export interface ICourseSection {

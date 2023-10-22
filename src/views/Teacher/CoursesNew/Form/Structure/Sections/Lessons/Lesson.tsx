@@ -10,11 +10,17 @@ import {
   Button,
   Input,
 } from "@chakra-ui/react";
-import { FC, Fragment } from "react";
-import { MdOndemandVideo, MdAssignment, MdOutlineDelete } from "react-icons/md";
+import { FC, Fragment, useState } from "react";
+import {
+  MdOndemandVideo,
+  MdAssignment,
+  MdOutlineDelete,
+  MdAddCircleOutline,
+} from "react-icons/md";
 import { ICourseLesson, ICourseLessonType } from "@/types/course";
 import LessonTitle from "@/views/Teacher/CoursesNew/Form/Structure/Sections/Lessons/LessonTitle";
 import VideoPreviewModal from "@/views/Teacher/CoursesNew/Form/Structure/Sections/Lessons/VideoPreviewModal";
+import Link from "next/link";
 
 const LESSON_TYPES = Object.values(ICourseLessonType);
 
@@ -65,6 +71,13 @@ const Lesson: FC<LessonProps> = ({
     onLessonChange?.({
       ...lesson,
       dyntubeKey: videoKey,
+    });
+  };
+
+  const handleLessonLinksChange = (links: string[]) => {
+    onLessonChange?.({
+      ...lesson,
+      links,
     });
   };
 
@@ -122,7 +135,10 @@ const Lesson: FC<LessonProps> = ({
             )}
           </Box>
           <Divider />
-          <Links />
+          <Links
+            links={lesson.links ?? []}
+            onLinksChange={handleLessonLinksChange}
+          />
         </Flex>
       </Flex>
       <Divider />
@@ -130,11 +146,101 @@ const Lesson: FC<LessonProps> = ({
   );
 };
 
-interface LinksProps {}
-const Links: FC<LinksProps> = () => {
+interface LinksProps {
+  links: string[];
+  onLinksChange: (links: string[]) => void;
+}
+const Links: FC<LinksProps> = ({ links = [], onLinksChange }) => {
+  const [tmpLinks, setTmpLinks] = useState<string[]>([]);
+
   return (
-    <Flex flexDir="column" w="100%">
-      <Text fontWeight="700">Links</Text>
+    <Flex flexDir="column" w="100%" gap="0.5rem">
+      <Flex alignItems="center" gap="0.5rem">
+        <Text fontWeight="700">Links</Text>
+        <Flex
+          alignItems="center"
+          justifyContent="center"
+          px="0.5rem"
+          borderRadius="md"
+          bgColor="gray.300"
+        >
+          <Text>
+            {links.length}
+            {!!tmpLinks.length ? `+${tmpLinks.length}` : ""}
+          </Text>
+        </Flex>
+        <IconButton
+          p="0"
+          variant="text"
+          icon={<MdAddCircleOutline size="1.25rem" />}
+          aria-label="add-link"
+          onClick={() => setTmpLinks((pre) => [...pre, ""])}
+        />
+      </Flex>
+      <Flex flexDir="column" gap="0.5rem">
+        {links.map((link, idx) => {
+          return (
+            <Flex
+              key={`link-${idx}`}
+              alignItems="center"
+              justifyContent="space-between"
+            >
+              <Link href={link} passHref={true} target="_blank">
+                <Text textDecoration="underline">{link}</Text>
+              </Link>
+              <IconButton
+                p="0"
+                aria-label="delete"
+                icon={<MdOutlineDelete size="1.5rem" />}
+                variant="text"
+                onClick={() => onLinksChange(links.filter((li) => li !== link))}
+              />
+            </Flex>
+          );
+        })}
+      </Flex>
+      <Flex flexDir="column" gap="0.5rem">
+        {tmpLinks.map((link, idx) => {
+          return (
+            <Flex key={`tmp-link-${idx}`} alignItems="center" gap="0.5rem">
+              <Input
+                value={link}
+                onChange={(ev) => {
+                  const val = ev.target.value;
+                  setTmpLinks((pre) => {
+                    const draft = [...pre];
+                    draft[idx] = val;
+                    return draft;
+                  });
+                }}
+              />
+              <IconButton
+                p="0"
+                aria-label="delete"
+                icon={<MdOutlineDelete size="1.5rem" />}
+                variant="text"
+                onClick={() =>
+                  setTmpLinks((pre) => {
+                    const draft = [...pre];
+                    draft.splice(idx, 1);
+                    return draft;
+                  })
+                }
+              />
+            </Flex>
+          );
+        })}
+      </Flex>
+      {!!tmpLinks.length && (
+        <Button
+          onClick={() => {
+            onLinksChange([...links, ...tmpLinks]);
+            setTmpLinks([]);
+          }}
+        >
+          Lưu links
+        </Button>
+      )}
     </Flex>
   );
 };
