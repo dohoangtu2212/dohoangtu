@@ -14,8 +14,6 @@ import SignIn from "@/views/Auth/AuthForm/SignIn";
 import SignUp from "@/views/Auth/AuthForm/SignUp";
 import { useRouter } from "next/router";
 import { AuthMode } from "@/constants/auth";
-import { FcGoogle } from "react-icons/fc";
-import { BiMessageDetail } from "react-icons/bi";
 import { DisplayMode } from "@/views/Auth/AuthForm/types";
 import { getUserRole } from "@/utils/firebase";
 import { UserRole } from "@/types/permission";
@@ -45,7 +43,7 @@ const AuthForm: FC<AuthFormProps> = ({ mode, onLoggedIn }) => {
     <Flex
       flexDir="column"
       w={{ base: "90vw", md: "30rem" }}
-      minH='25rem'
+      minH="25rem"
       as={mode === DisplayMode.page ? Card : Flex}
       bgColor={COLORS.white}
       pb="2rem"

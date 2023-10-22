@@ -296,7 +296,7 @@ const TeacherCoursesNew = () => {
     isGetCourseLoading;
 
   return (
-    <Flex h={{ base: "100%", md: "90vh" }} flexDir="column" gap="2rem">
+    <Flex flexDir="column" gap="2rem">
       <Flex justifyContent="space-between">
         <Flex alignItems="center" gap="1rem">
           <Button leftIcon={<MdArrowBackIos />} onClick={handleGoBack}>

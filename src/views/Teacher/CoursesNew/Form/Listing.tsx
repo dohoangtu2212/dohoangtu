@@ -67,7 +67,7 @@ const Listing: FC<ListingProps> = ({
   );
 
   return (
-    <Flex flexDir="column" alignItems="flex-start" gap="1rem" py="1rem">
+    <Flex flexDir="column" alignItems="flex-start" gap="1rem" pt="1rem">
       <FormControl display="flex" alignItems="center">
         <FormLabel htmlFor="email-alerts" mb="0">
           Hiển thị trong cửa hàng

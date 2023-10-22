@@ -6,7 +6,7 @@ import Structure from "@/views/Teacher/CoursesNew/Form/Structure";
 import Listing from "@/views/Teacher/CoursesNew/Form/Listing";
 import Details from "@/views/Teacher/CoursesNew/Form/Details";
 
-type StructureProps = {
+interface CourseNewFormProps {
   values: ICourseFormValues;
   handleSetFieldValue: FormikHelpers<
     Partial<ICourseFormValues>
@@ -14,8 +14,8 @@ type StructureProps = {
   handleSetFieldTouched: FormikHelpers<
     Partial<ICourseFormValues>
   >["setFieldTouched"];
-};
-const Form: FC<StructureProps> = ({
+}
+const Form: FC<CourseNewFormProps> = ({
   values,
   handleSetFieldValue,
   handleSetFieldTouched,
@@ -46,8 +46,8 @@ const Form: FC<StructureProps> = ({
         </Box>
       </Flex>
       <Divider orientation="vertical" />
-      <Box flex="1" maxH="82vh" overflowY="auto">
-        <Text fontSize="1rem" fontWeight="700" pb="1rem">
+      <Box flex="1">
+        <Text fontSize="1rem" fontWeight="700">
           Cấu trúc khoá học
         </Text>
         <Structure
