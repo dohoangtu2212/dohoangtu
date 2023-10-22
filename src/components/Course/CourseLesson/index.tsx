@@ -96,7 +96,7 @@ const CourseLesson: FC<CourseLessonProps> = ({
                     w="100%"
                     textAlign="left"
                   >
-                    Links
+                    Tài liệu học tập
                   </Text>
                   <AccordionIcon />
                 </AccordionButton>
