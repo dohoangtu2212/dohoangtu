@@ -70,6 +70,15 @@ export interface ICourseDetails {
   courseId?: string;
   chapters: ICourseChapter[];
   overview?: string;
+  comments?: ICourseComment[];
+}
+
+export interface ICourseComment {
+  userId: string;
+  userEmail: string;
+  userName?: string | null;
+  comment: string;
+  createdAt: string;
 }
 
 export type INewCourseDetails = Omit<ICourseDetails, "id"> & {

@@ -1,5 +1,6 @@
 import {
   ICourse,
+  ICourseComment,
   ICourseDetails,
   INewCourse,
   INewCourseDetails,
@@ -36,6 +37,7 @@ const TAG = {
   orders: "orders",
   studentCourses: "student-courses",
   studentViewsCount: "student-views-count",
+  courseDetailsComments: "course-details-comments",
 };
 
 const dbApis = createApi({
@@ -202,6 +204,70 @@ const dbApis = createApi({
       },
       invalidatesTags: [TAG.courseDetails],
     }),
+    addCourseDetailsComment: build.mutation<
+      { id: string },
+      { data: ICourseComment; courseDetailsId: string }
+    >({
+      async queryFn({ data, courseDetailsId }) {
+        try {
+          const db = getDatabase();
+
+          const dbRef = ref(db);
+
+          let existingComments: ICourseComment[] = [];
+
+          const commentsSnap = await get(
+            child(dbRef, `${DB_KEY.coursesDetails}/${courseDetailsId}/comments`)
+          );
+          if (commentsSnap.exists()) {
+            const data = commentsSnap.val() as ICourseComment[];
+            if (!!data) {
+              existingComments = data;
+            }
+          }
+
+          const newComment = data;
+          const updates: { [key: string]: any } = {};
+          updates[`/${DB_KEY.coursesDetails}/${courseDetailsId}/comments`] = [
+            ...existingComments,
+            newComment,
+          ];
+
+          await update(ref(db), updates);
+          return { data: { id: courseDetailsId as string } };
+        } catch (e) {
+          return { error: JSON.stringify(e) };
+        }
+      },
+      invalidatesTags: [TAG.courseDetailsComments],
+    }),
+    getCourseDetailsComments: build.query<
+      { comments: ICourseComment[] },
+      { courseDetailsId: string }
+    >({
+      async queryFn({ courseDetailsId }) {
+        try {
+          const db = getDatabase();
+          const dbRef = ref(db);
+
+          let comments: ICourseComment[] = [];
+
+          const commentsSnap = await get(
+            child(dbRef, `${DB_KEY.coursesDetails}/${courseDetailsId}/comments`)
+          );
+          if (commentsSnap.exists()) {
+            const data = commentsSnap.val() as ICourseComment[];
+            if (!!data) {
+              comments = data;
+            }
+          }
+          return { data: { comments } };
+        } catch (e) {
+          return { error: JSON.stringify(e) };
+        }
+      },
+      providesTags: [TAG.courseDetailsComments],
+    }),
     getCourseDetails: build.query<ICourseDetails, { id: string }>({
       async queryFn({ id }) {
         try {
@@ -213,7 +279,7 @@ const dbApis = createApi({
           );
           if (snapshot.exists()) {
             const data = snapshot.val() as ICourseDetails;
-            return { data };
+            return { data: { ...data, id } };
           } else {
             throw new Error("No data available");
           }
@@ -420,5 +486,7 @@ export const {
   useGetStudentViewsCountQuery,
   useUpdateStudentViewsCountMutation,
   useUpdateStudentCourseProgressMutation,
+  useAddCourseDetailsCommentMutation,
+  useGetCourseDetailsCommentsQuery
 } = dbApis;
 export default dbApis;

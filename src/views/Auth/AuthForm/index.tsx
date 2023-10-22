@@ -6,8 +6,6 @@ import {
   TabPanels,
   TabPanel,
   Card,
-  Text,
-  Button,
 } from "@chakra-ui/react";
 import { FC, useCallback } from "react";
 import SignIn from "@/views/Auth/AuthForm/SignIn";
