@@ -2,7 +2,6 @@ import {
   ICourseSection,
   ICourseLesson,
   IDisabledLesson,
-  IStudentCourse,
   IStudentViewCount,
 } from "@/types/course";
 import {
@@ -15,7 +14,6 @@ import {
   Text,
   Flex,
 } from "@chakra-ui/react";
-import { reduce } from "lodash";
 import { FC } from "react";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
@@ -24,14 +22,14 @@ import { UserRole } from "@/types/permission";
 import CourseLesson from "@/components/Course/CourseLesson";
 dayjs.extend(duration);
 
-type CourseSectionProps = {
+interface CourseSectionProps {
   section: ICourseSection;
   disabledLessons?: IDisabledLesson[];
   selectedLesson?: ICourseLesson | null;
   onLessonSelected?: (lesson: ICourseLesson) => void;
   onDisabledLessonSelected?: () => void;
   viewsCount?: IStudentViewCount;
-};
+}
 const CourseSection: FC<CourseSectionProps> = ({
   section,
   selectedLesson,
@@ -43,8 +41,10 @@ const CourseSection: FC<CourseSectionProps> = ({
   const userRole = useUserRoleSelector();
   const isStudent = userRole === UserRole.student;
 
-  const viewedLessons = section.lessons.filter((lesson) =>
-    Object.keys(viewsCount ?? {}).includes(lesson.dyntubeKey)
+  const viewedLessons = section.lessons.filter(
+    (lesson) =>
+      !!lesson.dyntubeKey &&
+      Object.keys(viewsCount ?? {}).includes(lesson.dyntubeKey)
   );
 
   return (
@@ -74,8 +74,9 @@ const CourseSection: FC<CourseSectionProps> = ({
         <AccordionPanel pb={4}>
           <Flex flexDir="column" gap="1rem">
             {section.lessons?.map((lesson) => {
-              const lessionVideoViewsCount =
-                viewsCount?.[lesson.dyntubeKey] ?? 0;
+              const lessionVideoViewsCount = !!lesson.dyntubeKey
+                ? viewsCount?.[lesson.dyntubeKey] ?? 0
+                : 0;
               const isActive =
                 selectedLesson?.order === `${section.order}.${lesson.order}`;
 

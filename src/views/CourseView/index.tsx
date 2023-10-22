@@ -274,8 +274,8 @@ const CourseView = () => {
       !matchedStudentCourse?.id
     )
       return;
-    const courseViewedVideoKeys = courseVideoKeys.filter((key) =>
-      Object.keys(viewsCount).includes(key)
+    const courseViewedVideoKeys = courseVideoKeys.filter(
+      (key) => !!key && Object.keys(viewsCount).includes(key)
     );
     const progress = Math.round(
       (courseViewedVideoKeys.length / courseVideoKeys.length) * 100
