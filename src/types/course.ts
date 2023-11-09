@@ -46,6 +46,13 @@ export interface ICourseLesson {
   // for ICourseLessonType.assignment
 
   links?: string[];
+  practices?: ICourseLessonPractice[];
+}
+
+export interface ICourseLessonPractice {
+  question: string;
+  answers: string[];
+  correctAnswer: string;
 }
 
 export interface ICourseSection {

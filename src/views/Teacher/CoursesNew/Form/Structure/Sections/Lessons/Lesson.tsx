@@ -6,23 +6,20 @@ import {
   InputProps,
   Tooltip,
   Box,
-  useDisclosure,
   Button,
-  Input,
 } from "@chakra-ui/react";
-import { FC, Fragment, useState } from "react";
+import { FC, Fragment } from "react";
+import { MdOndemandVideo, MdAssignment, MdOutlineDelete } from "react-icons/md";
 import {
-  MdOndemandVideo,
-  MdAssignment,
-  MdOutlineDelete,
-  MdAddCircleOutline,
-} from "react-icons/md";
-import { ICourseLesson, ICourseLessonType } from "@/types/course";
+  ICourseLesson,
+  ICourseLessonPractice,
+  ICourseLessonType,
+} from "@/types/course";
 import LessonTitle from "@/views/Teacher/CoursesNew/Form/Structure/Sections/Lessons/LessonTitle";
-import VideoPreviewModal from "@/views/Teacher/CoursesNew/Form/Structure/Sections/Lessons/VideoPreviewModal";
-import Link from "next/link";
-
-const LESSON_TYPES = Object.values(ICourseLessonType);
+import LessonLinks from "./LessonLinks";
+import LessonVideo from "./LessonVideo";
+import LessonPractices from "./LessonPractices";
+import LessonType from "./LessonType";
 
 interface LessonProps {
   sectionOrder?: number;
@@ -37,7 +34,6 @@ const Lesson: FC<LessonProps> = ({
   onLessonDelete,
 }) => {
   const lessonOrder = `${sectionOrder}.${lesson.order}`;
-  const isVideoLesson = lesson.type === ICourseLessonType.video;
 
   const handleLessonTitleChange: InputProps["onChange"] = (ev) => {
     const name = ev.target.value;
@@ -81,6 +77,13 @@ const Lesson: FC<LessonProps> = ({
     });
   };
 
+  const handleLessonPracticesChange = (practices: ICourseLessonPractice[]) => {
+    onLessonChange?.({
+      ...lesson,
+      practices,
+    });
+  };
+
   return (
     <Fragment>
       <Flex alignItems="center" w="100%">
@@ -103,39 +106,26 @@ const Lesson: FC<LessonProps> = ({
       </Flex>
       <Flex w="100%" px="2rem">
         <Flex flexDir="column" flex="2" gap="1rem">
-          <Flex alignItems="center" gap="0.5rem">
-            <Text fontWeight="700">Phân loại:</Text>
-            <Button
-              aria-label="video"
-              variant="text"
-              bgColor={isVideoLesson ? "green.400" : "transparent"}
-              leftIcon={<MdOndemandVideo />}
-              onClick={() => handleLessonTypeChange(ICourseLessonType.video)}
-            >
-              Video
-            </Button>
-            <Button
-              aria-label="video"
-              variant="text"
-              bgColor={!isVideoLesson ? "green.400" : "transparent"}
-              leftIcon={<MdAssignment />}
-              onClick={() =>
-                handleLessonTypeChange(ICourseLessonType.assignment)
-              }
-            >
-              Trắc nghiệm
-            </Button>
-          </Flex>
-          <Box pt="1rem">
-            {isVideoLesson && (
-              <VideoLesson
+          <LessonType
+            type={lesson.type ?? ICourseLessonType.video}
+            onTypeChange={handleLessonTypeChange}
+          />
+          <Box pt="0.5rem">
+            {lesson.type === ICourseLessonType.video && (
+              <LessonVideo
                 videoKey={lesson.dyntubeKey}
                 onVideoKeyChange={handleChangeVideoKey}
               />
             )}
+            {lesson.type === ICourseLessonType.assignment && (
+              <LessonPractices
+                practices={lesson.practices ?? []}
+                onPracticesChange={handleLessonPracticesChange}
+              />
+            )}
           </Box>
           <Divider />
-          <Links
+          <LessonLinks
             links={lesson.links ?? []}
             onLinksChange={handleLessonLinksChange}
           />
@@ -144,151 +134,6 @@ const Lesson: FC<LessonProps> = ({
       <Divider />
     </Fragment>
   );
-};
-
-interface LinksProps {
-  links: string[];
-  onLinksChange: (links: string[]) => void;
-}
-const Links: FC<LinksProps> = ({ links = [], onLinksChange }) => {
-  const [tmpLinks, setTmpLinks] = useState<string[]>([]);
-
-  return (
-    <Flex flexDir="column" w="100%" gap="0.5rem">
-      <Flex alignItems="center" gap="0.5rem">
-        <Text fontWeight="700">Links</Text>
-        <Flex
-          alignItems="center"
-          justifyContent="center"
-          px="0.5rem"
-          borderRadius="md"
-          bgColor="gray.300"
-        >
-          <Text>
-            {links.length}
-            {!!tmpLinks.length ? `+${tmpLinks.length}` : ""}
-          </Text>
-        </Flex>
-        <IconButton
-          p="0"
-          variant="text"
-          icon={<MdAddCircleOutline size="1.25rem" />}
-          aria-label="add-link"
-          onClick={() => setTmpLinks((pre) => [...pre, ""])}
-        />
-      </Flex>
-      <Flex flexDir="column" gap="0.5rem">
-        {links.map((link, idx) => {
-          return (
-            <Flex
-              key={`link-${idx}`}
-              alignItems="center"
-              justifyContent="space-between"
-            >
-              <Link href={link} passHref={true} target="_blank">
-                <Text textDecoration="underline">{link}</Text>
-              </Link>
-              <IconButton
-                p="0"
-                aria-label="delete"
-                icon={<MdOutlineDelete size="1.5rem" />}
-                variant="text"
-                onClick={() => onLinksChange(links.filter((li) => li !== link))}
-              />
-            </Flex>
-          );
-        })}
-      </Flex>
-      <Flex flexDir="column" gap="0.5rem">
-        {tmpLinks.map((link, idx) => {
-          return (
-            <Flex key={`tmp-link-${idx}`} alignItems="center" gap="0.5rem">
-              <Input
-                value={link}
-                onChange={(ev) => {
-                  const val = ev.target.value;
-                  setTmpLinks((pre) => {
-                    const draft = [...pre];
-                    draft[idx] = val;
-                    return draft;
-                  });
-                }}
-              />
-              <IconButton
-                p="0"
-                aria-label="delete"
-                icon={<MdOutlineDelete size="1.5rem" />}
-                variant="text"
-                onClick={() =>
-                  setTmpLinks((pre) => {
-                    const draft = [...pre];
-                    draft.splice(idx, 1);
-                    return draft;
-                  })
-                }
-              />
-            </Flex>
-          );
-        })}
-      </Flex>
-      {!!tmpLinks.length && (
-        <Button
-          onClick={() => {
-            onLinksChange([...links, ...tmpLinks]);
-            setTmpLinks([]);
-          }}
-        >
-          Lưu links
-        </Button>
-      )}
-    </Flex>
-  );
-};
-
-interface VideoLessonProps {
-  videoKey?: string;
-  onVideoKeyChange?: (key: string) => void;
-}
-const VideoLesson: FC<VideoLessonProps> = ({ videoKey, onVideoKeyChange }) => {
-  const {
-    isOpen: isPreviewModalOpen,
-    onOpen: openPreviewModal,
-    onClose: closePreviewModal,
-  } = useDisclosure();
-
-  return (
-    <Flex flexDir="column" w="100%" gap="0.5rem">
-      {!!videoKey && (
-        <VideoPreviewModal
-          dynTubeKey={videoKey}
-          isOpen={isPreviewModalOpen}
-          onClose={closePreviewModal}
-        />
-      )}
-      <Flex alignItems="center" gap="1rem">
-        <Text>Video Key</Text>
-        <Button
-          p="0.25rem 1rem"
-          h="fit-content"
-          isDisabled={!videoKey}
-          onClick={openPreviewModal}
-        >
-          Xem thử
-        </Button>
-      </Flex>
-      <Input
-        type="text"
-        placeholder="Nhập Video Key"
-        value={videoKey}
-        onChange={(e) => onVideoKeyChange?.(e.target.value)}
-      />
-    </Flex>
-  );
-};
-
-interface AssignmentLessonProps {}
-const AssignmentLesson: FC<AssignmentLessonProps> = () => {
-  return <Flex flexDir="column"></Flex>;
 };
 
 export default Lesson;
