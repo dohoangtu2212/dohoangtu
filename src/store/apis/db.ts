@@ -10,7 +10,15 @@ import {
 import { INewOrder, IOrder } from "@/types/order";
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { fakeBaseQuery } from "@reduxjs/toolkit/query/react";
-import { getDatabase, ref, push, child, update, get } from "firebase/database";
+import {
+  getDatabase,
+  ref,
+  push,
+  child,
+  update,
+  get,
+  remove,
+} from "firebase/database";
 import {
   getStorage,
   uploadBytes,
@@ -235,6 +243,29 @@ const dbApis = createApi({
 
           await update(ref(db), updates);
           return { data: { id: courseDetailsId as string } };
+        } catch (e) {
+          return { error: JSON.stringify(e) };
+        }
+      },
+      invalidatesTags: [TAG.courseDetailsComments],
+    }),
+    deleteCourseDetailsComment: build.mutation<
+      null,
+      { courseDetailsId: string; commentIdx: number }
+    >({
+      async queryFn({ commentIdx, courseDetailsId }) {
+        try {
+          const db = getDatabase();
+
+          const dbRef = ref(db);
+
+          const commentRef = child(
+            dbRef,
+            `${DB_KEY.coursesDetails}/${courseDetailsId}/comments/${commentIdx}`
+          );
+          await remove(commentRef);
+
+          return { data: null };
         } catch (e) {
           return { error: JSON.stringify(e) };
         }
@@ -487,6 +518,7 @@ export const {
   useUpdateStudentViewsCountMutation,
   useUpdateStudentCourseProgressMutation,
   useAddCourseDetailsCommentMutation,
-  useGetCourseDetailsCommentsQuery
+  useGetCourseDetailsCommentsQuery,
+  useDeleteCourseDetailsCommentMutation
 } = dbApis;
 export default dbApis;

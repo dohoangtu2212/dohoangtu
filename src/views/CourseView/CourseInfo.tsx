@@ -10,21 +10,27 @@ import {
   Button,
   Spinner,
   Avatar,
+  IconButton,
 } from "@chakra-ui/react";
 import CourseOverview from "@/components/Course/CourseOverview";
 import { FC, ReactNode, useCallback, useState } from "react";
 import { ICourseComment, ICourseDetails } from "@/types/course";
 import useMobile from "@/hooks/useMobile";
-import { useCurrentUserSelector } from "@/store/slices/user";
-import { MdSend } from "react-icons/md";
+import {
+  useCurrentUserSelector,
+  useUserRoleSelector,
+} from "@/store/slices/user";
+import { MdOutlineDelete, MdSend } from "react-icons/md";
 import useCustomToast from "@/hooks/useCustomToast";
 import {
   useAddCourseDetailsCommentMutation,
+  useDeleteCourseDetailsCommentMutation,
   useGetCourseDetailsCommentsQuery,
 } from "@/store/apis/db";
 import dayjs from "dayjs";
 import { COLORS } from "@/constants/theme/colors";
 import { orderBy, sortBy } from "lodash";
+import { UserRole } from "@/types/permission";
 
 type CourseInfoProps = {
   courseDetails?: ICourseDetails;
@@ -40,10 +46,7 @@ const CourseInfo: FC<CourseInfoProps> = ({
     <Tabs w="100%" px={{ base: "0.5rem", lg: "1rem" }}>
       <TabList>
         {isMobile && (
-          <Tab
-            fontSize={{ base: "0.875rem", lg: "1rem" }}
-            px="0.75rem"
-          >
+          <Tab fontSize={{ base: "0.875rem", lg: "1rem" }} px="0.75rem">
             Bài giảng
           </Tab>
         )}
@@ -79,6 +82,7 @@ interface CommentsProps {
   courseDetailsId: string;
 }
 const Comments: FC<CommentsProps> = ({ courseDetailsId }) => {
+  const userRole = useUserRoleSelector();
   const {
     data,
     isLoading: isGetCommentsLoading,
@@ -89,12 +93,15 @@ const Comments: FC<CommentsProps> = ({ courseDetailsId }) => {
 
   const isLoading = isGetCommentsLoading || isGetCommentsFetching;
   const comments = data?.comments ?? [];
+  const isStudent = userRole === UserRole.student;
 
   const [comment, setComment] = useState<string>("");
   const currentUser = useCurrentUserSelector();
   const toast = useCustomToast();
   const [addComment, { isLoading: isAddCommentLoading }] =
     useAddCourseDetailsCommentMutation();
+  const [deleteComment, { isLoading: isDeleteCommentLoading }] =
+    useDeleteCourseDetailsCommentMutation();
 
   const handleSendComment = useCallback(async () => {
     if (!currentUser) {
@@ -118,10 +125,9 @@ const Comments: FC<CommentsProps> = ({ courseDetailsId }) => {
     toast("Bình luận của bạn đã được gửi", "success");
   }, [comment, currentUser, toast, courseDetailsId, addComment]);
 
-  if (isLoading) return <Spinner />;
-
   return (
-    <Flex flexDir="column" p="0.5rem" gap="1.5rem">
+    <Flex flexDir="column" p="0.5rem" gap="1.5rem" position="relative">
+      {(isLoading || isDeleteCommentLoading) && <Spinner position="absolute" />}
       <Flex
         flexDir="column"
         gap="0.75rem"
@@ -131,8 +137,9 @@ const Comments: FC<CommentsProps> = ({ courseDetailsId }) => {
       >
         {!!comments.length ? (
           <>
-            {orderBy(comments, (comment) => comment.createdAt, "desc").map(
+            {orderBy(comments, (comment) => comment?.createdAt, "desc").map(
               (com, idx) => {
+                if (!com) return null;
                 const { userName, userEmail, userId, comment, createdAt } = com;
 
                 const userCred = userName ?? userEmail?.split("@")[0];
@@ -148,7 +155,7 @@ const Comments: FC<CommentsProps> = ({ courseDetailsId }) => {
                     gap="1rem"
                   >
                     <Avatar name={userCred} size="sm" fontWeight="700" />
-                    <Flex flexDir="column">
+                    <Flex flexDir="column" flex="1">
                       <Text fontWeight="600">{comment}</Text>
                       <Flex alignItems="center" gap="0.5rem">
                         <Text fontSize="0.75rem">{userName ?? userEmail}</Text>
@@ -157,6 +164,20 @@ const Comments: FC<CommentsProps> = ({ courseDetailsId }) => {
                         </Text>
                       </Flex>
                     </Flex>
+                    {!isStudent && (
+                      <IconButton
+                        p="0"
+                        aria-label="delete"
+                        icon={<MdOutlineDelete size="1.5rem" />}
+                        variant="text"
+                        onClick={async () =>
+                          await deleteComment({
+                            courseDetailsId,
+                            commentIdx: idx,
+                          })
+                        }
+                      />
+                    )}
                   </Flex>
                 );
               }
