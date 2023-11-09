@@ -1,9 +1,23 @@
-import { Flex, Box, useBoolean, FlexProps } from "@chakra-ui/react";
+import {
+  Flex,
+  Box,
+  useBoolean,
+  FlexProps,
+  Text,
+  ColorModeContext,
+  Button,
+} from "@chakra-ui/react";
 import dynamic from "next/dynamic";
 const Video = dynamic(() => import("@/components/DynTube/Video"), {
   ssr: false,
 });
-import { ICourseDetails, ICourseLesson, IDisabledLesson } from "@/types/course";
+import {
+  ICourseDetails,
+  ICourseLesson,
+  ICourseLessonPractice,
+  ICourseLessonType,
+  IDisabledLesson,
+} from "@/types/course";
 import { FC, useCallback, useEffect, useState } from "react";
 import {
   useGetStudentViewsCountQuery,
@@ -16,15 +30,16 @@ import {
 import { UserRole } from "@/types/permission";
 import useCustomToast from "@/hooks/useCustomToast";
 import { MdArrowBackIos, MdArrowForwardIos } from "react-icons/md";
+import { COLORS } from "@/constants/theme/colors";
 
-type CourseMainProps = {
+interface CourseMainProps {
   courseDetails: ICourseDetails;
   disabledLessons: IDisabledLesson[];
   selectedLesson: ICourseLesson | null;
   onVideoEnded: () => void;
   onNext?: () => void;
   onPrev?: () => void;
-};
+}
 const CourseMain: FC<CourseMainProps> = ({
   courseDetails,
   selectedLesson,
@@ -120,7 +135,19 @@ const CourseMain: FC<CourseMainProps> = ({
     setHasStarted(false);
   }, [selectedLesson]);
 
-  if (!courseDetails || !videoKey) return null;
+  if (!courseDetails) return null;
+
+  if (selectedLesson?.type === ICourseLessonType.assignment) {
+    if (!selectedLesson.practices?.length) {
+      return <Text>Câu hỏi chưa được tạo.</Text>;
+    }
+
+    const practices: ICourseLessonPractice[] = selectedLesson.practices ?? [];
+    return <LessonPractices practices={practices} />;
+  }
+
+  if (selectedLesson?.type === ICourseLessonType.video && !!videoKey)
+    return null;
 
   const commonNavigatingFlexProps: FlexProps = {
     w: "1.5rem",
@@ -137,7 +164,7 @@ const CourseMain: FC<CourseMainProps> = ({
   };
 
   return (
-    <Flex flexDir="column" w="100%" bgColor="red">
+    <Flex flexDir="column" w="100%">
       <Box position="relative">
         <Flex
           {...commonNavigatingFlexProps}
@@ -170,6 +197,92 @@ const CourseMain: FC<CourseMainProps> = ({
           onPlay={handlePlayVideo}
         />
       </Box>
+    </Flex>
+  );
+};
+
+interface LessonPracticesProps {
+  practices: ICourseLessonPractice[];
+}
+const LessonPractices: FC<LessonPracticesProps> = ({ practices }) => {
+  const [userAnswers, setUserAnswers] = useState(practices.map(() => ""));
+  const [showAnswers, setShowAnswers] = useState(false);
+
+  return (
+    <Flex
+      flexDir="column"
+      alignItems="center"
+      px="1rem"
+      minH="20rem"
+      maxH="80vh"
+      overflow="auto"
+      gap="1rem"
+    >
+      <Text fontWeight="700" fontSize="1.25rem">
+        BÀI TẬP
+      </Text>
+      <Flex flexDir="column" gap="1rem" w="40rem">
+        {practices.map(({ question, answers, correctAnswer }, practiceIdx) => {
+          return (
+            <Flex key={practiceIdx} flexDir="column" gap="0.5rem">
+              <Text fontWeight="600">{`Q${practiceIdx + 1}: ${question}`}</Text>
+              <Flex flexDir="column" gap="0.25rem">
+                {answers.map((answer, answerIdx) => {
+                  const isSelected = answer === userAnswers[practiceIdx];
+                  const isCorrect = answer === correctAnswer;
+
+                  let borderColor = COLORS.summerBlue;
+                  let bgColor = "transparent";
+                  if (isSelected) {
+                    if (isCorrect && showAnswers) {
+                      borderColor = "green.500";
+                      bgColor = "green.300";
+                    } else if (!isCorrect && showAnswers) {
+                      borderColor = "red.500";
+                      bgColor = "red.300";
+                    } else {
+                      borderColor = COLORS.starryNightBlue;
+                      bgColor = COLORS.summerBlue;
+                    }
+                  } else {
+                    if (isCorrect && showAnswers) {
+                      borderColor = "green.500";
+                      bgColor = "green.300";
+                    }
+                  }
+
+                  return (
+                    <Flex
+                      key={`${practiceIdx}_${answerIdx}`}
+                      borderWidth="1px"
+                      borderStyle="solid"
+                      borderColor={borderColor}
+                      bgColor={bgColor}
+                      p="0.125rem 0.5rem"
+                      borderRadius="md"
+                      userSelect="none"
+                      cursor="pointer"
+                      onClick={() =>
+                        setUserAnswers((pre) => {
+                          const draft = [...pre];
+                          draft[practiceIdx] = answer;
+
+                          return draft;
+                        })
+                      }
+                    >
+                      <Text>{answer}</Text>
+                    </Flex>
+                  );
+                })}
+              </Flex>
+            </Flex>
+          );
+        })}
+      </Flex>
+      <Button onClick={() => setShowAnswers((prev) => !prev)}>
+        {`${showAnswers ? "Ẩn" : "Kiểm tra"} kết quả`}
+      </Button>
     </Flex>
   );
 };
