@@ -42,7 +42,6 @@ const CourseInfo: FC<CourseInfoProps> = ({
         {isMobile && (
           <Tab
             fontSize={{ base: "0.875rem", lg: "1rem" }}
-            bgColor="red"
             px="0.75rem"
           >
             Bài giảng

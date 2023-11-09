@@ -146,7 +146,7 @@ const CourseMain: FC<CourseMainProps> = ({
     return <LessonPractices practices={practices} />;
   }
 
-  if (selectedLesson?.type === ICourseLessonType.video && !!videoKey)
+  if (selectedLesson?.type === ICourseLessonType.video && !videoKey)
     return null;
 
   const commonNavigatingFlexProps: FlexProps = {
@@ -221,7 +221,7 @@ const LessonPractices: FC<LessonPracticesProps> = ({ practices }) => {
       <Text fontWeight="700" fontSize="1.25rem">
         BÀI TẬP
       </Text>
-      <Flex flexDir="column" gap="1rem" w="40rem">
+      <Flex flexDir="column" gap="1rem" w={{ base: "100%", lg: "40rem" }}>
         {practices.map(({ question, answers, correctAnswer }, practiceIdx) => {
           return (
             <Flex key={practiceIdx} flexDir="column" gap="0.5rem">

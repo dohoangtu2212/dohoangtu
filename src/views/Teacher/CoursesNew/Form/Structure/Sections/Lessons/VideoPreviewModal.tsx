@@ -19,7 +19,6 @@ const VideoPreviewModal: FC<VideoPreviewModalProps> = ({
     <Modal {...modalProps}>
       <ModalOverlay />
       <ModalContent
-        bgColor="red"
         w="fit-content"
         maxW="none"
         p="0"
