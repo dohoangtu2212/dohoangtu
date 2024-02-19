@@ -19,6 +19,8 @@ import { getUserRole } from "@/utils/firebase";
 import SetRoleModal from "@/views/Auth/AuthForm/SignUp/SetRoleModal";
 import useCustomToast from "@/hooks/useCustomToast";
 import { MdArrowBack, MdArrowBackIos, MdArrowLeft } from "react-icons/md";
+import { UserRole } from "@/types/permission";
+import { useUpdateUserRoleMutation } from "@/store/apis/user";
 
 type SignInProps = {
   onDone: () => void;
@@ -32,6 +34,8 @@ const SignIn: FC<SignInProps> = ({ onDone }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showResetPassword, setShowResetPassword] = useBoolean();
+  const [updateUserRole, { isLoading: isUpdateUserRoleLoading }] =
+    useUpdateUserRoleMutation();
 
   const toast = useCustomToast();
 
@@ -46,10 +50,16 @@ const SignIn: FC<SignInProps> = ({ onDone }) => {
 
         const role = await getUserRole();
         if (!role) {
-          setEmail(email);
-          setPassword(password);
-          openRoleModal();
-          return;
+          await updateUserRole({
+            email: email,
+            role: UserRole.student,
+          });
+          toast(
+            'Bạn đang truy cập hệ thống với vai trò "Học sinh".',
+            "success"
+          );
+          await auth.signOut();
+          await signInWithEmailAndPassword(auth, email, password);
         }
 
         onDone?.();
