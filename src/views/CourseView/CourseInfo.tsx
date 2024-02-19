@@ -98,7 +98,7 @@ const Comments: FC<CommentsProps> = ({ courseDetailsId }) => {
   const [comment, setComment] = useState<string>("");
   const currentUser = useCurrentUserSelector();
   const toast = useCustomToast();
-  const [addComment, { isLoading: isAddCommentLoading }] =
+  const [addComment, { isLoading: isAddCommentLoading, error }] =
     useAddCourseDetailsCommentMutation();
   const [deleteComment, { isLoading: isDeleteCommentLoading }] =
     useDeleteCourseDetailsCommentMutation();
@@ -203,6 +203,7 @@ const Comments: FC<CommentsProps> = ({ courseDetailsId }) => {
             type="submit"
             rightIcon={<MdSend />}
             isLoading={isAddCommentLoading}
+            isDisabled={!comment}
           >
             Gửi
           </Button>

@@ -228,7 +228,12 @@ const dbApis = createApi({
             child(dbRef, `${DB_KEY.coursesDetails}/${courseDetailsId}/comments`)
           );
           if (commentsSnap.exists()) {
-            const data = commentsSnap.val() as ICourseComment[];
+            const values = commentsSnap.val();
+            const data = Object.entries(values).map(([key, val]) => ({
+              id: key,
+              ...(val as any),
+            })) as ICourseComment[];
+
             if (!!data) {
               existingComments = data;
             }
@@ -519,6 +524,6 @@ export const {
   useUpdateStudentCourseProgressMutation,
   useAddCourseDetailsCommentMutation,
   useGetCourseDetailsCommentsQuery,
-  useDeleteCourseDetailsCommentMutation
+  useDeleteCourseDetailsCommentMutation,
 } = dbApis;
 export default dbApis;
