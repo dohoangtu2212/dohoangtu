@@ -87,7 +87,14 @@ const CourseLesson: FC<CourseLessonProps> = ({
         </Flex>
         {!!links.length && (
           <Flex onClick={(ev) => ev.stopPropagation()} w="100%">
-            <Accordion allowToggle w="100%" border="none">
+            <Accordion
+              allowToggle
+              w="100%"
+              borderWidth="1px"
+              borderStyle="solid"
+              borderColor="black"
+              borderRadius="md"
+            >
               <AccordionItem border="none">
                 <AccordionButton>
                   <Text
@@ -110,6 +117,11 @@ const CourseLesson: FC<CourseLessonProps> = ({
                               <Text
                                 textDecoration="underline"
                                 fontSize="0.875rem"
+                                maxW={{
+                                  base: "10rem",
+                                  lg: "12rem",
+                                  "2xl": "20rem",
+                                }}
                               >
                                 {link}
                               </Text>
