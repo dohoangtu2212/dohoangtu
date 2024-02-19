@@ -41,7 +41,7 @@ const PaymentModal: FC<PaymentModalProps> = ({
       <ModalContent w={{ base: "100vw", md: "50rem" }} maxW="none">
         <ModalCloseButton />
         <ModalBody p="1.5rem 2rem">
-          <Flex gap="1rem">
+          <Flex gap="1rem" flexDir={{ base: "column-reverse", lg: "row" }}>
             <Flex flexDir="column" flex="1" gap="1rem">
               <Flex flexDir="column">
                 <Text fontWeight="600">GIÁ TRỊ ĐƠN HÀNG</Text>

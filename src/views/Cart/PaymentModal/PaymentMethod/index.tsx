@@ -48,13 +48,17 @@ const PaymentMethod: FC<PaymentMethodProps> = ({ paymentMethod, onChange }) => {
 
         <TabPanels>
           <TabPanel>
-            <Box position="relative" w="100%" h="30rem">
+            <Box
+              position="relative"
+              w="100%"
+              h={{ base: "40rem", lg: "30rem" }}
+            >
               <Image
                 src="/images/payments/bank-qr.png"
                 alt="bank"
                 fill
                 style={{
-                  objectFit: "cover",
+                  objectFit: "contain",
                 }}
               />
             </Box>
