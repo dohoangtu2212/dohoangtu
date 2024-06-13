@@ -61,7 +61,6 @@ const AccountTable: FC<AccountTableProps> = ({
               <Th>Loại tài khoản</Th>
               <Th>Trạng thái</Th>
               <Th>Xác minh</Th>
-              <Th />
             </Tr>
           </Thead>
           <Tbody>
@@ -91,7 +90,6 @@ const AccountTable: FC<AccountTableProps> = ({
                 <Td>
                   <VerifiedTag status={item.emailVerified || false} />
                 </Td>
-                <Td />
               </Tr>
             ))}
           </Tbody>
