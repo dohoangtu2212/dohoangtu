@@ -5,7 +5,6 @@ import { formikGetErrorMessages, formikGetIsDisabled } from "@/utils/formik";
 import { useEffect, useMemo } from "react";
 import FormInput from "@/views/AccountInfo/AccoutInfoEdit/FormInput";
 import useCustomToast from "@/hooks/useCustomToast";
-import ManageServiceService from "@/service/managePage.service";
 import { introductionFormValidationSchema } from "@/constants/manage-page";
 import {
   IManagePageReq,
@@ -15,7 +14,7 @@ import {
 import { useUpdateIntroductionMutation } from "@/store/apis/db";
 
 type FormProps = {
-  data: IManagePageRes;
+  data: IManagePageRes | null;
 };
 
 const IntroductionForm: FC<FormProps> = ({ data }) => {
@@ -31,7 +30,7 @@ const IntroductionForm: FC<FormProps> = ({ data }) => {
       description: "",
     },
     validationSchema: introductionFormValidationSchema,
-    onSubmit: async (values) => {
+    onSubmit: async (values: any) => {
       await onSubmit(values);
     },
   });
@@ -77,10 +76,10 @@ const IntroductionForm: FC<FormProps> = ({ data }) => {
       introduceTextThird: values.introduceTextThird,
       description: values.description,
       // old data
-      introVideo: data.introVideo,
-      commits: data.commits,
-      lessons: data.lessons,
-      reviews: data.reviews,
+      introVideo: data?.introVideo ?? "",
+      commits: data?.commits ?? [],
+      lessons: data?.lessons ?? [],
+      reviews: data?.reviews ?? [],
     };
     try {
       const res = await updateIntroduction(req).unwrap();

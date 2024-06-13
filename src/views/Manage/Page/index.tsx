@@ -84,34 +84,30 @@ const ManagePage = () => {
           <Spinner color={COLORS.twilightBlue} />
         ) : (
           <Flex flexDir="column" w="100%" h="100%">
-            {!!managePage ? (
-              <Flex flexDir="row">
-                <Box width="200px">
-                  <Flex
-                    flexDir={"column"}
-                    pb="35px"
-                    borderRight="1px solid rgba(10, 11, 49, 0.20)"
-                  >
-                    {tabList.map((item, index) => (
-                      <TabItem
-                        key={index}
-                        name={item.name}
-                        active={tab === item.index}
-                        onClick={() => setTab(item.index)}
-                      />
-                    ))}
-                  </Flex>
-                </Box>
-                <Flex width="100%" pl="30px">
-                  {tab == 0 && <IntroductionForm data={managePage} />}
-                  {tab == 1 && <CommitForm data={managePage} />}
-                  {tab == 2 && <LessonForm data={managePage} />}
-                  {tab == 3 && <ReviewForm data={managePage} />}
+            <Flex flexDir="row">
+              <Box width="200px">
+                <Flex
+                  flexDir={"column"}
+                  pb="35px"
+                  borderRight="1px solid rgba(10, 11, 49, 0.20)"
+                >
+                  {tabList.map((item, index) => (
+                    <TabItem
+                      key={index}
+                      name={item.name}
+                      active={tab === item.index}
+                      onClick={() => setTab(item.index)}
+                    />
+                  ))}
                 </Flex>
+              </Box>
+              <Flex width="100%" pl="30px">
+                {tab == 0 && <IntroductionForm data={managePage} />}
+                {tab == 1 && <CommitForm data={managePage} />}
+                {tab == 2 && <LessonForm data={managePage} />}
+                {tab == 3 && <ReviewForm data={managePage} />}
               </Flex>
-            ) : (
-              <NotFoundState />
-            )}
+            </Flex>
           </Flex>
         )}
       </Flex>

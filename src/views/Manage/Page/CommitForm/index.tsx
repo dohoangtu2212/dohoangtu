@@ -14,6 +14,7 @@ import FormInput from "@/views/AccountInfo/AccoutInfoEdit/FormInput";
 import useCustomToast from "@/hooks/useCustomToast";
 import {
   CommitFormValues,
+  ICommit,
   IManagePageReq,
   IManagePageRes,
 } from "@/types/managePage";
@@ -22,7 +23,7 @@ import FileImageInput from "@/components/Input/FileImageInput";
 import { useUpdateCommitMutation } from "@/store/apis/db";
 
 type FormProps = {
-  data: IManagePageRes;
+  data: IManagePageRes | null;
 };
 
 const CommitForm: FC<FormProps> = ({ data }) => {
@@ -40,7 +41,7 @@ const CommitForm: FC<FormProps> = ({ data }) => {
       ],
     },
     validationSchema: commitFormValidationSchema,
-    onSubmit: async (values) => {
+    onSubmit: async (values: any) => {
       await onSubmit(values);
     },
   });
@@ -82,12 +83,12 @@ const CommitForm: FC<FormProps> = ({ data }) => {
       introVideo: values.introVideo,
       commits: values.commits,
       // old data
-      introduceTextFirst: data.introduceTextFirst,
-      introduceTextSecond: data.introduceTextSecond,
-      introduceTextThird: data.introduceTextThird,
-      description: data.description,
-      lessons: data.lessons,
-      reviews: data.reviews,
+      introduceTextFirst: data?.introduceTextFirst ?? "",
+      introduceTextSecond: data?.introduceTextSecond ?? "",
+      introduceTextThird: data?.introduceTextThird ?? "",
+      description: data?.description ?? "",
+      lessons: data?.lessons ?? [],
+      reviews: data?.reviews ?? [],
     };
 
     try {
@@ -116,56 +117,58 @@ const CommitForm: FC<FormProps> = ({ data }) => {
               </FormControl>
               <FieldArray
                 name="commits"
-                render={(arrayHelpers) => (
+                render={(arrayHelpers: any) => (
                   <>
-                    {formik.values.commits.map((commit, index) => (
-                      <Box
-                        key={index}
-                        padding="16px"
-                        border="1px solid rgba(10, 11, 49, 0.10)"
-                        borderRadius="4px"
-                      >
-                        <Flex flexDir="row" gap="16px">
-                          <FormControl
-                            id={`commits[${index}].title`}
-                            isRequired
-                          >
-                            <FormLabel width="200px">Tiêu đề</FormLabel>
-                            <FormInput
-                              name={`commits[${index}].title`}
-                              placeholder="Nhập tiêu đề"
-                              value={formik.values.commits[index].title}
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                            />
-                          </FormControl>
-                          <FormControl
-                            id={`commits[${index}].image`}
-                            isRequired
-                          >
-                            <FormLabel width="200px">Hình ảnh</FormLabel>
-                            <FileImageInput
-                              name={`commits[${index}].image`}
-                              imageName={commit.imageName}
-                              imageUrl={commit.imageUrl}
-                              placeholder="Tải hình ảnh"
-                              accept="image/*"
-                              onChange={(file?: File, fileName?: string) => {
-                                formik.setFieldValue(
-                                  `commits[${index}].image`,
-                                  file
-                                );
-                                formik.setFieldValue(
-                                  `commits[${index}].imageName`,
-                                  fileName ?? ""
-                                );
-                                setFieldTouched("type");
-                              }}
-                            />
-                          </FormControl>
-                        </Flex>
-                      </Box>
-                    ))}
+                    {formik.values.commits.map(
+                      (commit: ICommit, index: number) => (
+                        <Box
+                          key={index}
+                          padding="16px"
+                          border="1px solid rgba(10, 11, 49, 0.10)"
+                          borderRadius="4px"
+                        >
+                          <Flex flexDir="row" gap="16px">
+                            <FormControl
+                              id={`commits[${index}].title`}
+                              isRequired
+                            >
+                              <FormLabel width="200px">Tiêu đề</FormLabel>
+                              <FormInput
+                                name={`commits[${index}].title`}
+                                placeholder="Nhập tiêu đề"
+                                value={formik.values.commits[index].title}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                              />
+                            </FormControl>
+                            <FormControl
+                              id={`commits[${index}].image`}
+                              isRequired
+                            >
+                              <FormLabel width="200px">Hình ảnh</FormLabel>
+                              <FileImageInput
+                                name={`commits[${index}].image`}
+                                imageName={commit.imageName}
+                                imageUrl={commit.imageUrl}
+                                placeholder="Tải hình ảnh"
+                                accept="image/*"
+                                onChange={(file?: File, fileName?: string) => {
+                                  formik.setFieldValue(
+                                    `commits[${index}].image`,
+                                    file
+                                  );
+                                  formik.setFieldValue(
+                                    `commits[${index}].imageName`,
+                                    fileName ?? ""
+                                  );
+                                  setFieldTouched("type");
+                                }}
+                              />
+                            </FormControl>
+                          </Flex>
+                        </Box>
+                      )
+                    )}
                   </>
                 )}
               />

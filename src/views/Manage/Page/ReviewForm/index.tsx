@@ -7,6 +7,7 @@ import useCustomToast from "@/hooks/useCustomToast";
 import {
   IManagePageReq,
   IManagePageRes,
+  IReview,
   ReviewFormValues,
 } from "@/types/managePage";
 import { reviewFormValidationSchema } from "@/constants/manage-page";
@@ -15,7 +16,7 @@ import DragDrop from "@/components/Input/DragDrop";
 import FileImage from "@/components/UI/FileImage";
 
 type FormProps = {
-  data: IManagePageRes;
+  data: IManagePageRes | null;
 };
 
 const defaultData = { image: undefined, imageUrl: "", imageName: "" };
@@ -30,7 +31,7 @@ const ReviewForm: FC<FormProps> = ({ data }) => {
       reviews: [],
     },
     validationSchema: reviewFormValidationSchema,
-    onSubmit: async (values) => {
+    onSubmit: async (values: any) => {
       await onSubmit(values);
     },
   });
@@ -69,13 +70,13 @@ const ReviewForm: FC<FormProps> = ({ data }) => {
     const req: IManagePageReq = {
       reviews: values.reviews,
       // old data
-      introduceTextFirst: data.introduceTextFirst,
-      introduceTextSecond: data.introduceTextSecond,
-      introduceTextThird: data.introduceTextThird,
-      description: data.description,
-      introVideo: data.introVideo,
-      commits: data.commits,
-      lessons: data.lessons,
+      introduceTextFirst: data?.introduceTextFirst ?? "",
+      introduceTextSecond: data?.introduceTextSecond ?? "",
+      introduceTextThird: data?.introduceTextThird ?? "",
+      description: data?.description ?? "",
+      introVideo: data?.introVideo ?? "",
+      commits: data?.commits ?? [],
+      lessons: data?.lessons ?? [],
     };
 
     try {
@@ -94,7 +95,7 @@ const ReviewForm: FC<FormProps> = ({ data }) => {
             <Flex flexDir="column" w="full" gap="16px">
               <FieldArray
                 name="reviews"
-                render={(arrayHelpers) => (
+                render={(arrayHelpers: any) => (
                   <>
                     <Flex
                       flexDir="row"
@@ -121,25 +122,27 @@ const ReviewForm: FC<FormProps> = ({ data }) => {
                         flexDir="column"
                         gap="16px"
                       >
-                        {formik.values.reviews.map((review, index) => (
-                          <GridItem key={index} w="100%">
-                            <FileImage
-                              image={review.image}
-                              imageName={review.imageName ?? ""}
-                              imageUrl={review.imageUrl ?? ""}
-                              width={{
-                                base: "250px",
-                                md: "250px",
-                                lg: "250px",
-                                xl: "300px",
-                              }}
-                              onRemove={() => {
-                                arrayHelpers.remove(index);
-                                setFieldTouched("type");
-                              }}
-                            />
-                          </GridItem>
-                        ))}
+                        {formik.values.reviews.map(
+                          (review: IReview, index: number) => (
+                            <GridItem key={index} w="100%">
+                              <FileImage
+                                image={review.image}
+                                imageName={review.imageName ?? ""}
+                                imageUrl={review.imageUrl ?? ""}
+                                width={{
+                                  base: "250px",
+                                  md: "250px",
+                                  lg: "250px",
+                                  xl: "300px",
+                                }}
+                                onRemove={() => {
+                                  arrayHelpers.remove(index);
+                                  setFieldTouched("type");
+                                }}
+                              />
+                            </GridItem>
+                          )
+                        )}
                       </Flex>
                     </Flex>
                   </>

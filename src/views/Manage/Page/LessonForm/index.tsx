@@ -1,18 +1,12 @@
 import { FieldArray, FormikProvider, useFormik } from "formik";
 import type { FC } from "react";
-import {
-  Flex,
-  Button,
-  FormControl,
-  FormLabel,
-  Text,
-  Box,
-} from "@chakra-ui/react";
+import { Flex, Button, FormControl, FormLabel, Text } from "@chakra-ui/react";
 import { formikGetErrorMessages, formikGetIsDisabled } from "@/utils/formik";
 import { useEffect, useMemo } from "react";
 import FormInput from "@/views/AccountInfo/AccoutInfoEdit/FormInput";
 import useCustomToast from "@/hooks/useCustomToast";
 import {
+  ILesson,
   IManagePageReq,
   IManagePageRes,
   LessonFormValues,
@@ -22,7 +16,7 @@ import { lessonFormValidationSchema } from "@/constants/manage-page";
 import FormTextarea from "@/views/AccountInfo/AccoutInfoEdit/FormTextarea";
 
 type FormProps = {
-  data: IManagePageRes;
+  data: IManagePageRes | null;
 };
 
 const LessonForm: FC<FormProps> = ({ data }) => {
@@ -60,7 +54,7 @@ const LessonForm: FC<FormProps> = ({ data }) => {
       ],
     },
     validationSchema: lessonFormValidationSchema,
-    onSubmit: async (values) => {
+    onSubmit: async (values: any) => {
       await onSubmit(values);
     },
   });
@@ -99,13 +93,13 @@ const LessonForm: FC<FormProps> = ({ data }) => {
     const req: IManagePageReq = {
       lessons: values.lessons,
       // old data
-      introduceTextFirst: data.introduceTextFirst,
-      introduceTextSecond: data.introduceTextSecond,
-      introduceTextThird: data.introduceTextThird,
-      description: data.description,
-      introVideo: data.introVideo,
-      commits: data.commits ?? [],
-      reviews: data.reviews ?? [],
+      introduceTextFirst: data?.introduceTextFirst ?? "",
+      introduceTextSecond: data?.introduceTextSecond ?? "",
+      introduceTextThird: data?.introduceTextThird ?? "",
+      description: data?.description ?? "",
+      introVideo: data?.introVideo ?? "",
+      commits: data?.commits ?? [],
+      reviews: data?.reviews ?? [],
     };
 
     try {
@@ -124,86 +118,90 @@ const LessonForm: FC<FormProps> = ({ data }) => {
             <Flex flexDir="column" w="full" gap="16px">
               <FieldArray
                 name="lessons"
-                render={(arrayHelpers) => (
+                render={(arrayHelpers: any) => (
                   <>
-                    {formik.values.lessons.map((lesson, index) => (
-                      <Flex
-                        key={index}
-                        padding="16px"
-                        border="1px solid rgba(10, 11, 49, 0.10)"
-                        borderRadius="4px"
-                        gap="16px"
-                        flexDir="column"
-                      >
-                        <Flex flexDir="row" gap="16px">
-                          <FormControl
-                            id={`lessons[${index}].title`}
-                            isRequired
-                          >
-                            <FormLabel width="200px">Tiêu đề</FormLabel>
-                            <FormInput
-                              name={`lessons[${index}].title`}
-                              placeholder="Nhập tiêu đề"
-                              value={formik.values.lessons[index].title ?? ""}
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                            />
-                          </FormControl>
+                    {formik.values.lessons.map(
+                      (lesson: ILesson, index: number) => (
+                        <Flex
+                          key={index}
+                          padding="16px"
+                          border="1px solid rgba(10, 11, 49, 0.10)"
+                          borderRadius="4px"
+                          gap="16px"
+                          flexDir="column"
+                        >
+                          <Flex flexDir="row" gap="16px">
+                            <FormControl
+                              id={`lessons[${index}].title`}
+                              isRequired
+                            >
+                              <FormLabel width="200px">Tiêu đề</FormLabel>
+                              <FormInput
+                                name={`lessons[${index}].title`}
+                                placeholder="Nhập tiêu đề"
+                                value={formik.values.lessons[index].title ?? ""}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                              />
+                            </FormControl>
+                          </Flex>
+                          <Flex flexDir="row" gap="16px">
+                            <FormControl
+                              id={`lessons[${index}].description`}
+                              isRequired
+                            >
+                              <FormLabel width="200px">Mô tả</FormLabel>
+                              <FormTextarea
+                                name={`lessons[${index}].description`}
+                                placeholder="Nhập mô tả"
+                                value={
+                                  formik.values.lessons[index].description ?? ""
+                                }
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                              />
+                            </FormControl>
+                          </Flex>
+                          <Flex flexDir="row" gap="16px">
+                            <FormControl
+                              id={`lessons[${index}].videoUrl`}
+                              isRequired
+                            >
+                              <FormLabel width="200px">
+                                Đường dẫn Video
+                              </FormLabel>
+                              <FormInput
+                                name={`lessons[${index}].videoUrl`}
+                                placeholder="Nhập đường dẫn Video"
+                                value={
+                                  formik.values.lessons[index].videoUrl ?? ""
+                                }
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                              />
+                            </FormControl>
+                            <FormControl
+                              id={`lessons[${index}].videoMobileUrl`}
+                              isRequired
+                            >
+                              <FormLabel width="200px">
+                                Đường dẫn Video Mobile
+                              </FormLabel>
+                              <FormInput
+                                name={`lessons[${index}].videoMobileUrl`}
+                                placeholder="Nhập đường dẫn Video"
+                                value={
+                                  formik.values.lessons[index].videoMobileUrl ??
+                                  ""
+                                }
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                              />
+                            </FormControl>
+                          </Flex>
                         </Flex>
-                        <Flex flexDir="row" gap="16px">
-                          <FormControl
-                            id={`lessons[${index}].description`}
-                            isRequired
-                          >
-                            <FormLabel width="200px">Mô tả</FormLabel>
-                            <FormTextarea
-                              name={`lessons[${index}].description`}
-                              placeholder="Nhập mô tả"
-                              value={
-                                formik.values.lessons[index].description ?? ""
-                              }
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                            />
-                          </FormControl>
-                        </Flex>
-                        <Flex flexDir="row" gap="16px">
-                          <FormControl
-                            id={`lessons[${index}].videoUrl`}
-                            isRequired
-                          >
-                            <FormLabel width="200px">Đường dẫn Video</FormLabel>
-                            <FormInput
-                              name={`lessons[${index}].videoUrl`}
-                              placeholder="Nhập đường dẫn Video"
-                              value={
-                                formik.values.lessons[index].videoUrl ?? ""
-                              }
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                            />
-                          </FormControl>
-                          <FormControl
-                            id={`lessons[${index}].videoMobileUrl`}
-                            isRequired
-                          >
-                            <FormLabel width="200px">
-                              Đường dẫn Video Mobile
-                            </FormLabel>
-                            <FormInput
-                              name={`lessons[${index}].videoMobileUrl`}
-                              placeholder="Nhập đường dẫn Video"
-                              value={
-                                formik.values.lessons[index].videoMobileUrl ??
-                                ""
-                              }
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                            />
-                          </FormControl>
-                        </Flex>
-                      </Flex>
-                    ))}
+                      )
+                    )}
                   </>
                 )}
               />
