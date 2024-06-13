@@ -33,7 +33,7 @@ const RegisterTeacherForm: FC<FormProps> = ({}) => {
       positionType: EPositionType.Other,
     },
     validationSchema: registerFormValidationSchema,
-    onSubmit: async (values) => {
+    onSubmit: async (values: any) => {
       await onSubmit(values);
     },
   });
@@ -156,7 +156,6 @@ const RegisterTeacherForm: FC<FormProps> = ({}) => {
                 formik.setFieldValue("position", value);
                 setFieldTouched("type");
               }}
-              onBlur={handleBlur}
               placeholder="Trợ giảng, Giáo viên chính, khác,.."
             />
           </FormControl>
