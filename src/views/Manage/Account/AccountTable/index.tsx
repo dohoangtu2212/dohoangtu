@@ -14,6 +14,7 @@ import { IBaseUser } from "@/types/user";
 import React from "react";
 import { UserRole } from "@/types/permission";
 import DisableTag from "../DisableTag";
+import VerifiedTag from "../VerifiedTag";
 
 type AccountTableProps = {
   selected: number[];
@@ -59,6 +60,7 @@ const AccountTable: FC<AccountTableProps> = ({
               <Th>Email</Th>
               <Th>Loại tài khoản</Th>
               <Th>Trạng thái</Th>
+              <Th>Xác minh</Th>
               <Th />
             </Tr>
           </Thead>
@@ -86,7 +88,10 @@ const AccountTable: FC<AccountTableProps> = ({
                 <Td>
                   <DisableTag status={item.disabled || false} />
                 </Td>
-                <Td>{item.disabled}</Td>
+                <Td>
+                  <VerifiedTag status={item.emailVerified || false} />
+                </Td>
+                <Td />
               </Tr>
             ))}
           </Tbody>
