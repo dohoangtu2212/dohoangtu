@@ -4,10 +4,9 @@ export const getAdmin: () => admin.app.App = () => {
   try {
     const app = admin.initializeApp({
       credential: admin.credential.cert({
-        projectId: "online-classroom-de70d",
+        projectId: process.env.FIREBASE_PROJECT_ID, //"online-classroom-de70d",
         privateKey: process.env.FIREBASE_ADMIN_PRIVATE_KEY,
-        clientEmail:
-          "firebase-adminsdk-m4onf@online-classroom-de70d.iam.gserviceaccount.com",
+        clientEmail: process.env.FIREBASE_CLIENT_EMAIL, // "firebase-adminsdk-m4onf@online-classroom-de70d.iam.gserviceaccount.com",
       }),
     });
     return app;

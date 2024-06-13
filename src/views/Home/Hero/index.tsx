@@ -8,26 +8,13 @@ import { DEMO_COURSE_ID } from "@/constants/course";
 import useMobile from "@/hooks/useMobile";
 import { FC } from "react";
 import { robotoSlab, sedgwickAve } from "@/fonts";
+import { IManagePageRes } from "@/types/managePage";
 
-const DEMO_VIDEO_URL =
-  "https://firebasestorage.googleapis.com/v0/b/online-classroom-de70d.appspot.com/o/assets%2FDemo1.mp4?alt=media&token=83867c46-3507-4416-8391-1c1240fdaa1d";
+type HeroProps = {
+  data: IManagePageRes | null;
+};
 
-const STICKERS = [
-  {
-    imageUrl: "/images/sticker-1.png",
-    text: "Video chất lượng cao",
-  },
-  {
-    imageUrl: "/images/sticker-2.png",
-    text: "Bài tập phong phú",
-  },
-  {
-    imageUrl: "/images/sticker-3.png",
-    text: "Hỗ trợ nhiệt tình",
-  },
-];
-
-const Hero = () => {
+const Hero = ({ data }: HeroProps) => {
   return (
     <Flex
       gap={{ base: "1rem", lg: "2rem" }}
@@ -35,14 +22,16 @@ const Hero = () => {
       py={{ base: "1rem", lg: "2rem" }}
       px={{ base: "1rem", lg: "0" }}
     >
-      <BriefIntro />
-      <Preview />
+      <BriefIntro data={data} />
+      <Preview data={data} />
     </Flex>
   );
 };
 
-type BriefIntroProps = {};
-const BriefIntro: FC<BriefIntroProps> = () => {
+type BriefIntroProps = {
+  data: IManagePageRes | null;
+};
+const BriefIntro: FC<BriefIntroProps> = ({ data }) => {
   const { isMobile } = useMobile();
 
   return (
@@ -59,7 +48,7 @@ const BriefIntro: FC<BriefIntroProps> = () => {
             textAlign="right"
             w="max-content"
           >
-            Chinh phục môn TOÁN
+            {data?.introduceTextFirst}
           </Text>
           <Flex
             gap="1rem"
@@ -67,7 +56,7 @@ const BriefIntro: FC<BriefIntroProps> = () => {
             justifyContent={{ base: "flex-end", lg: "flex-end" }}
           >
             <Text fontSize={{ base: "1.25rem", lg: "2.5rem" }}>
-              kì thi THPT QG
+              {data?.introduceTextSecond}
             </Text>
             <Text
               fontSize={{ base: "4rem", lg: "6rem" }}
@@ -75,7 +64,7 @@ const BriefIntro: FC<BriefIntroProps> = () => {
               fontWeight="700"
               textShadow={`3px 3px ${COLORS.summerBlue}`}
             >
-              2024
+              {data?.introduceTextThird}
             </Text>
           </Flex>
         </Box>
@@ -86,10 +75,12 @@ const BriefIntro: FC<BriefIntroProps> = () => {
           fontSize={{ base: "1rem", lg: "1.25rem" }}
           my={{ base: "1rem", lg: "3rem" }}
           textAlign={{ base: "center", lg: "right" }}
-          w={{ base: "auto", md: "max-content" }}
+          w={{ base: "auto", md: "100%" }}
+          whiteSpace="break-spaces"
         >
-          Toàn bộ bài giảng được xây dựng dưới dạng hình ảnh
-          {!isMobile && <br />} chuyển động cực kì trực quan, bắt mắt và dễ hiểu
+          {data?.description}
+          {/* Toàn bộ bài giảng được xây dựng dưới dạng hình ảnh
+          {!isMobile && <br />} chuyển động cực kì trực quan, bắt mắt và dễ hiểu */}
         </Text>
         <Box py={{ base: "0", lg: "2rem" }} w="100%">
           <Actions />
@@ -187,8 +178,10 @@ const Actions = () => {
   );
 };
 
-type PreviewProps = {};
-const Preview: FC<PreviewProps> = () => {
+type PreviewProps = {
+  data: IManagePageRes | null;
+};
+const Preview: FC<PreviewProps> = ({ data }) => {
   return (
     <Flex flex="1" flexDir="column">
       <Flex
@@ -198,25 +191,27 @@ const Preview: FC<PreviewProps> = () => {
         alignItems="center"
       >
         <Box borderRadius="lg" overflow="hidden">
-          <video loop poster="/images/thumbnail.png" controls>
-            <source src={DEMO_VIDEO_URL} type="video/mp4" />
-          </video>
+          {data?.introVideo && (
+            <video loop poster="/images/thumbnail.png" controls>
+              <source src={data?.introVideo} type="video/mp4" />
+            </video>
+          )}
         </Box>
         <Flex
           alignItems="center"
           gap={{ base: "1rem", lg: "2rem" }}
           py={{ base: "0", lg: "1rem" }}
         >
-          {STICKERS.map((sticker) => (
-            <Flex flexDir="column" alignItems="center" key={sticker.text}>
+          {data?.commits.map((commit) => (
+            <Flex flexDir="column" alignItems="center" key={commit.title}>
               <Box
                 position="relative"
                 w={{ base: "6rem", lg: "13.5rem" }}
                 h={{ base: "6rem", lg: "12rem" }}
               >
                 <Image
-                  src={sticker.imageUrl}
-                  alt={sticker.text}
+                  src={commit.imageUrl ?? ""}
+                  alt={commit.title}
                   fill
                   style={{
                     objectFit: "contain",
@@ -228,10 +223,13 @@ const Preview: FC<PreviewProps> = () => {
                 fontSize={{ base: "0.875rem", lg: "1.25rem" }}
                 textAlign="center"
               >
-                {sticker.text}
+                {commit.title}
               </Text>
             </Flex>
           ))}
+          {/* {STICKERS.map((sticker) => (
+       
+          ))} */}
         </Flex>
       </Flex>
     </Flex>

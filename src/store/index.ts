@@ -8,10 +8,14 @@ import { cartReducer } from "@/store/slices/cart";
 import dyntubeUploadApis from "@/store/apis/dyntubeUpload";
 import { courseReducer } from "@/store/slices/course";
 import storageApis from "@/store/apis/storage";
+import registerTeacherApis from "./apis/register-teacher";
+import AuthApis from "./apis/auth";
 
 const reducer = combineReducers({
   [dyntubeApis.reducerPath]: dyntubeApis.reducer,
   [userApis.reducerPath]: userApis.reducer,
+  [registerTeacherApis.reducerPath]: registerTeacherApis.reducer,
+  [AuthApis.reducerPath]: AuthApis.reducer,
   [dyntubeUploadApis.reducerPath]: dyntubeUploadApis.reducer,
   [dbApis.reducerPath]: dbApis.reducer,
   [storageApis.reducerPath]: storageApis.reducer,
@@ -29,6 +33,8 @@ const makeStore = () =>
       }).concat([
         dyntubeApis.middleware,
         userApis.middleware,
+        registerTeacherApis.middleware,
+        AuthApis.middleware,
         dyntubeUploadApis.middleware,
         dbApis.middleware,
         storageApis.middleware,

@@ -1,4 +1,3 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getAdmin } from "@/utils/firebase-admin";
 import { UserRole } from "@/types/permission";

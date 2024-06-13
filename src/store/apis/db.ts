@@ -1,3 +1,4 @@
+import { DEFAULT_MANAGE_PAGE } from "@/constants/manage-page";
 import {
   ICourse,
   ICourseComment,
@@ -7,7 +8,10 @@ import {
   IStudentCourse,
   IStudentViewCount,
 } from "@/types/course";
+import { IManagePageReq, IManagePageRes } from "@/types/managePage";
 import { INewOrder, IOrder } from "@/types/order";
+import { IBaseAuthReq } from "@/types/user";
+import { ManagePageHandles } from "@/utils/managePage.handles";
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { fakeBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
@@ -18,6 +22,8 @@ import {
   update,
   get,
   remove,
+  query,
+  set,
 } from "firebase/database";
 import {
   getStorage,
@@ -26,16 +32,18 @@ import {
   getDownloadURL,
 } from "firebase/storage";
 
-const DB_KEY = {
+export const DB_KEY = {
   courses: "courses",
   coursesDetails: "courses-details",
   orders: "orders",
   users: "users",
   students: "students",
   studentsCourses: "students-courses",
+  registerTeacher: "register-teacher",
+  managePage: "manage-page",
 };
 
-type Updates = { [key: string]: any };
+export type Updates = { [key: string]: any };
 
 const TAG = {
   courses: "courses",
@@ -46,6 +54,7 @@ const TAG = {
   studentCourses: "student-courses",
   studentViewsCount: "student-views-count",
   courseDetailsComments: "course-details-comments",
+  managePage: "manage-page",
 };
 
 const dbApis = createApi({
@@ -503,6 +512,177 @@ const dbApis = createApi({
       },
       invalidatesTags: [TAG.studentViewsCount],
     }),
+    getManagePage: build.query<IManagePageRes | null, null>({
+      async queryFn() {
+        try {
+          const db = getDatabase();
+          const dbRef = ref(db);
+
+          const snapshot = await get(
+            query(child(dbRef, `${DB_KEY.managePage}`))
+          );
+          if (snapshot.exists()) {
+            let result = Object.entries(snapshot.val()).map(([key, val]) => ({
+              id: key,
+              ...(val as any),
+            })) as IManagePageRes[];
+            const res = result.length > 0 ? result[0] : DEFAULT_MANAGE_PAGE;
+            return { data: res };
+          } else {
+            return { data: DEFAULT_MANAGE_PAGE };
+          }
+        } catch (e) {
+          return { error: JSON.stringify(e) };
+        }
+      },
+      providesTags: [TAG.managePage],
+    }),
+    updateIntroduction: build.mutation<IManagePageRes, IManagePageReq>({
+      async queryFn(record) {
+        try {
+          const body = { ...record };
+          const db = getDatabase();
+          const dbRef = ref(db);
+
+          const resList = await ManagePageHandles.getList(dbRef);
+          const resData = await ManagePageHandles.createAndUpdate(
+            db,
+            resList,
+            body
+          );
+          return { data: resData };
+        } catch (e) {
+          return { error: JSON.stringify(e) };
+        }
+      },
+      invalidatesTags: [TAG.managePage],
+    }),
+    updateCommit: build.mutation<IManagePageRes, IManagePageReq>({
+      async queryFn(record) {
+        try {
+          const body = { ...record };
+          const db = getDatabase();
+          const dbRef = ref(db);
+
+          const resList = await ManagePageHandles.getList(dbRef);
+
+          for (let index = 0; index < body.commits.length; index++) {
+            const commit = body.commits[index];
+            const newCommitKey = push(child(ref(db), DB_KEY.managePage)).key;
+            const commitKey = commit.id ?? newCommitKey!;
+            if (!!commit.image) {
+              const storage = getStorage();
+              const fileRef = storageRef(storage, `commit/${commitKey}`);
+              await uploadBytes(fileRef, commit.image);
+              const url = await getDownloadURL(fileRef);
+              commit.imageUrl = url;
+              commit.id = commitKey;
+              commit.imageName = commit.image.name;
+            }
+            delete commit.image;
+            body.commits[index] = commit;
+          }
+
+          const resData = await ManagePageHandles.createAndUpdate(
+            db,
+            resList,
+            body
+          );
+          return { data: resData };
+        } catch (e) {
+          return { error: JSON.stringify(e) };
+        }
+      },
+      invalidatesTags: [TAG.managePage],
+    }),
+    updateLesson: build.mutation<IManagePageRes, IManagePageReq>({
+      async queryFn(record) {
+        try {
+          const body = { ...record };
+          const db = getDatabase();
+          const dbRef = ref(db);
+
+          const resList = await ManagePageHandles.getList(dbRef);
+
+          for (let index = 0; index < body.lessons.length; index++) {
+            const lesson = body.lessons[index];
+            if (!lesson.id) {
+              const newLessonKey = push(child(ref(db), DB_KEY.managePage)).key;
+              const lessonKey = lesson.id ?? newLessonKey!;
+              body.lessons[index].id = lessonKey;
+            }
+          }
+
+          const resData = await ManagePageHandles.createAndUpdate(
+            db,
+            resList,
+            body
+          );
+          return { data: resData };
+        } catch (e) {
+          console.log("e: ", e);
+          return { error: JSON.stringify(e) };
+        }
+      },
+      invalidatesTags: [TAG.managePage],
+    }),
+    updateReview: build.mutation<IManagePageRes, IManagePageReq>({
+      async queryFn(record) {
+        try {
+          const body = { ...record };
+          const db = getDatabase();
+          const dbRef = ref(db);
+
+          const resList = await ManagePageHandles.getList(dbRef);
+
+          for (let index = 0; index < body.reviews.length; index++) {
+            const review = body.reviews[index];
+            const newReviewKey = push(child(ref(db), DB_KEY.managePage)).key;
+            const reviewKey = review.id ?? newReviewKey!;
+            if (!!review.image) {
+              const storage = getStorage();
+              const fileRef = storageRef(storage, `review/${reviewKey}`);
+              await uploadBytes(fileRef, review.image);
+              const url = await getDownloadURL(fileRef);
+              review.imageUrl = url;
+              review.id = reviewKey;
+              review.imageName = review.image.name;
+            }
+            delete review.image;
+            body.reviews[index] = review;
+          }
+
+          const resData = await ManagePageHandles.createAndUpdate(
+            db,
+            resList,
+            body
+          );
+          return { data: resData };
+        } catch (e) {
+          return { error: JSON.stringify(e) };
+        }
+      },
+      invalidatesTags: [TAG.managePage],
+    }),
+    updateAvatar: build.mutation<string, { avatar?: File } & IBaseAuthReq>({
+      async queryFn(record) {
+        try {
+          const body = { ...record };
+          let AvatarUrl = "";
+
+          if (!!body.avatar) {
+            const storage = getStorage();
+            const fileRef = storageRef(storage, `avatar/${body.currid}`);
+            await uploadBytes(fileRef, body.avatar);
+            AvatarUrl = await getDownloadURL(fileRef);
+          }
+          return { data: AvatarUrl };
+        } catch (e) {
+          return { error: JSON.stringify(e) };
+        }
+      },
+      invalidatesTags: [TAG.managePage],
+    }),
   }),
 });
 
@@ -525,5 +705,11 @@ export const {
   useAddCourseDetailsCommentMutation,
   useGetCourseDetailsCommentsQuery,
   useDeleteCourseDetailsCommentMutation,
+  useGetManagePageQuery,
+  useUpdateIntroductionMutation,
+  useUpdateCommitMutation,
+  useUpdateLessonMutation,
+  useUpdateReviewMutation,
+  useUpdateAvatarMutation,
 } = dbApis;
 export default dbApis;

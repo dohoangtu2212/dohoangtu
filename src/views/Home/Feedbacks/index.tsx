@@ -1,28 +1,12 @@
 import { FC } from "react";
 import Image from "next/image";
 import { Box, Flex, Grid, GridItem, Text } from "@chakra-ui/react";
+import { IManagePageRes } from "@/types/managePage";
 
-const FEEDBACKS: string[] = [
-  "/images/feedbacks/1.png",
-  "/images/feedbacks/2.png",
-  "/images/feedbacks/3.png",
-  "/images/feedbacks/4.png",
-  "/images/feedbacks/5.png",
-  "/images/feedbacks/6.png",
-  "/images/feedbacks/7.png",
-  "/images/feedbacks/8.png",
-  "/images/feedbacks/9.png",
-  "/images/feedbacks/10.png",
-  "/images/feedbacks/11.png",
-  "/images/feedbacks/12.png",
-  "/images/feedbacks/13.png",
-  "/images/feedbacks/14.png",
-  "/images/feedbacks/15.png",
-  "/images/feedbacks/16.png",
-];
-
-type FeedbacksProps = {};
-const Feedbacks: FC<FeedbacksProps> = () => {
+type FeedbacksProps = {
+  data: IManagePageRes | null;
+};
+const Feedbacks: FC<FeedbacksProps> = ({ data }) => {
   return (
     <Flex flexDir="column" bgColor="gray.200" p="2rem" gap="1rem">
       <Text
@@ -40,8 +24,8 @@ const Feedbacks: FC<FeedbacksProps> = () => {
         }}
         gap="1rem"
       >
-        {FEEDBACKS.map((fbUrl) => (
-          <GridItem key={fbUrl}>
+        {data?.reviews.map((review) => (
+          <GridItem key={review.imageUrl}>
             <Flex alignItems="center" justifyContent="center">
               <Box
                 position="relative"
@@ -52,9 +36,9 @@ const Feedbacks: FC<FeedbacksProps> = () => {
                 bgColor="white"
               >
                 <Image
-                  src={fbUrl}
+                  src={review.imageUrl ?? ""}
                   fill
-                  alt={fbUrl}
+                  alt={review.imageUrl ?? ""}
                   sizes="(min-width: 30em) 20rem, 30rem"
                   style={{
                     objectFit: "contain",

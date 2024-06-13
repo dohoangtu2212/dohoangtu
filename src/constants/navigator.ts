@@ -29,6 +29,17 @@ export const NAVIGATOR: { [key: string]: INavigator } = {
     name: "Giỏ hàng",
     link: ROUTE.cart,
   },
+  registerTeacher: {
+    id: "register-teacher",
+    name: "Đăng ký giáo viên",
+    link: ROUTE.registerTeacher,
+  },
+  // ALL USERS
+  accountActivation: {
+    id: "account-activation",
+    name: "Kích hoạt tài khoản",
+    link: ROUTE.accountActivation,
+  },
   // STUDENT
   student: {
     id: "student",
@@ -56,6 +67,22 @@ export const NAVIGATOR: { [key: string]: INavigator } = {
     name: "Đơn hàng",
     link: ROUTE.teacherOrders,
   },
+  // ADMIN
+  adminManageAccount: {
+    id: "admin-manage-account",
+    name: "Quản lý tài khoản",
+    link: ROUTE.adminManageAccount,
+  },
+  adminManageTeachers: {
+    id: "admin-manage-teachers",
+    name: "Quản lý giáo viên",
+    link: ROUTE.adminManageTeachers,
+  },
+  adminManagePage: {
+    id: "admin-manage-page",
+    name: "Quản lý trang chủ",
+    link: ROUTE.adminManagePage,
+  },
 };
 export const NAVIGATORS = Object.values(NAVIGATOR);
 
@@ -64,6 +91,7 @@ export const PUBLIC_NAVIGATORS: INavigator[] = [
   NAVIGATOR.store,
   // NAVIGATOR.features,
   NAVIGATOR.contact,
+  NAVIGATOR.registerTeacher,
   // {
   //   id: "books",
   //   name: "Sách",
@@ -86,4 +114,10 @@ export const STUDENT_NAVIGATORS: INavigator[] = [
 export const TEACHER_NAVIGATORS: INavigator[] = [
   NAVIGATOR.teacherCourses,
   NAVIGATOR.teacherOrders,
+];
+
+export const ADMIN_NAVIGATORS: INavigator[] = [
+  NAVIGATOR.adminManageAccount,
+  NAVIGATOR.adminManageTeachers,
+  NAVIGATOR.adminManagePage,
 ];

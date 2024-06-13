@@ -13,6 +13,8 @@ import RoleTag from "@/components/Role/RoleTag";
 import { MdPerson, MdLogout } from "react-icons/md";
 import { useUserRoleSelector } from "@/store/slices/user";
 import { COLORS } from "@/constants/theme/colors";
+import { ROUTE } from "@/constants/route";
+import router from "next/router";
 
 const UserMenu = () => {
   const auth = getAuth();
@@ -51,6 +53,11 @@ const UserMenu = () => {
               fontSize="0.875rem"
               justifyContent="flex-start"
               px="1rem"
+              onClick={() =>
+                router.push({
+                  pathname: ROUTE.accountInfo,
+                })
+              }
             >
               Thông tin
             </Button>

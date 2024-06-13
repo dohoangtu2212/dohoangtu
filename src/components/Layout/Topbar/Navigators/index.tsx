@@ -1,5 +1,6 @@
 import NavItem from "@/components/Layout/Navigation/NavItem";
 import {
+  ADMIN_NAVIGATORS,
   PUBLIC_NAVIGATORS,
   STUDENT_NAVIGATORS,
   TEACHER_NAVIGATORS,
@@ -42,12 +43,14 @@ const NavigatorsList: FC<NavigatorsListProps> = () => {
 
   const isRoleStudent = userRole === UserRole.student;
   const isRoleTeacher = userRole === UserRole.teacher;
+  const isRoleAdmin = userRole === UserRole.admin;
 
   const navigators = useMemo(() => {
     if (isRoleStudent) return [...PUBLIC_NAVIGATORS, ...STUDENT_NAVIGATORS];
     if (isRoleTeacher) return [...PUBLIC_NAVIGATORS, ...TEACHER_NAVIGATORS];
+    if (isRoleAdmin) return [...PUBLIC_NAVIGATORS, ...ADMIN_NAVIGATORS];
     return PUBLIC_NAVIGATORS;
-  }, [isRoleStudent, isRoleTeacher]);
+  }, [isRoleStudent, isRoleTeacher, isRoleAdmin]);
 
   return (
     <>

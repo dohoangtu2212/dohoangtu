@@ -1,18 +1,19 @@
 import { useDisclosure } from "@chakra-ui/react";
-import { AuthFormValues } from "@/types/auth";
+import { SignUpFormValues } from "@/types/auth";
+
 import {
-  createUserWithEmailAndPassword,
   AuthErrorCodes,
-  AuthError,
+  getAuth,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import { getAuth } from "firebase/auth";
-import Form from "@/views/Auth/AuthForm/Form";
 import { FC, useState } from "react";
 import SetRoleModal from "@/views/Auth/AuthForm/SignUp/SetRoleModal";
 import useCustomToast from "@/hooks/useCustomToast";
-import { useUpdateUserRoleMutation } from "@/store/apis/user";
 import { UserRole } from "@/types/permission";
+import SignUpForm from "../SignUpForm";
+import { ICreateUser } from "@/types/user";
+import { CustomErrorCodes } from "@/constants/auth";
+import { useRegisterUserMutation } from "@/store/apis/auth";
 
 type SignUpProps = {
   onDone: () => void;
@@ -23,46 +24,59 @@ const SignUp: FC<SignUpProps> = ({ onDone }) => {
     onClose: closeRoleModal,
     onOpen: openRoleModal,
   } = useDisclosure();
+  const [registerUser, { isLoading: isRegisterUserLoading }] =
+    useRegisterUserMutation();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [updateUserRole, { isLoading: isUpdateUserRoleLoading }] =
-    useUpdateUserRoleMutation();
 
   const toast = useCustomToast();
 
-  const signUp = async (values: AuthFormValues) => {
-    const auth = getAuth();
-    const { email, password } = values;
+  const signUp = async (values: SignUpFormValues) => {
+    const { email, password, fullName, address, schoolName } = values;
 
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
-      await updateUserRole({
+      const auth = getAuth();
+      const req: ICreateUser = {
         email: email,
+        password: password,
         role: UserRole.student,
-      });
-      toast('Bạn đang truy cập hệ thống với vai trò "Học sinh".', "success");
-      await signInWithEmailAndPassword(auth, email, password);
+        fullName: fullName,
+        schoolName: schoolName,
+        address: address,
+      };
+      const res = await registerUser(req).unwrap();
+      console.log("res: ", res);
+      if (res.success) {
+        toast('Bạn đang truy cập hệ thống với vai trò "Học sinh".', "success");
+        await signInWithEmailAndPassword(auth, email, password);
+      } else {
+        let message = "Đăng ký thất bại!";
+        const { code } = res.error;
+        if (code === CustomErrorCodes.EMAIL_ALREADY_EXISTS) {
+          message = "Email này đã được sử dụng bởi một tài khoản khác.";
+        }
+        if (code === AuthErrorCodes.INVALID_EMAIL) {
+          message = "Tài khoản không hợp lệ.";
+        }
+        if (code === AuthErrorCodes.INVALID_EMAIL) {
+          message = "Tài khoản không hợp lệ.";
+        }
+        if (code === AuthErrorCodes.USER_DELETED) {
+          message = "Tài khoản chưa đăng ký.";
+        }
+        toast(message, "error");
+      }
+
       onDone?.();
     } catch (err) {
-      const { code } = err as AuthError;
-      let message = "Đã xảy ra lỗi.";
-
-      if (code === AuthErrorCodes.INVALID_EMAIL) {
-        message = "Tài khoản không hợp lệ.";
-      }
-
-      if (code === AuthErrorCodes.USER_DELETED) {
-        message = "Tài khoản chưa đăng ký.";
-      }
-
-      toast("Đăng ký thất bại!", "success");
+      console.log("err: ", err);
     }
   };
 
   return (
     <>
-      <Form onSubmit={signUp} action="Đăng kí" />
+      <SignUpForm onSubmit={signUp} action="Đăng kí" />
       <SetRoleModal
         email={email}
         password={password}

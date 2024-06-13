@@ -4,11 +4,18 @@ export const ROUTE = {
   studentHome: "/student",
   studentCourses: "/student/courses",
   studentCourseView: "/student/courses/[courseId]/view",
+
   teacherCourseView: "/teacher/courses/[courseId]/view",
   teacherHome: "/teacher",
   teacherCourses: "/teacher/courses",
   teacherOrders: "/teacher/orders",
   teacherCoursesNew: "/teacher/courses/new",
+
+  adminManageAccount: "/admin/manage-account",
+  adminManageTeachers: "/admin/manage-teachers",
+  adminManagePage: "/admin/manage-page",
+  accountInfo: "/account/info",
+
   courses: "/courses",
   books: "/books",
   documents: "/documents",
@@ -20,6 +27,8 @@ export const ROUTE = {
   features: "/features",
   cart: "/cart",
   demoCourseView: "/demo/courses/[courseId]/view",
+  registerTeacher: "/register-teacher",
+  accountActivation: "/account-activation",
 };
 
 export const PUBLIC_ROUTES = [
@@ -34,4 +43,5 @@ export const PUBLIC_ROUTES = [
   ROUTE.cart,
   ROUTE.demoCourseView,
   ROUTE.storeCourseDetails,
+  ROUTE.registerTeacher,
 ];

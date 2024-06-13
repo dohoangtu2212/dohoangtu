@@ -3,8 +3,15 @@ import Hero from "@/views/Home/Hero";
 import Values from "@/views/Home/Values";
 import Guide from "@/views/Home/Guide";
 import Feedbacks from "@/views/Home/Feedbacks";
+import { useGetManagePageQuery } from "@/store/apis/db";
 
 const Home = () => {
+  const {
+    data: managePage = null,
+    isLoading: isGetManagePageLoading,
+    isFetching: isGetManagePageFetching,
+  } = useGetManagePageQuery(null);
+
   return (
     <>
       <Flex
@@ -13,10 +20,10 @@ const Home = () => {
         gap="2rem"
         py={{ base: "1rem", lg: "3rem" }}
       >
-        <Hero />
-        <Values />
+        <Hero data={managePage} />
+        <Values data={managePage} />
         <Guide />
-        <Feedbacks />
+        <Feedbacks data={managePage} />
       </Flex>
     </>
   );

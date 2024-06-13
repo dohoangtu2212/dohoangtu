@@ -89,7 +89,7 @@ const SetRoleModal: FC<SetRoleModalProps> = ({
                 variant="outline"
                 onClick={handleSelectTeacher}
                 isLoading={isUpdateUserRoleLoading}
-                isDisabled
+                //isDisabled
               >
                 Giáo viên
               </Button>

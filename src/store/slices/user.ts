@@ -1,11 +1,11 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { User as FirebaseUser } from "firebase/auth";
 import type { RootState } from "@/store";
 import { useSelector } from "react-redux";
 import { UserRole } from "@/types/permission";
+import { IBaseUser } from "@/types/user";
 
 export interface UserState {
-  currentUser: FirebaseUser | null;
+  currentUser: IBaseUser | null;
   userRole: UserRole | null;
 }
 
@@ -18,7 +18,7 @@ export const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    setCurrentUser: (state, action: PayloadAction<FirebaseUser | null>) => {
+    setCurrentUser: (state, action: PayloadAction<IBaseUser | null>) => {
       state.currentUser = action.payload;
     },
     setUserRole: (state, action: PayloadAction<UserRole | null>) => {

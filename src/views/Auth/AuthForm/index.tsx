@@ -13,10 +13,11 @@ import SignUp from "@/views/Auth/AuthForm/SignUp";
 import { useRouter } from "next/router";
 import { AuthMode } from "@/constants/auth";
 import { DisplayMode } from "@/views/Auth/AuthForm/types";
-import { getUserRole } from "@/utils/firebase";
+import { getAuth, getUserRole } from "@/utils/firebase";
 import { UserRole } from "@/types/permission";
 import { ROUTE } from "@/constants/route";
 import { COLORS } from "@/constants/theme/colors";
+import { useCurrentUserSelector } from "@/store/slices/user";
 
 type AuthFormProps = {
   mode: DisplayMode;
@@ -32,9 +33,13 @@ const AuthForm: FC<AuthFormProps> = ({ mode, onLoggedIn }) => {
   const handleDone = useCallback(async () => {
     onLoggedIn?.();
     const userRole = await getUserRole();
+    const auth = await getAuth();
     if (mode === DisplayMode.modal) return;
-    if (userRole === UserRole.student) router.push(ROUTE.studentCourses);
-    if (userRole === UserRole.teacher) router.push(ROUTE.teacherCourses);
+    if (auth.currentUser?.emailVerified === false)
+      router.push(ROUTE.accountActivation);
+    else if (userRole === UserRole.student) router.push(ROUTE.studentCourses);
+    else if (userRole === UserRole.teacher) router.push(ROUTE.teacherCourses);
+    else if (userRole === UserRole.admin) router.push(ROUTE.adminManageAccount);
   }, [onLoggedIn, mode, router]);
 
   return (
