@@ -33,8 +33,12 @@ export default async function handler(
         nextPageToken = listUsersResult.pageToken;
       } while (nextPageToken);
 
-      for (let index = 0; index < allUsers.length; index++) {
-        const uid = allUsers[index].uid;
+      const unverifedUsers = allUsers.filter(
+        (item) => item.emailVerified != true
+      );
+
+      for (let index = 0; index < unverifedUsers.length; index++) {
+        const uid = unverifedUsers[index].uid;
         const resUser = await UserHandles.getUser(admin, uid);
 
         await admin.auth().updateUser(uid, {
