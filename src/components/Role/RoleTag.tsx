@@ -13,6 +13,7 @@ const RoleTag: FC<RoleTagProps> = ({ role, ...tagProps }) => {
       fontWeight="500"
       variant="subtle"
       colorScheme={COLOR_SCHEME[role]}
+      justifyContent="center"
     >
       {TEXT[role]}
     </Tag>
@@ -22,13 +23,13 @@ const RoleTag: FC<RoleTagProps> = ({ role, ...tagProps }) => {
 const TEXT = {
   [UserRole.teacher]: "Giáo viên",
   [UserRole.student]: "Học sinh",
-  [UserRole.admin]: "",
+  [UserRole.admin]: "Quản trị viên",
 };
 
 const COLOR_SCHEME = {
   [UserRole.teacher]: "cyan",
   [UserRole.student]: "green",
-  [UserRole.admin]: "",
+  [UserRole.admin]: "purple",
 };
 
 export default RoleTag;

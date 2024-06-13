@@ -28,6 +28,8 @@ const renderRole = (role: UserRole) => {
     return "Học viên";
   } else if (role == UserRole.teacher) {
     return "Giáo viên";
+  } else if (role == UserRole.admin) {
+    return "Quản trị viên";
   }
   return "";
 };

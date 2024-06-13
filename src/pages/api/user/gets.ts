@@ -79,10 +79,8 @@ export default async function handler(
 
       // Phân trang
       const startIndex = (pageIndex - 1) * pageSize;
-      const paginatedUsers = filteredUsers.slice(
-        startIndex,
-        startIndex + pageSize
-      );
+      const limit = Number(startIndex) + Number(pageSize);
+      const paginatedUsers = filteredUsers.slice(startIndex, limit);
 
       if (!paginatedUsers) return res.status(200).json(INITAL_BASE_PAGING);
 
