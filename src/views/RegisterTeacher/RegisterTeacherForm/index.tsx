@@ -119,7 +119,7 @@ const RegisterTeacherForm: FC<FormProps> = ({}) => {
               onBlur={handleBlur}
             />
           </FormControl>
-          <Flex flexDir="row" gap="16px">
+          <Flex flexDir={{ base: "column", md: "row" }} gap="16px">
             <FormControl id="culturalLeveling" isRequired>
               <FormLabel width="200px">Trình độ</FormLabel>
               <FormInput

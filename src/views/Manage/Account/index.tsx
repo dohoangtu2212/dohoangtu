@@ -10,12 +10,13 @@ import {
   useDisclosure,
   Input,
   Select,
+  SelectProps,
 } from "@chakra-ui/react";
 
 import { MdArrowDropDown } from "react-icons/md";
 import AccountTable from "./AccountTable";
 import AlertConfirm from "./AccountTable/AlertConfirm";
-import React, { ChangeEvent, useEffect, useState } from "react";
+import React, { ChangeEvent, FC, useEffect, useState } from "react";
 import { INITAL_BASE_PAGING } from "@/constants/api";
 import { IBasePagingRes } from "@/models/common";
 import { IGetPagingReq } from "@/models/user";
@@ -32,7 +33,6 @@ import useCustomToast from "@/hooks/useCustomToast";
 import {
   useDeleteUsersMutation,
   useDisableUsersMutation,
-  useGetUserMutation,
   useGetUsersMutation,
 } from "@/store/apis/user";
 
@@ -152,6 +152,42 @@ const ManageAccount = () => {
     }
   };
 
+  const onChangeUserRole = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const req = {
+      ...pagingRequest,
+      role: event.target.value as UserRole,
+    };
+    setPagingRequest(req);
+    getPaging(req);
+  };
+
+  const onDeletes = () => {
+    setModalConfirm({
+      title: "Xoá tài khoản",
+      messgage: "Bạn muốn xoá tài khoản đã chọn",
+    });
+    onOpen();
+    setType(ETypeMenu.delete);
+  };
+
+  const onDisables = () => {
+    setModalConfirm({
+      title: "Vô hiệu hoá tài khoản",
+      messgage: "Bạn muốn vô hiệu hoá tài khoản đã chọn",
+    });
+    onOpen();
+    setType(ETypeMenu.disable);
+  };
+
+  const onActives = () => {
+    setModalConfirm({
+      title: "Kích hoạt tài khoản",
+      messgage: "Bạn muốn kích hoạt tài khoản đã chọn",
+    });
+    onOpen();
+    setType(ETypeMenu.active);
+  };
+
   return (
     <>
       <AlertConfirm
@@ -162,130 +198,143 @@ const ManageAccount = () => {
         onClose={onClose}
         onConfirm={handleAction}
       />
-      <Flex flexDir="column" gap="1rem">
-        <Flex flexDir="row">
-          <Text fontWeight="600" textTransform="uppercase">
-            Quản lý tài khoản
-          </Text>
-        </Flex>
-
-        <Flex alignItems="flex-start" justifyContent="space-between">
-          <Flex flexDir="row" gap="1rem" minW={"70%"}>
-            <Input
-              placeholder="Tên hoặc email"
-              minW={"60%"}
-              onChange={(event) => {
-                const req = {
-                  ...pagingRequest,
-                  keyword:
-                    event.target.value == "" ? undefined : event.target.value,
-                };
-                setPagingRequest(req);
-                getPaging(req);
-              }}
-            />
-            <Select
-              minW={"40%"}
-              value={pagingRequest.role}
-              onChange={(event) => {
-                const req = {
-                  ...pagingRequest,
-                  role: event.target.value as UserRole,
-                };
-                setPagingRequest(req);
-                getPaging(req);
-              }}
-            >
-              <option value={UserRole.student}>Học viên</option>
-              <option value={UserRole.teacher}>Giáo viên</option>
-            </Select>
+      <Flex flexDir="column" gap="1rem" py="1rem">
+        <Flex flexDir="column" gap="1rem" px="0.5rem">
+          <Flex flexDir="row" justifyContent={{ base: "center", md: "left" }}>
+            <Text fontWeight="600" textTransform="uppercase">
+              Quản lý tài khoản
+            </Text>
           </Flex>
-          <Box>
-            <Menu>
-              <MenuButton
-                isDisabled={selected.length === 0}
-                as={Button}
-                leftIcon={<MdArrowDropDown size="1.25rem" />}
-                isLoading={isLoading}
-              >
-                Thao tác
-              </MenuButton>
-              <MenuList>
-                <MenuItem
-                  onClick={() => {
-                    setModalConfirm({
-                      title: "Xoá tài khoản",
-                      messgage: "Bạn muốn xoá tài khoản đã chọn",
-                    });
-                    onOpen();
-                    setType(ETypeMenu.delete);
+          <Flex
+            flexDir={{ base: "column", md: "row" }}
+            alignItems="flex-start"
+            justifyContent="space-between"
+            gap="1rem"
+          >
+            <Flex flexDir="row" gap="1rem" minW={{ base: "100%", md: "70%" }}>
+              <Input
+                placeholder="Tên hoặc email"
+                minW={{ base: "100%", md: "60%" }}
+                onChange={(event) => {
+                  const req = {
+                    ...pagingRequest,
+                    keyword:
+                      event.target.value == "" ? undefined : event.target.value,
+                  };
+                  setPagingRequest(req);
+                  getPaging(req);
+                }}
+              />
+              <SelectCustom
+                visibility={{ base: "hidden", md: "visible" }}
+                minW={"40%"}
+                value={pagingRequest.role}
+                onChange={onChangeUserRole}
+              />
+            </Flex>
+            <Flex
+              flexDir="row"
+              gap="1rem"
+              justifyContent="space-between"
+              width={{ base: "100%", md: "auto" }}
+            >
+              <SelectCustom
+                visibility={{ base: "visible", md: "hidden" }}
+                minW={{ base: "0", md: "40%" }}
+                width={{ base: "100%", md: "auto" }}
+                value={pagingRequest.role}
+                onChange={onChangeUserRole}
+              />
+              <Flex>
+                <MenuCustom
+                  isLoading={isLoading}
+                  selected={selected}
+                  onDeletes={onDeletes}
+                  onDisables={onDisables}
+                  onActives={onActives}
+                />
+              </Flex>
+            </Flex>
+          </Flex>
+          <Box pb="1rem">
+            <AccountTable
+              selected={selected}
+              pagingResponse={pagingResponse}
+              onSelectedAll={onSelectedAll}
+              onSelectedItem={onSelectedItem}
+            />
+            <Box pt="1rem">
+              {pagingResponse.total > 0 && (
+                <Paginator
+                  currentPage={pagingResponse.page}
+                  onPageChange={(page) => {
+                    if (page <= pagingResponse.totalPage) {
+                      const req = {
+                        ...pagingRequest,
+                        pageIndex: page,
+                      };
+                      setPagingRequest(req);
+                      getPaging(req);
+                    }
                   }}
-                >
-                  Xoá
-                </MenuItem>
-                <MenuItem
-                  onClick={() => {
-                    setModalConfirm({
-                      title: "Vô hiệu hoá tài khoản",
-                      messgage: "Bạn muốn vô hiệu hoá tài khoản đã chọn",
-                    });
-                    onOpen();
-                    setType(ETypeMenu.disable);
-                  }}
-                >
-                  Vô hiệu hoá
-                </MenuItem>
-                <MenuItem
-                  onClick={() => {
-                    setModalConfirm({
-                      title: "Kích hoạt tài khoản",
-                      messgage: "Bạn muốn kích hoạt tài khoản đã chọn",
-                    });
-                    onOpen();
-                    setType(ETypeMenu.active);
-                  }}
-                >
-                  Kích hoạt
-                </MenuItem>
-              </MenuList>
-            </Menu>
+                  pages={Array.from(
+                    {
+                      length: pagingResponse.totalPage,
+                    },
+                    (_, i) => i + 1
+                  )}
+                  pagesCount={pagingResponse.totalPage}
+                />
+              )}
+            </Box>
           </Box>
         </Flex>
-        <Box pb="1rem">
-          <AccountTable
-            selected={selected}
-            pagingResponse={pagingResponse}
-            onSelectedAll={onSelectedAll}
-            onSelectedItem={onSelectedItem}
-          />
-          <Box pt="1rem">
-            {pagingResponse.total > 0 && (
-              <Paginator
-                currentPage={pagingResponse.page}
-                onPageChange={(page) => {
-                  if (page <= pagingResponse.totalPage) {
-                    const req = {
-                      ...pagingRequest,
-                      pageIndex: page,
-                    };
-                    setPagingRequest(req);
-                    getPaging(req);
-                  }
-                }}
-                pages={Array.from(
-                  {
-                    length: pagingResponse.totalPage,
-                  },
-                  (_, i) => i + 1
-                )}
-                pagesCount={pagingResponse.totalPage}
-              />
-            )}
-          </Box>
-        </Box>
       </Flex>
     </>
   );
 };
 
 export default ManageAccount;
+
+type MenuCustomProps = {
+  isLoading: boolean;
+  selected: number[];
+  onDeletes: () => void;
+  onDisables: () => void;
+  onActives: () => void;
+};
+const MenuCustom: FC<MenuCustomProps> = ({
+  isLoading,
+  selected,
+  onDeletes,
+  onDisables,
+  onActives,
+}) => {
+  return (
+    <Menu>
+      <MenuButton
+        isDisabled={selected.length === 0}
+        as={Button}
+        leftIcon={<MdArrowDropDown size="1.25rem" />}
+        isLoading={isLoading}
+      >
+        Thao tác
+      </MenuButton>
+      <MenuList>
+        <MenuItem onClick={onDeletes}>Xoá</MenuItem>
+        <MenuItem onClick={onDisables}>Vô hiệu hoá</MenuItem>
+        <MenuItem onClick={onActives}>Kích hoạt</MenuItem>
+      </MenuList>
+    </Menu>
+  );
+};
+
+type SelectCustomProps = SelectProps & {};
+const SelectCustom: FC<SelectCustomProps> = ({ ...selectProps }) => {
+  return (
+    <Select {...selectProps}>
+      <option value={UserRole.student}>Học viên</option>
+      <option value={UserRole.teacher}>Giáo viên</option>
+    </Select>
+  );
+};

@@ -23,10 +23,14 @@ const TabItem: FC<TabItemProps> = ({ name, active = false, onClick }) => {
   return (
     <Box
       onClick={onClick}
+      padding={{ base: "0", md: "0 24px" }}
+      height={{ base: "auto", md: "35px" }}
+      minW={{ base: "120px", md: "auto" }}
+      borderRight={{ base: "none", md: active ? "3px solid #355496" : "none" }}
+      textAlign={{ base: "center", md: "left" }}
       sx={{
         margin: 0,
         border: "none",
-        padding: "0 24px",
         float: "left",
         position: "relative",
         display: "block",
@@ -36,13 +40,11 @@ const TabItem: FC<TabItemProps> = ({ name, active = false, onClick }) => {
         textTransform: "uppercase",
         overflow: "hidden",
         width: "100%",
-        height: "35px",
         lineHeight: "35px",
         boxSizing: "border-box",
         letterSpacing: "2px",
-        textAlign: "left",
+
         color: active ? "#355496" : "rgba(0, 0, 0, .54)",
-        borderRight: active ? "3px solid #355496" : "none",
         cursor: "pointer",
       }}
     >
@@ -73,9 +75,9 @@ const ManagePage = () => {
   const isLoading = isGetManagePageLoading || isGetManagePageFetching;
 
   return (
-    <>
+    <Flex flexDir="column" gap="1rem" py="1rem">
       <Flex flexDir="column" gap="1rem">
-        <Flex flexDir="row">
+        <Flex flexDir="row" justifyContent={{ base: "center", md: "left" }}>
           <Text fontWeight="600" textTransform="uppercase">
             Quản lý trang chủ
           </Text>
@@ -84,12 +86,31 @@ const ManagePage = () => {
           <Spinner color={COLORS.twilightBlue} />
         ) : (
           <Flex flexDir="column" w="100%" h="100%">
-            <Flex flexDir="row">
-              <Box width="200px">
+            <Flex flexDir={{ base: "column", md: "row" }}>
+              <Box
+                width={{ base: "100%", md: "200px" }}
+                overflow="scroll"
+                sx={{
+                  "&::-webkit-scrollbar": {
+                    height: "3px",
+                  },
+                  "&::-webkit-scrollbar-thumb": {
+                    borderRadius: "7px",
+                    backgroundColor: COLORS.blueLapis,
+                  },
+                }}
+              >
                 <Flex
-                  flexDir={"column"}
-                  pb="35px"
-                  borderRight="1px solid rgba(10, 11, 49, 0.20)"
+                  flexDir={{ base: "row", md: "column" }}
+                  pb={{ base: "0", md: "35px" }}
+                  borderRight={{
+                    base: "none",
+                    md: "1px solid rgba(10, 11, 49, 0.20)",
+                  }}
+                  borderBottom={{
+                    base: "1px solid rgba(10, 11, 49, 0.20)",
+                    md: "none",
+                  }}
                 >
                   {tabList.map((item, index) => (
                     <TabItem
@@ -101,7 +122,7 @@ const ManagePage = () => {
                   ))}
                 </Flex>
               </Box>
-              <Flex width="100%" pl="30px">
+              <Flex width="100%" pl={{ base: "0", md: "30px" }} px="0.5rem">
                 {tab == 0 && <IntroductionForm data={managePage} />}
                 {tab == 1 && <CommitForm data={managePage} />}
                 {tab == 2 && <LessonForm data={managePage} />}
@@ -111,7 +132,7 @@ const ManagePage = () => {
           </Flex>
         )}
       </Flex>
-    </>
+    </Flex>
   );
 };
 

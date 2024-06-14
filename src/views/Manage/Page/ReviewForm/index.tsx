@@ -98,7 +98,7 @@ const ReviewForm: FC<FormProps> = ({ data }) => {
                 render={(arrayHelpers: any) => (
                   <>
                     <Flex
-                      flexDir="row"
+                      flexDir={{ base: "column", md: "row" }}
                       gap={{ base: "32px", md: "32px", lg: "64px", xl: "64px" }}
                       flex="1 1 auto"
                     >
@@ -117,7 +117,6 @@ const ReviewForm: FC<FormProps> = ({ data }) => {
                       />
                       <Flex
                         height="60vh"
-                        width="flex: 1 1 auto"
                         sx={{ overflow: "scroll" }}
                         flexDir="column"
                         gap="16px"
@@ -130,7 +129,7 @@ const ReviewForm: FC<FormProps> = ({ data }) => {
                                 imageName={review.imageName ?? ""}
                                 imageUrl={review.imageUrl ?? ""}
                                 width={{
-                                  base: "250px",
+                                  base: "100%",
                                   md: "250px",
                                   lg: "250px",
                                   xl: "300px",

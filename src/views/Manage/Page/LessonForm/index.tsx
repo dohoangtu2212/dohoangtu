@@ -162,7 +162,10 @@ const LessonForm: FC<FormProps> = ({ data }) => {
                               />
                             </FormControl>
                           </Flex>
-                          <Flex flexDir="row" gap="16px">
+                          <Flex
+                            flexDir={{ base: "column", md: "row" }}
+                            gap="16px"
+                          >
                             <FormControl
                               id={`lessons[${index}].videoUrl`}
                               isRequired
@@ -189,7 +192,7 @@ const LessonForm: FC<FormProps> = ({ data }) => {
                               </FormLabel>
                               <FormInput
                                 name={`lessons[${index}].videoMobileUrl`}
-                                placeholder="Nhập đường dẫn Video"
+                                placeholder="Nhập đường dẫn Video Mobile"
                                 value={
                                   formik.values.lessons[index].videoMobileUrl ??
                                   ""

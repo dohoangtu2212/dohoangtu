@@ -127,7 +127,10 @@ const CommitForm: FC<FormProps> = ({ data }) => {
                           border="1px solid rgba(10, 11, 49, 0.10)"
                           borderRadius="4px"
                         >
-                          <Flex flexDir="row" gap="16px">
+                          <Flex
+                            flexDir={{ base: "column", md: "row" }}
+                            gap="16px"
+                          >
                             <FormControl
                               id={`commits[${index}].title`}
                               isRequired

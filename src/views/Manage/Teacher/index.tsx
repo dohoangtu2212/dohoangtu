@@ -10,10 +10,11 @@ import {
   useDisclosure,
   Input,
   Select,
+  SelectProps,
 } from "@chakra-ui/react";
 
 import { MdArrowDropDown } from "react-icons/md";
-import React, { ChangeEvent, useEffect, useState } from "react";
+import React, { ChangeEvent, FC, useEffect, useState } from "react";
 import { INITAL_BASE_PAGING } from "@/constants/api";
 import { IBasePagingRes } from "@/models/common";
 import { IGetPagingReq } from "@/models/user";
@@ -205,6 +206,35 @@ const ManageTeacher = () => {
     }
   };
 
+  const onDeletes = () => {
+    setModalConfirm({
+      title: "Xoá tài khoản",
+      messgage: "Bạn muốn xoá tài khoản đã chọn",
+    });
+    onOpen();
+    setType(ETypeMenu.delete);
+  };
+
+  const onSeens = () => {
+    setModalConfirm({
+      title: "Cập nhật trạng thái đã xem",
+      messgage: "Bạn muốn Cập nhật trạng thái đã xem trong danh sách đã chọn",
+    });
+    onOpen();
+    setType(ETypeMenu.seens);
+  };
+
+  const onChangePositionType = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    const req = {
+      ...pagingRequest,
+      type: event.target.value as EPositionType,
+    };
+    setPagingRequest(req);
+    getPaging(req);
+  };
+
   return (
     <>
       {isApproveModalOpen && (
@@ -229,138 +259,156 @@ const ManageTeacher = () => {
           onConfirm={handleAction}
         />
       )}
-
-      <Flex flexDir="column" gap="1rem">
-        <Flex flexDir="row">
-          <Text fontWeight="600" textTransform="uppercase">
-            Quản lý giáo viên
-          </Text>
-        </Flex>
-
-        <Flex alignItems="flex-start" justifyContent="space-between">
-          <Flex flexDir="row" gap="1rem" minW={"70%"}>
-            <Input
-              placeholder="Tên hoặc email, học vị"
-              minW={"60%"}
-              onChange={(event) => {
-                const req = {
-                  ...pagingRequest,
-                  keyword:
-                    event.target.value == "" ? undefined : event.target.value,
-                };
-                setPagingRequest(req);
-                getPaging(req);
+      <Flex flexDir="column" gap="1rem" py="1rem">
+        <Flex flexDir="column" gap="1rem" px="0.5rem">
+          <Flex flexDir="row" justifyContent={{ base: "center", md: "left" }}>
+            <Text fontWeight="600" textTransform="uppercase">
+              Quản lý giáo viên
+            </Text>
+          </Flex>
+          <Flex
+            flexDir={{ base: "column", md: "row" }}
+            alignItems="flex-start"
+            justifyContent="space-between"
+            gap="1rem"
+          >
+            <Flex flexDir="row" gap="1rem" minW={{ base: "100%", md: "70%" }}>
+              <Input
+                placeholder="Tên hoặc email, học vị"
+                minW={{ base: "100%", md: "60%" }}
+                onChange={(event) => {
+                  const req = {
+                    ...pagingRequest,
+                    keyword:
+                      event.target.value == "" ? undefined : event.target.value,
+                  };
+                  setPagingRequest(req);
+                  getPaging(req);
+                }}
+              />
+              <SelectCustom
+                visibility={{ base: "hidden", md: "visible" }}
+                minW={"40%"}
+                value={pagingRequest.type}
+                onChange={onChangePositionType}
+              />
+            </Flex>
+            <Flex
+              flexDir="row"
+              gap="1rem"
+              justifyContent="space-between"
+              width={{ base: "100%", md: "auto" }}
+            >
+              <SelectCustom
+                visibility={{ base: "visible", md: "hidden" }}
+                minW={{ base: "0", md: "40%" }}
+                width={{ base: "100%", md: "auto" }}
+                value={pagingRequest.type}
+                onChange={onChangePositionType}
+              />
+              <Flex>
+                <MenuCustom
+                  isLoading={isLoading}
+                  selectedRow={selectedRow}
+                  onDeletes={onDeletes}
+                  onSeens={onSeens}
+                />
+              </Flex>
+            </Flex>
+          </Flex>
+          <Box pb="1rem">
+            <TeacherTable
+              selected={selectedRow}
+              pagingResponse={pagingResponse}
+              onSelectedAll={onSelectedAll}
+              onSelectedItem={onSelectedItem}
+              onViewDetail={(item, index) => {
+                openApproveModal();
+                setSelectItem(item);
+                if (item?.status === EApproveStatus.UnSeen) {
+                  seens([item?.id ?? ""]);
+                }
+              }}
+              onApprove={(item, index) => {
+                setModalConfirm({
+                  title: "Xét duyệt",
+                  messgage: "Bạn muốn duyệt đăng ký cho tài khoản này không",
+                });
+                onOpen();
+                setSelectItem(item);
+                setType(ETypeMenu.approve);
               }}
             />
-            <Select
-              minW={"40%"}
-              value={pagingRequest.type}
-              onChange={(event) => {
-                const req = {
-                  ...pagingRequest,
-                  type: event.target.value as EPositionType,
-                };
-                setPagingRequest(req);
-                getPaging(req);
-              }}
-            >
-              <option value={EPositionType.Teacher}>Giáo viên Chính</option>
-              <option value={EPositionType.Tutors}>Trợ Giảng</option>
-              <option value={EPositionType.Other}>Khác</option>
-            </Select>
-          </Flex>
-          <Box>
-            <Menu>
-              <MenuButton
-                isLoading={isLoading}
-                isDisabled={selectedRow.length === 0}
-                as={Button}
-                leftIcon={<MdArrowDropDown size="1.25rem" />}
-              >
-                Thao tác
-              </MenuButton>
-              <MenuList>
-                <MenuItem
-                  onClick={() => {
-                    setModalConfirm({
-                      title: "Xoá tài khoản",
-                      messgage: "Bạn muốn xoá tài khoản đã chọn",
-                    });
-                    onOpen();
-                    setType(ETypeMenu.delete);
+            <Box pt="1rem">
+              {pagingResponse.total > 0 && (
+                <Paginator
+                  currentPage={pagingResponse.page}
+                  onPageChange={(page) => {
+                    if (page <= pagingResponse.totalPage) {
+                      const req = {
+                        ...pagingRequest,
+                        pageIndex: page,
+                      };
+                      setPagingRequest(req);
+                      getPaging(req);
+                    }
                   }}
-                >
-                  Xoá
-                </MenuItem>
-                <MenuItem
-                  onClick={() => {
-                    setModalConfirm({
-                      title: "Cập nhật trạng thái đã xem",
-                      messgage:
-                        "Bạn muốn Cập nhật trạng thái đã xem trong danh sách đã chọn",
-                    });
-                    onOpen();
-                    setType(ETypeMenu.seens);
-                  }}
-                >
-                  Đã xem
-                </MenuItem>
-              </MenuList>
-            </Menu>
+                  pages={Array.from(
+                    {
+                      length: pagingResponse.totalPage,
+                    },
+                    (_, i) => i + 1
+                  )}
+                  pagesCount={pagingResponse.totalPage}
+                />
+              )}
+            </Box>
           </Box>
         </Flex>
-
-        <Box pb="1rem">
-          <TeacherTable
-            selected={selectedRow}
-            pagingResponse={pagingResponse}
-            onSelectedAll={onSelectedAll}
-            onSelectedItem={onSelectedItem}
-            onViewDetail={(item, index) => {
-              openApproveModal();
-              setSelectItem(item);
-              if (item?.status === EApproveStatus.UnSeen) {
-                seens([item?.id ?? ""]);
-              }
-            }}
-            onApprove={(item, index) => {
-              setModalConfirm({
-                title: "Xét duyệt",
-                messgage: "Bạn muốn duyệt đăng ký cho tài khoản này không",
-              });
-              onOpen();
-              setSelectItem(item);
-              setType(ETypeMenu.approve);
-            }}
-          />
-          <Box pt="1rem">
-            {pagingResponse.total > 0 && (
-              <Paginator
-                currentPage={pagingResponse.page}
-                onPageChange={(page) => {
-                  if (page <= pagingResponse.totalPage) {
-                    const req = {
-                      ...pagingRequest,
-                      pageIndex: page,
-                    };
-                    setPagingRequest(req);
-                    getPaging(req);
-                  }
-                }}
-                pages={Array.from(
-                  {
-                    length: pagingResponse.totalPage,
-                  },
-                  (_, i) => i + 1
-                )}
-                pagesCount={pagingResponse.totalPage}
-              />
-            )}
-          </Box>
-        </Box>
       </Flex>
     </>
   );
 };
 
 export default ManageTeacher;
+
+type MenuCustomProps = {
+  isLoading: boolean;
+  selectedRow: number[];
+  onDeletes: () => void;
+  onSeens: () => void;
+};
+const MenuCustom: FC<MenuCustomProps> = ({
+  isLoading,
+  selectedRow,
+  onDeletes,
+  onSeens,
+}) => {
+  return (
+    <Menu>
+      <MenuButton
+        isLoading={isLoading}
+        isDisabled={selectedRow.length === 0}
+        as={Button}
+        leftIcon={<MdArrowDropDown size="1.25rem" />}
+      >
+        Thao tác
+      </MenuButton>
+      <MenuList>
+        <MenuItem onClick={onDeletes}>Xoá</MenuItem>
+        <MenuItem onClick={onSeens}>Đã xem</MenuItem>
+      </MenuList>
+    </Menu>
+  );
+};
+
+type SelectCustomProps = SelectProps & {};
+const SelectCustom: FC<SelectCustomProps> = ({ ...selectProps }) => {
+  return (
+    <Select {...selectProps}>
+      <option value={EPositionType.Teacher}>Giáo viên Chính</option>
+      <option value={EPositionType.Tutors}>Trợ Giảng</option>
+      <option value={EPositionType.Other}>Khác</option>
+    </Select>
+  );
+};
