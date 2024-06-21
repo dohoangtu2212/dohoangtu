@@ -74,7 +74,8 @@ const ReviewForm: FC<FormProps> = ({ data }) => {
       introduceTextSecond: data?.introduceTextSecond ?? "",
       introduceTextThird: data?.introduceTextThird ?? "",
       description: data?.description ?? "",
-      introVideo: data?.introVideo ?? "",
+      introVideoName: data?.introVideoName ?? "",
+      introVideoUrl: data?.introVideoUrl ?? "",
       commits: data?.commits ?? [],
       lessons: data?.lessons ?? [],
     };

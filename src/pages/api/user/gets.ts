@@ -49,6 +49,13 @@ export default async function handler(
         nextPageToken = listUsersResult.pageToken;
       } while (nextPageToken);
 
+      allUsers.sort(function (a, b) {
+        return (
+          Date.parse(b.metadata.creationTime) -
+          Date.parse(a.metadata.creationTime)
+        );
+      });
+
       let filteredUsers = allUsers.filter((user) => {
         let nameMatch = true; // Mặc định là true nếu nameQuery không được cung cấp
         let matchRole = true; // Mặc định là true nếu roleQuery không được cung cấp

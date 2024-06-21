@@ -76,7 +76,8 @@ const IntroductionForm: FC<FormProps> = ({ data }) => {
       introduceTextThird: values.introduceTextThird,
       description: values.description,
       // old data
-      introVideo: data?.introVideo ?? "",
+      introVideoName: data?.introVideoName ?? "",
+      introVideoUrl: data?.introVideoUrl ?? "",
       commits: data?.commits ?? [],
       lessons: data?.lessons ?? [],
       reviews: data?.reviews ?? [],

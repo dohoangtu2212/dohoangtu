@@ -565,6 +565,25 @@ const dbApis = createApi({
           const dbRef = ref(db);
 
           const resList = await ManagePageHandles.getList(dbRef);
+          if (!!body.introVideo) {
+            const storage = getStorage();
+            const fileRef = storageRef(storage, "assets/introVideo");
+            await uploadBytes(fileRef, body.introVideo);
+            const url = await getDownloadURL(fileRef);
+            body.introVideoUrl = url;
+            body.introVideoName = body.introVideo.name;
+            delete body.introVideo;
+          }
+
+          if (!!body.thumbnail) {
+            const storage = getStorage();
+            const fileRef = storageRef(storage, "assets/thumbnail");
+            await uploadBytes(fileRef, body.thumbnail);
+            const url = await getDownloadURL(fileRef);
+            body.thumbnailUrl = url;
+            body.thumbnailName = body.thumbnail.name;
+            delete body.thumbnail;
+          }
 
           for (let index = 0; index < body.commits.length; index++) {
             const commit = body.commits[index];
@@ -578,9 +597,9 @@ const dbApis = createApi({
               commit.imageUrl = url;
               commit.id = commitKey;
               commit.imageName = commit.image.name;
+              delete commit.image;
+              body.commits[index] = commit;
             }
-            delete commit.image;
-            body.commits[index] = commit;
           }
 
           const resData = await ManagePageHandles.createAndUpdate(
@@ -610,6 +629,29 @@ const dbApis = createApi({
               const newLessonKey = push(child(ref(db), DB_KEY.managePage)).key;
               const lessonKey = lesson.id ?? newLessonKey!;
               body.lessons[index].id = lessonKey;
+              // const newCommitKey = push(child(ref(db), DB_KEY.managePage)).key;
+              // const lessonKey = lesson.id ?? newCommitKey!;
+              // if (!!lesson.video) {
+              //   const storage = getStorage();
+              //   const fileRef = storageRef(storage, `lesson/${lessonKey}`);
+              //   await uploadBytes(fileRef, lesson.video);
+              //   const url = await getDownloadURL(fileRef);
+              //   lesson.videoUrl = url;
+              //   lesson.id = lessonKey;
+              //   lesson.videoName = lesson.video.name;
+              //   delete lesson.video;
+              //   body.lessons[index] = lesson;
+              // }
+              // if (!!lesson.videoMobile) {
+              //   const storage = getStorage();
+              //   const fileRef = storageRef(storage, `lesson/mobile-${lessonKey}`);
+              //   await uploadBytes(fileRef, lesson.videoMobile);
+              //   const url = await getDownloadURL(fileRef);
+              //   lesson.videoMobileUrl = url;
+              //   lesson.id = lessonKey;
+              //   lesson.videoMobileName = lesson.videoMobile.name;
+              //   delete lesson.videoMobile;
+              //   body.lessons[index] = lesson;
             }
           }
 

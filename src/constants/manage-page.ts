@@ -7,7 +7,9 @@ export const DEFAULT_MANAGE_PAGE: IManagePageRes = {
   introduceTextSecond: "",
   introduceTextThird: "",
   description: "",
-  introVideo: "",
+  introVideo: undefined,
+  introVideoName: "",
+  introVideoUrl: "",
   commits: [],
   lessons: [],
   reviews: [],
@@ -71,7 +73,7 @@ export const introductionFormValidationSchema = Yup.object().shape({
 });
 
 export const commitFormValidationSchema = Yup.object().shape({
-  introVideo: introVideoValidation,
+  introVideoName: introVideoValidation,
   commits: commitValidation,
 });
 

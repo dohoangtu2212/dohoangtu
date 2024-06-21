@@ -58,7 +58,6 @@ const AccountInfo = () => {
     const req: IBaseAuthReq = {
       currid: currentUser?.uid ?? "",
     };
-    console.log("req: ", req);
 
     const res = await getUser(req).unwrap();
     if (res.success && res.data) {

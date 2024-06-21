@@ -1,11 +1,11 @@
 import { COLORS } from "@/constants/theme/colors";
 import ImagePreviewModal from "@/views/Manage/Page/ImagePreviewModal";
+import VideoPreviewModal from "@/views/Manage/Page/VideoPreviewModal";
 import {
   Button,
   FormLabel,
   Input,
   InputGroup,
-  InputProps,
   InputRightElement,
   Text,
   useDisclosure,
@@ -14,21 +14,28 @@ import React, { useEffect } from "react";
 import { FC, useCallback, useState } from "react";
 import { MdClose, MdVisibility } from "react-icons/md";
 
-type FileImageInputProps = {
+export enum FileType {
+  image,
+  video,
+}
+
+type FileInputCustomProps = {
   name?: string;
-  imageName?: string;
-  imageUrl?: string;
+  initialFileName?: string;
+  initialFileUrl?: string;
   placeholder: string;
   accept?: string;
-  onChange: (file?: File, imageName?: string) => void;
+  onChange: (file?: File, initialFileName?: string) => void;
+  type: FileType;
 };
-const FileImageInput: FC<FileImageInputProps> = ({
+const FileInputCustom: FC<FileInputCustomProps> = ({
   name,
-  imageName,
-  imageUrl,
+  initialFileName,
+  initialFileUrl,
   placeholder,
   accept,
   onChange,
+  type,
 }) => {
   const {
     isOpen: isPreviewModalOpen,
@@ -42,10 +49,10 @@ const FileImageInput: FC<FileImageInputProps> = ({
   const [fileName, setFileName] = useState<string>();
 
   useEffect(() => {
-    if (imageName && imageUrl) {
-      setFileName(imageName);
+    if (initialFileName && initialFileUrl) {
+      setFileName(initialFileName);
     }
-  }, [imageName, imageUrl]);
+  }, [initialFileName, initialFileUrl]);
 
   const handleFileChange = useCallback(
     (file: File) => {
@@ -70,11 +77,21 @@ const FileImageInput: FC<FileImageInputProps> = ({
 
   return (
     <>
-      <ImagePreviewModal
-        previewUrl={file ? previewUrl : imageUrl ?? ""}
-        isOpen={isPreviewModalOpen}
-        onClose={closePreviewModal}
-      />
+      {type == FileType.image && (
+        <ImagePreviewModal
+          previewUrl={file ? previewUrl : initialFileUrl ?? ""}
+          isOpen={isPreviewModalOpen}
+          onClose={closePreviewModal}
+        />
+      )}
+      {type == FileType.video && (
+        <VideoPreviewModal
+          previewUrl={file ? previewUrl : initialFileUrl ?? ""}
+          isOpen={isPreviewModalOpen}
+          onClose={closePreviewModal}
+        />
+      )}
+
       <InputGroup>
         <FormLabel
           htmlFor={name}
@@ -108,7 +125,7 @@ const FileImageInput: FC<FileImageInputProps> = ({
           ref={inputRef}
           id={name}
           name={name}
-          placeholder="Tải hình ảnh"
+          placeholder={placeholder}
           accept={accept}
           onChange={(event) => {
             const file = event.target.files?.[0];
@@ -123,7 +140,7 @@ const FileImageInput: FC<FileImageInputProps> = ({
             },
           }}
         />
-        {(imageUrl || file) && (
+        {(initialFileUrl || file) && (
           <InputRightElement
             top="1px"
             right="-7px"
@@ -144,7 +161,7 @@ const FileImageInput: FC<FileImageInputProps> = ({
                 <MdClose size="18px" color={"#355496"} />
               </Button>
             )}
-            {(previewUrl || imageUrl) && (
+            {(previewUrl || initialFileUrl) && (
               <Button
                 size="sm"
                 onClick={openPreviewModal}
@@ -163,7 +180,7 @@ const FileImageInput: FC<FileImageInputProps> = ({
   );
 };
 
-export default FileImageInput;
+export default FileInputCustom;
 
 type FileNameProps = {
   fileName: string;

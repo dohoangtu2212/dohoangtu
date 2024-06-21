@@ -40,7 +40,10 @@ async function createAndUpdate(
     introduceTextSecond: data.introduceTextSecond,
     introduceTextThird: data.introduceTextThird,
     description: data.description,
-    introVideo: data.introVideo,
+    introVideoName: data.introVideoName,
+    introVideoUrl: data.introVideoUrl,
+    thumbnailName: data.thumbnailName,
+    thumbnailUrl: data.thumbnailUrl,
     commits: data.commits ?? [],
     lessons: data.lessons ?? [],
     reviews: data.reviews ?? [],
@@ -54,37 +57,7 @@ async function createAndUpdate(
   return result;
 }
 
-async function updateSync(
-  db: Database,
-  snapshotData: IManagePageRes,
-  createData: IManagePageReq
-): Promise<IManagePageRes> {
-  const updates: { [key: string]: any } = {};
-  updates[`/${DB_KEY.managePage}/${snapshotData.id}`] = createData;
-
-  await update(ref(db), updates);
-  const resData: IManagePageRes = { ...createData, id: snapshotData.id };
-
-  return resData;
-}
-
-async function createSync(
-  db: Database,
-  createData: IManagePageReq
-): Promise<IManagePageRes> {
-  const newKey = push(child(ref(db), DB_KEY.managePage)).key;
-  const updates: Updates = {};
-
-  updates[`/${DB_KEY.managePage}/` + newKey] = createData;
-  update(ref(db), updates);
-  const resData: IManagePageRes = { ...createData, id: newKey! };
-
-  return resData;
-}
-
 export const ManagePageHandles = {
   getList,
-  updateSync,
-  createSync,
   createAndUpdate,
 };

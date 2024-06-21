@@ -19,7 +19,7 @@ import {
   IManagePageRes,
 } from "@/types/managePage";
 import { commitFormValidationSchema } from "@/constants/manage-page";
-import FileImageInput from "@/components/Input/FileImageInput";
+import FileInputCustom, { FileType } from "@/components/Input/FileInputCustom";
 import { useUpdateCommitMutation } from "@/store/apis/db";
 
 type FormProps = {
@@ -33,7 +33,9 @@ const CommitForm: FC<FormProps> = ({ data }) => {
 
   const formik = useFormik<CommitFormValues>({
     initialValues: {
-      introVideo: "",
+      introVideo: undefined,
+      introVideoName: "",
+      introVideoUrl: "",
       commits: [
         { title: "", image: undefined, imageUrl: "", imageName: "" },
         { title: "", image: undefined, imageUrl: "", imageName: "" },
@@ -48,7 +50,11 @@ const CommitForm: FC<FormProps> = ({ data }) => {
 
   useEffect(() => {
     if (data && formik) {
-      formik.setFieldValue("introVideo", data.introVideo ?? "");
+      formik.setFieldValue("introVideoName", data.introVideoName ?? "");
+      formik.setFieldValue("introVideoUrl", data.introVideoUrl ?? "");
+      formik.setFieldValue("thumbnailName", data.thumbnailName ?? "");
+      formik.setFieldValue("thumbnailUrl", data.thumbnailUrl ?? "");
+
       if (data.commits?.length > 0) {
         formik.setFieldValue("commits", data.commits);
       }
@@ -81,6 +87,11 @@ const CommitForm: FC<FormProps> = ({ data }) => {
   const onSubmit = async (values: CommitFormValues) => {
     const req: IManagePageReq = {
       introVideo: values.introVideo,
+      introVideoName: values.introVideoName,
+      introVideoUrl: values.introVideoUrl,
+      thumbnail: values.thumbnail,
+      thumbnailName: values.thumbnailName,
+      thumbnailUrl: values.thumbnailUrl,
       commits: values.commits,
       // old data
       introduceTextFirst: data?.introduceTextFirst ?? "",
@@ -105,16 +116,47 @@ const CommitForm: FC<FormProps> = ({ data }) => {
         <FormikProvider value={formik}>
           <form onSubmit={handleSubmit} noValidate>
             <Flex flexDir="column" w="full" gap="16px">
-              <FormControl id="introVideo" isRequired>
-                <FormLabel width="200px">Đường dẫn Video</FormLabel>
-                <FormInput
-                  name="introVideo"
-                  placeholder="Nhập đường dẫn Video"
-                  value={values.introVideo}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-              </FormControl>
+              <Box
+                padding="16px"
+                border="1px solid rgba(10, 11, 49, 0.10)"
+                borderRadius="4px"
+              >
+                <Flex flexDir={{ base: "column", md: "row" }} gap="16px">
+                  <FormControl id="introVideo" isRequired>
+                    <FormLabel width="200px">Video</FormLabel>
+                    <FileInputCustom
+                      name={`introVideo`}
+                      initialFileName={values.introVideoName}
+                      initialFileUrl={values.introVideoUrl}
+                      type={FileType.video}
+                      placeholder="Tải video"
+                      accept="video/*"
+                      onChange={(file?: File, fileName?: string) => {
+                        formik.setFieldValue(`introVideo`, file);
+                        formik.setFieldValue(`introVideoName`, fileName ?? "");
+                        setFieldTouched("type");
+                      }}
+                    />
+                  </FormControl>
+                  <FormControl id="thumbnail" isRequired>
+                    <FormLabel width="200px">Thumbnail</FormLabel>
+                    <FileInputCustom
+                      name={`thumbnail`}
+                      initialFileName={values.thumbnailName}
+                      initialFileUrl={values.thumbnailUrl}
+                      type={FileType.image}
+                      placeholder="Tải hình ảnh"
+                      accept="image/*"
+                      onChange={(file?: File, fileName?: string) => {
+                        formik.setFieldValue(`thumbnail`, file);
+                        formik.setFieldValue(`thumbnailName`, fileName ?? "");
+                        setFieldTouched("type");
+                      }}
+                    />
+                  </FormControl>
+                </Flex>
+              </Box>
+
               <FieldArray
                 name="commits"
                 render={(arrayHelpers: any) => (
@@ -149,10 +191,11 @@ const CommitForm: FC<FormProps> = ({ data }) => {
                               isRequired
                             >
                               <FormLabel width="200px">Hình ảnh</FormLabel>
-                              <FileImageInput
+                              <FileInputCustom
                                 name={`commits[${index}].image`}
-                                imageName={commit.imageName}
-                                imageUrl={commit.imageUrl}
+                                initialFileName={commit.imageName}
+                                initialFileUrl={commit.imageUrl}
+                                type={FileType.image}
                                 placeholder="Tải hình ảnh"
                                 accept="image/*"
                                 onChange={(file?: File, fileName?: string) => {

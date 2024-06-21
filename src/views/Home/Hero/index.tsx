@@ -191,9 +191,13 @@ const Preview: FC<PreviewProps> = ({ data }) => {
         alignItems="center"
       >
         <Box borderRadius="lg" overflow="hidden">
-          {data?.introVideo && (
-            <video loop poster="/images/thumbnail.png" controls>
-              <source src={data?.introVideo} type="video/mp4" />
+          {data?.introVideoUrl && (
+            <video
+              loop
+              poster={data?.thumbnailUrl ?? "/images/thumbnail.png"}
+              controls
+            >
+              <source src={data?.introVideoUrl} type="video/mp4" />
             </video>
           )}
         </Box>

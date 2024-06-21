@@ -31,12 +31,16 @@ const ImagePreviewModal: FC<ImagePreviewModalProps> = ({
           transform: "translate(-50%, -50%)!important",
         }}
       >
-        <ModalBody p="0" width={700} height={700}>
+        <ModalBody
+          p="0"
+          width={{ base: "90vw", md: "70vw", xl: "70vh" }}
+          height={{ base: "90vw", md: "70vw", xl: "70vh" }}
+        >
           {!!previewUrl && (
-            <Flex bg="black">
+            <Flex bg="#f6f8fa" borderRadius="1rem">
               <Image
-                width={700}
-                height={700}
+                width={{ base: "90vw", md: "70vw", xl: "70vh" }}
+                height={{ base: "90vw", md: "70vw", xl: "70vh" }}
                 src={previewUrl}
                 alt="bank"
                 style={{

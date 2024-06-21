@@ -26,7 +26,6 @@ const AvatarUser: FC<AvatarUserProps> = ({}) => {
       avatar: file,
     };
     const res = await updateAvatar(req).unwrap();
-    console.log("res: ", res);
     if (res) {
       await updateUserInfoAsync(res);
       toast("Lưu thành công.", "success");

@@ -26,6 +26,8 @@ import { NextRouter, useRouter } from "next/router";
 import { ParsedUrlQuery } from "querystring";
 import { FC, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import ButtonTimer from "./ButtonTimer";
+import useCustomToast from "@/hooks/useCustomToast";
 
 enum AccountActivationType {
   sendMail,
@@ -36,6 +38,7 @@ enum AccountActivationType {
 const AccountActivation = () => {
   const router = useRouter();
   const dispatch = useDispatch();
+  const toast = useCustomToast();
   const { code } = router.query as ParsedUrlQuery & { code: string };
   const currentUser = useCurrentUserSelector();
   const [isCodeSuccess, setIsCodeSuccess] = useState<boolean>(false);
@@ -45,6 +48,7 @@ const AccountActivation = () => {
     useUpdateUserInfoMutation();
 
   const isLoading = isCheckActivationLoading;
+  const isLoadingMail = isUpdateUserInfoLoading;
 
   useEffect(() => {
     if (currentUser?.uid && currentUser.emailVerified == false) {
@@ -61,7 +65,7 @@ const AccountActivation = () => {
 
     const res = await checkActivation(req).unwrap();
     if (res.success && res.data == true) {
-      setIsCodeSuccess(res.data == true);
+      setIsCodeSuccess(true);
       updateInfoAsync();
     }
   };
@@ -87,6 +91,7 @@ const AccountActivation = () => {
       action: ActionEditUser.reSendMail,
     };
     await updateUserInfo(req).unwrap();
+    toast("Gửi mail thành công", "success");
   };
 
   return (
@@ -122,6 +127,7 @@ const AccountActivation = () => {
                 pl={12}
               >
                 <Content
+                  isLoading={isLoadingMail}
                   currentUser={currentUser}
                   code={code}
                   isCodeSuccess={isCodeSuccess}
@@ -145,6 +151,7 @@ type ContentProps = {
   isCodeSuccess: boolean;
   router: NextRouter;
   reSendMail: () => Promise<void>;
+  isLoading: boolean;
 };
 const Content: FC<ContentProps> = ({
   currentUser,
@@ -152,6 +159,7 @@ const Content: FC<ContentProps> = ({
   isCodeSuccess,
   router,
   reSendMail,
+  isLoading,
 }) => {
   if ((code && isCodeSuccess) || currentUser?.emailVerified == true) {
     return (
@@ -173,16 +181,28 @@ const Content: FC<ContentProps> = ({
     return (
       <Flex flexDir="column" gap={"24px"} pr={{ sm: "0", md: "100px" }}>
         <b>Kích hoạt tài khoản</b>
-        <p>Bạn chưa kích hoạt tài khoản vui lòng gửi mail để xác nhận.</p>
-        <Button onClick={() => reSendMail()}>Gửi Email</Button>
+        <p>
+          Bạn chưa kích hoạt tài khoản. Vui lòng kiểm tra email của bạn để xác
+          nhận.
+          <br /> Nếu không tìm thấy email hãy gửi lại.
+        </p>
+        <ButtonTimer
+          isLoading={isLoading}
+          text="Gửi Email"
+          onClick={() => reSendMail()}
+        />
       </Flex>
     );
   } else if (currentUser?.emailVerified == false && code && !isCodeSuccess) {
     return (
       <Flex flexDir="column" gap={"24px"} pr={{ sm: "0", md: "100px" }}>
         <b>Mã kích hoạt không hợp lệ</b>
-        <p>Mã kích hoạt không đúng, vui lòng vui lòng kiểm tra và thử lại</p>
-        <Button onClick={() => reSendMail()}>Gửi lại mail</Button>
+        <p>Mã kích hoạt không đúng. Vui lòng kiểm tra email và thử lại</p>
+        <ButtonTimer
+          isLoading={isLoading}
+          text="Gửi lại mail"
+          onClick={() => reSendMail()}
+        />
       </Flex>
     );
   }

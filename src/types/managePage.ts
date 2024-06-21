@@ -6,7 +6,12 @@ export interface IntroductionFormValues {
 }
 
 export interface CommitFormValues {
-  introVideo: string;
+  introVideo?: File;
+  introVideoUrl?: string;
+  introVideoName?: string;
+  thumbnail?: File;
+  thumbnailUrl?: string;
+  thumbnailName?: string;
   commits: ICommit[];
 }
 
@@ -23,7 +28,12 @@ export interface IManagePageReq {
   introduceTextSecond: string;
   introduceTextThird: string;
   description: string;
-  introVideo: string;
+  introVideo?: File;
+  introVideoUrl?: string;
+  introVideoName?: string;
+  thumbnail?: File;
+  thumbnailUrl?: string;
+  thumbnailName?: string;
   commits: ICommit[];
   lessons: ILesson[];
   reviews: IReview[];
@@ -35,7 +45,12 @@ export interface IManagePageRes {
   introduceTextSecond: string;
   introduceTextThird: string;
   description: string;
-  introVideo: string;
+  introVideo?: File;
+  introVideoUrl?: string;
+  introVideoName?: string;
+  thumbnail?: File;
+  thumbnailUrl?: string;
+  thumbnailName?: string;
   commits: ICommit[];
   lessons: ILesson[];
   reviews: IReview[];
@@ -55,6 +70,12 @@ export interface ILesson {
   description: string;
   videoUrl: string;
   videoMobileUrl: string;
+  // video?: File;
+  // videoUrl?: string;
+  // videoName?: string;
+  // videoMobile?: File;
+  // videoMobileUrl?: string;
+  // videoMobileName?: string;
 }
 
 export interface IReview {

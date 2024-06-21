@@ -46,7 +46,6 @@ const SignUp: FC<SignUpProps> = ({ onDone }) => {
         address: address,
       };
       const res = await registerUser(req).unwrap();
-      console.log("res: ", res);
       if (res.success) {
         toast('Bạn đang truy cập hệ thống với vai trò "Học sinh".', "success");
         await signInWithEmailAndPassword(auth, email, password);
