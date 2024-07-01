@@ -3,6 +3,7 @@ export interface IntroductionFormValues {
   introduceTextSecond: string;
   introduceTextThird: string;
   description: string;
+  trialLearnLink?: string;
 }
 
 export interface CommitFormValues {
@@ -34,6 +35,7 @@ export interface IManagePageReq {
   thumbnail?: File;
   thumbnailUrl?: string;
   thumbnailName?: string;
+  trialLearnLink?: string;
   commits: ICommit[];
   lessons: ILesson[];
   reviews: IReview[];
@@ -51,6 +53,7 @@ export interface IManagePageRes {
   thumbnail?: File;
   thumbnailUrl?: string;
   thumbnailName?: string;
+  trialLearnLink?: string;
   commits: ICommit[];
   lessons: ILesson[];
   reviews: IReview[];

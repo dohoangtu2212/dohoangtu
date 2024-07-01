@@ -101,6 +101,7 @@ const LessonForm: FC<FormProps> = ({ data }) => {
       introVideoUrl: data?.introVideoUrl ?? "",
       thumbnailName: data?.thumbnailName ?? "",
       thumbnailUrl: data?.thumbnailUrl ?? "",
+      trialLearnLink: data?.trialLearnLink ?? "",
       commits: data?.commits ?? [],
       reviews: data?.reviews ?? [],
     };

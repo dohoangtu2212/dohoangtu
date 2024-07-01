@@ -98,6 +98,7 @@ const CommitForm: FC<FormProps> = ({ data }) => {
       introduceTextSecond: data?.introduceTextSecond ?? "",
       introduceTextThird: data?.introduceTextThird ?? "",
       description: data?.description ?? "",
+      trialLearnLink: data?.trialLearnLink ?? "",
       lessons: data?.lessons ?? [],
       reviews: data?.reviews ?? [],
     };

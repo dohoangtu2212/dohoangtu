@@ -44,6 +44,7 @@ const IntroductionForm: FC<FormProps> = ({ data }) => {
       );
       formik.setFieldValue("introduceTextThird", data.introduceTextThird ?? "");
       formik.setFieldValue("description", data.description ?? "");
+      formik.setFieldValue("trialLearnLink", data.trialLearnLink ?? "");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
@@ -75,6 +76,7 @@ const IntroductionForm: FC<FormProps> = ({ data }) => {
       introduceTextSecond: values.introduceTextSecond,
       introduceTextThird: values.introduceTextThird,
       description: values.description,
+      trialLearnLink: values?.trialLearnLink ?? "",
       // old data
       introVideoName: data?.introVideoName ?? "",
       introVideoUrl: data?.introVideoUrl ?? "",
@@ -132,6 +134,16 @@ const IntroductionForm: FC<FormProps> = ({ data }) => {
               name="description"
               placeholder="Nhập mô tả"
               value={values.description}
+              onChange={handleChange}
+              onBlur={handleBlur}
+            />
+          </FormControl>
+          <FormControl id="trialLearnLink">
+            <FormLabel width="200px">Liên kết học thử</FormLabel>
+            <FormInput
+              name="trialLearnLink"
+              placeholder="Nhập liên kết học thử"
+              value={values.trialLearnLink}
               onChange={handleChange}
               onBlur={handleBlur}
             />

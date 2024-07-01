@@ -9,6 +9,7 @@ import useMobile from "@/hooks/useMobile";
 import { FC } from "react";
 import { robotoSlab, sedgwickAve } from "@/fonts";
 import { IManagePageRes } from "@/types/managePage";
+import Link from "next/link";
 
 type HeroProps = {
   data: IManagePageRes | null;
@@ -83,7 +84,7 @@ const BriefIntro: FC<BriefIntroProps> = ({ data }) => {
           {!isMobile && <br />} chuyển động cực kì trực quan, bắt mắt và dễ hiểu */}
         </Text>
         <Box py={{ base: "0", lg: "2rem" }} w="100%">
-          <Actions />
+          <Actions data={data} />
 
           <Flex alignItems="flex-end">
             <Text
@@ -118,8 +119,10 @@ const BriefIntro: FC<BriefIntroProps> = ({ data }) => {
     </Flex>
   );
 };
-
-const Actions = () => {
+type ActionsProps = {
+  data: IManagePageRes | null;
+};
+const Actions: FC<ActionsProps> = ({ data }) => {
   const router = useRouter();
 
   const handleSignUp = () => {
@@ -164,16 +167,19 @@ const Actions = () => {
       >
         Đăng kí
       </Button>
-      <Button
-        px="2.5rem"
-        variant="outline"
-        py="0.5rem"
-        h="fit-content"
-        fontSize="1.25rem"
-        onClick={handleViewDemoCourse}
-      >
-        Học thử
-      </Button>
+      {data?.trialLearnLink && (
+        <Link href={data?.trialLearnLink ?? ""} passHref={true} target="_blank">
+          <Button
+            px="2.5rem"
+            variant="outline"
+            py="0.5rem"
+            h="fit-content"
+            fontSize="1.25rem"
+          >
+            Học thử
+          </Button>
+        </Link>
+      )}
     </Flex>
   );
 };
