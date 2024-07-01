@@ -76,6 +76,8 @@ const ReviewForm: FC<FormProps> = ({ data }) => {
       description: data?.description ?? "",
       introVideoName: data?.introVideoName ?? "",
       introVideoUrl: data?.introVideoUrl ?? "",
+      thumbnailName: data?.thumbnailName ?? "",
+      thumbnailUrl: data?.thumbnailUrl ?? "",
       commits: data?.commits ?? [],
       lessons: data?.lessons ?? [],
     };
