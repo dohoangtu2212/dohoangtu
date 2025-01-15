@@ -41,7 +41,7 @@ const CourseSection: FC<CourseSectionProps> = ({
   const userRole = useUserRoleSelector();
   const isStudent = userRole === UserRole.student;
 
-  const viewedLessons = section.lessons.filter(
+  const viewedLessons = (section.lessons ?? []).filter(
     (lesson) =>
       !!lesson.dyntubeKey &&
       Object.keys(viewsCount ?? {}).includes(lesson.dyntubeKey)
