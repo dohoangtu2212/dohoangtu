@@ -73,7 +73,7 @@ const CourseSection: FC<CourseSectionProps> = ({
         </h2>
         <AccordionPanel pb={4}>
           <Flex flexDir="column" gap="1rem">
-            {section.lessons?.map((lesson) => {
+            {(section.lessons ?? []).map((lesson) => {
               const lessionVideoViewsCount = !!lesson.dyntubeKey
                 ? viewsCount?.[lesson.dyntubeKey] ?? 0
                 : 0;
