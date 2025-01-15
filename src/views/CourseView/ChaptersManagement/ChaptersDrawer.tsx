@@ -63,7 +63,7 @@ const ChaptersDrawer: FC<ChaptersDrawerProps> = ({
                     </Tooltip>
                   </Flex>
                   <UnorderedList>
-                    {sections.map((section) => {
+                    {(sections ?? []).map((section) => {
                       const {
                         order: secOrder,
                         name: secName,
@@ -76,7 +76,7 @@ const ChaptersDrawer: FC<ChaptersDrawerProps> = ({
                               Bài {secOrder} : {secName}
                             </Text>
                             <UnorderedList flexDir="column">
-                              {lessons.map((lesson) => {
+                              {(lessons ?? []).map((lesson) => {
                                 const { name: lesName, order: lesOrder } =
                                   lesson;
 
