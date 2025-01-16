@@ -93,7 +93,7 @@ const Structure: FC<StructureProps> = ({
           const chaptersWithOrderUpdated = chaptersAfterDelete.map(
             (chap, idx) => ({
               ...chap,
-              order: idx + 1,
+              order: idx,
             })
           );
           handleChaptersChange(chaptersWithOrderUpdated);
