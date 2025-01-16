@@ -72,7 +72,7 @@ const getLessonsCount = (chapters: ICourseChapter[]) => {
       const lessonsCountInSections = reduce(
         sections,
         (lessonsCount, section) => {
-          const { lessons } = section;
+          const { lessons = [] } = section;
           return lessonsCount + lessons.length;
         },
         0
