@@ -77,13 +77,13 @@ const useAuthInit = () => {
         ...PRIVATE_ROUTES,
         ...(userPermission?.routes ?? []),
       ];
-      let isPermssionRoute = ALLOW_ROUTES.find((r) => r === pathname); // || (r !== "/" && pathname.startsWith(r)
-      if (
-        !isPermssionRoute &&
-        isValidStudentCourse(pathname, query, studentCourseIds ?? [])
-      ) {
-        isPermssionRoute = ROUTE.studentCourseView;
-      }
+      let isPermssionRoute = ALLOW_ROUTES.find((r) => r === pathname);
+      // if (
+      //   !isPermssionRoute &&
+      //   isValidStudentCourse(pathname, query, studentCourseIds ?? [])
+      // ) {
+      //   isPermssionRoute = ROUTE.studentCourseView;
+      // }
       if (!isPermssionRoute) router.push(ROUTE.home);
     }
   }, [
