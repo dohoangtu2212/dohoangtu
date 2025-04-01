@@ -1,4 +1,5 @@
 import { DEFAULT_MANAGE_PAGE } from "@/constants/manage-page";
+import { PRIVATE_ROUTES, PUBLIC_ROUTES } from "@/constants/route";
 import {
   ICourse,
   ICourseComment,
@@ -10,8 +11,16 @@ import {
 } from "@/types/course";
 import { IManagePageReq, IManagePageRes } from "@/types/managePage";
 import { INewOrder, IOrder } from "@/types/order";
+import {
+  IObjectPermission,
+  IUpdatePermissionsReq,
+  IUpdatePermissionsRes,
+  IUserPermission,
+  UserRole,
+} from "@/types/permission";
 import { IBaseAuthReq } from "@/types/user";
 import { ManagePageHandles } from "@/utils/managePage.handles";
+import { PermissionHandles } from "@/utils/permission.handles";
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { fakeBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
@@ -41,6 +50,7 @@ export const DB_KEY = {
   studentsCourses: "students-courses",
   registerTeacher: "register-teacher",
   managePage: "manage-page",
+  permissions: "permissions",
 };
 
 export type Updates = { [key: string]: any };
@@ -55,6 +65,7 @@ const TAG = {
   studentViewsCount: "student-views-count",
   courseDetailsComments: "course-details-comments",
   managePage: "manage-page",
+  permissions: "permissions",
 };
 
 const dbApis = createApi({
@@ -468,6 +479,30 @@ const dbApis = createApi({
       },
       providesTags: [TAG.studentCourses],
     }),
+    getStudentCourseIds: build.mutation<string[], { userId: string }>({
+      async queryFn({ userId }) {
+        try {
+          const db = getDatabase();
+          const dbRef = ref(db);
+
+          const snapshot = await get(
+            child(dbRef, `${DB_KEY.students}/${userId}/courses`)
+          );
+          if (snapshot.exists()) {
+            const values = snapshot.val();
+            const data = Object.entries(values).map(
+              ([key, val]) => (val as any).courseId
+            ) as string[];
+
+            return { data };
+          } else {
+            throw new Error("No data available");
+          }
+        } catch (e) {
+          return { error: JSON.stringify(e) };
+        }
+      },
+    }),
     getStudentViewsCount: build.query<
       IStudentViewCount | null,
       { studentId: string }
@@ -725,6 +760,68 @@ const dbApis = createApi({
       },
       invalidatesTags: [TAG.managePage],
     }),
+    getPermissions: build.query<IObjectPermission, void>({
+      async queryFn() {
+        try {
+          const db = getDatabase();
+          const dbRef = ref(db);
+
+          const resData = await PermissionHandles.getPermission(dbRef);
+          return { data: resData };
+        } catch (e) {
+          return { error: JSON.stringify(e) };
+        }
+      },
+      providesTags: [TAG.permissions],
+    }),
+    getUserPermission: build.mutation<IUserPermission, { role: UserRole }>({
+      async queryFn({ role }) {
+        try {
+          const db = getDatabase();
+          const dbRef = ref(db);
+
+          const resData = await PermissionHandles.getPermissionMapData(dbRef);
+          const codes = PermissionHandles.getPermissionsByRole(role, resData);
+          const routes = PermissionHandles.getRoutesFromPermissions(codes);
+          return {
+            data: {
+              codes: codes,
+              routes: routes,
+            },
+          };
+        } catch (e) {
+          return { error: JSON.stringify(e) };
+        }
+      },
+    }),
+    updatePermissions: build.mutation<
+      IUpdatePermissionsRes,
+      IUpdatePermissionsReq
+    >({
+      async queryFn(record) {
+        try {
+          const body = { ...record };
+          const db = getDatabase();
+
+          for (let index = 0; index < body.data.length; index++) {
+            const permission = body.data[index];
+            if (!permission.id) {
+              const newPermissionKey = push(
+                child(ref(db), DB_KEY.permissions)
+              ).key;
+              const permissionKey = permission.id ?? newPermissionKey!;
+              body.data[index].id = permissionKey;
+            }
+          }
+
+          const resData = await PermissionHandles.createAndUpdate(db, body);
+          return { data: resData };
+        } catch (e) {
+          return { error: JSON.stringify(e) };
+        }
+      },
+      invalidatesTags: [TAG.permissions],
+    }),
   }),
 });
 
@@ -741,6 +838,7 @@ export const {
   useUpdateStudentCoursesMutation,
   useConfirmOrderMutation,
   useGetStudentCoursesQuery,
+  useGetStudentCourseIdsMutation,
   useGetStudentViewsCountQuery,
   useUpdateStudentViewsCountMutation,
   useUpdateStudentCourseProgressMutation,
@@ -753,5 +851,8 @@ export const {
   useUpdateLessonMutation,
   useUpdateReviewMutation,
   useUpdateAvatarMutation,
+  useGetPermissionsQuery,
+  useGetUserPermissionMutation,
+  useUpdatePermissionsMutation,
 } = dbApis;
 export default dbApis;

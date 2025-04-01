@@ -11,13 +11,18 @@ import {
 import { getAuth } from "firebase/auth";
 import RoleTag from "@/components/Role/RoleTag";
 import { MdPerson, MdLogout } from "react-icons/md";
-import { useUserRoleSelector } from "@/store/slices/user";
+import {
+  useUserPermissionSelector,
+  useUserRoleSelector,
+} from "@/store/slices/user";
 import { COLORS } from "@/constants/theme/colors";
 import { ROUTE } from "@/constants/route";
 import router from "next/router";
+import { PERMISSION } from "@/constants/permission";
 
 const UserMenu = () => {
   const auth = getAuth();
+  const userPermission = useUserPermissionSelector();
   const userRole = useUserRoleSelector();
   const user = auth.currentUser;
   const userCred = !!user
@@ -46,21 +51,42 @@ const UserMenu = () => {
         <PopoverBody>
           <Flex flexDir="column" gap="1rem">
             {!!userRole && <RoleTag role={userRole} mt="0.5rem" py="0.5rem" />}
-            <Button
-              w="100%"
-              variant="ghost"
-              leftIcon={<MdPerson size="1.25rem" />}
-              fontSize="0.875rem"
-              justifyContent="flex-start"
-              px="1rem"
-              onClick={() =>
-                router.push({
-                  pathname: ROUTE.accountInfo,
-                })
-              }
-            >
-              Thông tin
-            </Button>
+            {userPermission?.codes.includes(PERMISSION.ACCOUNT.INFO_READ) && (
+              <Button
+                w="100%"
+                variant="ghost"
+                leftIcon={<MdPerson size="1.25rem" />}
+                fontSize="0.875rem"
+                justifyContent="flex-start"
+                px="1rem"
+                onClick={() =>
+                  router.push({
+                    pathname: ROUTE.accountInfo,
+                  })
+                }
+              >
+                Thông tin
+              </Button>
+            )}
+            {userPermission?.codes.includes(
+              PERMISSION.ACCOUNT.PERMISSION_READ
+            ) && (
+              <Button
+                w="100%"
+                variant="ghost"
+                leftIcon={<MdPerson size="1.25rem" />}
+                fontSize="0.875rem"
+                justifyContent="flex-start"
+                px="1rem"
+                onClick={() =>
+                  router.push({
+                    pathname: ROUTE.accountPermission,
+                  })
+                }
+              >
+                Phân quyền
+              </Button>
+            )}
             <Button
               variant="ghost"
               px="1rem"

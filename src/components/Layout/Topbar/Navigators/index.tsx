@@ -1,9 +1,7 @@
 import NavItem from "@/components/Layout/Navigation/NavItem";
 import {
-  ADMIN_NAVIGATORS,
+  PERMISSION_NAVIGATORS,
   PUBLIC_NAVIGATORS,
-  STUDENT_NAVIGATORS,
-  TEACHER_NAVIGATORS,
 } from "@/constants/navigator";
 import { useRouter } from "next/router";
 import NavigatorsContainer from "@/components/Layout/Navigation/NavigatorsContainer";
@@ -12,8 +10,7 @@ import { ROUTE } from "@/constants/route";
 import useMobile from "@/hooks/useMobile";
 import { Flex, Text } from "@chakra-ui/react";
 import { useMemo } from "react";
-import { useUserRoleSelector } from "@/store/slices/user";
-import { UserRole } from "@/types/permission";
+import { useUserPermissionSelector } from "@/store/slices/user";
 import { COLORS } from "@/constants/theme/colors";
 
 type NavigatorsProps = {};
@@ -37,20 +34,18 @@ const Navigators: FC<NavigatorsProps> = () => {
 type NavigatorsListProps = {};
 const NavigatorsList: FC<NavigatorsListProps> = () => {
   const router = useRouter();
-  const userRole = useUserRoleSelector();
+  const userPermission = useUserPermissionSelector();
 
   const { pathname } = router;
 
-  const isRoleStudent = userRole === UserRole.student;
-  const isRoleTeacher = userRole === UserRole.teacher;
-  const isRoleAdmin = userRole === UserRole.admin;
-
   const navigators = useMemo(() => {
-    if (isRoleStudent) return [...PUBLIC_NAVIGATORS, ...STUDENT_NAVIGATORS];
-    if (isRoleTeacher) return [...PUBLIC_NAVIGATORS, ...TEACHER_NAVIGATORS];
-    if (isRoleAdmin) return [...PUBLIC_NAVIGATORS, ...ADMIN_NAVIGATORS];
-    return PUBLIC_NAVIGATORS;
-  }, [isRoleStudent, isRoleTeacher, isRoleAdmin]);
+    return [
+      ...PUBLIC_NAVIGATORS,
+      ...PERMISSION_NAVIGATORS.filter((nav) =>
+        userPermission?.routes.includes(nav.link)
+      ),
+    ];
+  }, [userPermission?.routes]);
 
   return (
     <>

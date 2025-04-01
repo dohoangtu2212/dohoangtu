@@ -1,3 +1,4 @@
+import { PERMISSION } from "@/constants/permission";
 import type { INavigator } from "@/types/navigator";
 import { ROUTE } from "@/constants/route";
 import { MdHome } from "react-icons/md";
@@ -106,17 +107,10 @@ export const PUBLIC_NAVIGATORS: INavigator[] = [
   // },
 ];
 
-export const STUDENT_NAVIGATORS: INavigator[] = [
-  // NAVIGATOR.student,
+export const PERMISSION_NAVIGATORS: INavigator[] = [
   NAVIGATOR.studentCourses,
-];
-
-export const TEACHER_NAVIGATORS: INavigator[] = [
   NAVIGATOR.teacherCourses,
   NAVIGATOR.teacherOrders,
-];
-
-export const ADMIN_NAVIGATORS: INavigator[] = [
   NAVIGATOR.adminManageAccount,
   NAVIGATOR.adminManageTeachers,
   NAVIGATOR.adminManagePage,
