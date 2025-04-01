@@ -78,12 +78,12 @@ const useAuthInit = () => {
         ...(userPermission?.routes ?? []),
       ];
       let isPermssionRoute = ALLOW_ROUTES.find((r) => r === pathname);
-      // if (
-      //   !isPermssionRoute &&
-      //   isValidStudentCourse(pathname, query, studentCourseIds ?? [])
-      // ) {
-      //   isPermssionRoute = ROUTE.studentCourseView;
-      // }
+      if (
+        !isPermssionRoute &&
+        isValidStudentCourse(pathname, query, studentCourseIds ?? [])
+      ) {
+        isPermssionRoute = ROUTE.studentCourseView;
+      }
       if (!isPermssionRoute) router.push(ROUTE.home);
     }
   }, [
