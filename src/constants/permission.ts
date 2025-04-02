@@ -21,8 +21,7 @@ export const PERMISSION = {
   MANAGE_COURSE: {
     READ: "MANAGE_COURSE_READ",
     READ_DETAIL: "MANAGE_COURSE_READ_DETAIL",
-    ADD: "MANAGE_COURSE_ADD",
-    EDIT: "MANAGE_COURSE_EDIT",
+    ADD_EDIT: "MANAGE_COURSE_ADD_EDIT",
     DELETE: "MANAGE_COURSE_DELETE",
   },
   MANAGE_ACCOUNT: {
@@ -91,9 +90,14 @@ export const DEFAULT_PERMISSION: IObjectPermission = {
         },
         {
           code: PERMISSION.MANAGE_COURSE.READ_DETAIL,
-          name: "Truy cập trang Chi tiết quản lý khoá học",
-          description:
-            "Cho phép người dùng truy cập trang Chi tiết quản lý khoá học",
+          name: "Truy cập trang Chi tiết khoá học",
+          description: "Cho phép người dùng truy cập trang Chi tiết khoá học",
+          roles: [UserRole.teacher],
+        },
+        {
+          code: PERMISSION.MANAGE_COURSE.ADD_EDIT,
+          name: "Tạo mới / cập nhật khoá học",
+          description: "Cho phép người dùng tạo mới / cập nhập khoá học",
           roles: [UserRole.teacher],
         },
         // {
@@ -210,6 +214,7 @@ export const DEFAULT_PERMISSION: IObjectPermission = {
     [`${PERMISSION.ORDERS.READ}`]: [UserRole.teacher],
     [`${PERMISSION.MANAGE_COURSE.READ}`]: [UserRole.teacher],
     [`${PERMISSION.MANAGE_COURSE.READ_DETAIL}`]: [UserRole.teacher],
+    [`${PERMISSION.MANAGE_COURSE.ADD_EDIT}`]: [UserRole.teacher],
     // [`${PERMISSION.MANAGE_COURSE.ADD}`]: [UserRole.teacher],
     // [`${PERMISSION.MANAGE_COURSE.EDIT}`]: [UserRole.teacher],
     // [`${PERMISSION.MANAGE_COURSE.DELETE}`]: [UserRole.teacher],
