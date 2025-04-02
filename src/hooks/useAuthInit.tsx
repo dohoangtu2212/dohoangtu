@@ -56,6 +56,8 @@ const useAuthInit = () => {
       } else {
         dispatch(userActions.setCurrentUser(null));
         dispatch(userActions.setUserRole(null));
+        dispatch(userActions.setUserPermissions(null));
+        dispatch(userActions.setStudentCourseIds(null));
       }
       setInitialized(true);
     });
