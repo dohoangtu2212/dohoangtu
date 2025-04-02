@@ -114,10 +114,3 @@ function isValidStudentCourse(
   }
   return false;
 }
-
-// function isValidTeacherCourse(pathname: string, routes: string[]) {
-//   return (
-//     pathname == ROUTE.teacherCourseView &&
-//     routes.filter((r) => r === ROUTE.teacherCourses).length > 0
-//   );
-// }
